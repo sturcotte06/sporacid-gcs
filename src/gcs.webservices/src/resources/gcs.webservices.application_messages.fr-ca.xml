@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-messages SYSTEM "xml-schemas\application_message.schema.dtd">
+
+<application-messages locale="fr-ca">
+  <!-- Ldap authentication messages -->
+  
+  <!-- Authentication service messages -->
+  <message key="authentication_login_success" message="L'authentification a été effectuée avec succès." />
+  <message key="authentication_login_invalid_request" message="La requête d'authentification est malformée." />
+  <message key="authentication_login_wrong_username" message="Le nom d'usager est invalide." />
+  <message key="authentication_login_wrong_password" message="Le mot de passe est invalide." />
+  <message key="authentication_logout_success" message="La déconnexion a été effectuée avec succès." />
+  <message key="authentication_logout_invalid_request" message="La requête de déconnexion est malformée." />
+  <!-- Members service messages -->
+  <message key="members_get_member_successful" message="L'obtention du membre a été effectué avec succès." />
+  <message key="members_get_member_invalid_request" message="La requête d'obtention d'un membre est malformée." />
+  <!-- General messages -->
+  <message key="security_authentication_required" message="L'authentification est nécessaire pour cette opération." />
+  <message key="security_denied_access" message="L'usager n'a pas les droits." />
+</application-messages>

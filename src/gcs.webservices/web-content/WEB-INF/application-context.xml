@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/context 
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- <context:annotation-config /> -->
+	<!-- <tx:annotation-driven /> -->
+
+	<!-- Data source informations -->
+<!-- 	<bean id="dataSource" -->
+<!--       class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!--       <property name="driverClassName" value="org.postgresql.Driver" /> -->
+<!--       <property name="url" -->
+<!--       	value="jdbc:postgresql://gti710-20133-01.logti.etsmtl.ca:5432/gti710_20123" /> -->
+<!--       <property name="username" value="pgadmin" /> -->
+<!--       <property name="password" value="chAnge_Me" /> -->
+<!-- 	</bean> -->
+
+	<!-- Session factory bean object for hibernate -->
+<!-- 	<bean id="sessionFactory" -->
+<!--       class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" -->
+<!--       lazy-init="true"> -->
+<!--       <property name="dataSource" ref="dataSource" /> -->
+<!--       <property name="annotatedClasses"> -->
+<!--       	<list></list> -->
+<!--       </property> -->
+<!--       <property name="hibernateProperties"> -->
+<!--       	<props> -->
+<!--           <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
+<!--           <prop key="hibernate.show_sql">true</prop> -->
+<!--           <prop key="hibernate.connection.pool_size">1</prop> -->
+<!--       	</props> -->
+<!--       </property> -->
+<!-- 	</bean> -->
+	
+    <!-- Application messages cache. This is where configured messages will be loaded. -->
+    <bean id="messageLocalizer" name="messageLocalizer"
+      class="gcs.webapp.utils.app.messages.ApplicationMessageLocalizer" scope="singleton">
+      <constructor-arg name="messagesFolderRelativePath" value="./resources" />
+      <property name="defaultLocale" value="fr-ca" />
+    </bean>
+    
+    <!-- Custom security provider for the application modules -->
+    <bean id="moduleSecurityProvider" name="moduleSecurityProvider" 
+      class="gcs.webapp.utils.app.security.ModuleSecurityProvider" scope="singleton">
+      <constructor-arg name="moduleSecurityFolderRelativePath" value="./resources" />
+    </bean>
+    
+	<!-- Authenticated sessions cache -->
+  	<bean id="sessionCache" name="sessionCache" 
+      class="gcs.webservices.authentication.SessionCache" scope="singleton">
+      <!-- 24 hours of validity for a cached session -->
+      <constructor-arg value="86400" />
+      <property name="keyProvider">
+      	<bean class="gcs.webapp.utils.caching.providers.Base64KeyProvider" />
+      </property>
+      <property name="hashProvider">
+        <bean class="gcs.webapp.utils.security.SHA512HashProvider" />
+      </property>
+    </bean>
+    
+    <!-- LDAP authenticator for authenticating clients -->
+    <bean id="ldapAuthenticator" name="ldapAuthenticator" 
+      class="gcs.webservices.authentication.ActiveDirectoryAuthentication" scope="singleton">
+      <property name="ldapUrl" value="ldap://ens.ad.etsmtl.ca:389" />
+      <property name="defaultUserDomain" value="ens.etsmtl.ca" />
+    </bean>
+</beans>

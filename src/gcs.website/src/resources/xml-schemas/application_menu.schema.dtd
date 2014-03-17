@@ -1,0 +1,11 @@
+<!ELEMENT application-menu (menu-entry*)>
+	<!ATTLIST application-menu for CDATA #REQUIRED>
+	<!ELEMENT menu-entry (sub-menu?)>
+		<!ATTLIST menu-entry name CDATA #REQUIRED>
+		<!ATTLIST menu-entry path CDATA "">
+		<!ATTLIST menu-entry load-async (true | false) "true">
+		<!ELEMENT sub-menu (sub-menu-entry*)>
+			<!ELEMENT sub-menu-entry EMPTY>
+				<!ATTLIST sub-menu-entry name CDATA #REQUIRED>
+				<!ATTLIST sub-menu-entry path CDATA #REQUIRED>
+				<!ATTLIST sub-menu-entry load-async (true | false) "true">

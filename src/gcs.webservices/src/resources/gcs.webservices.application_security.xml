@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-messages SYSTEM "xml-schemas\application_security.schema.dtd">
+
+<application-security>
+  <!-- Members module definition -->
+  <application-module name="members_module">
+    <application-role name="capitaine">
+      <role-right operation="Create" />
+      <role-right operation="Read" />
+      <role-right operation="Update" />
+      <role-right operation="Delete" />
+    </application-role>
+    <application-role name="membre">
+      <role-right operation="Read" />
+    </application-role>
+  </application-module>
+  
+  <!-- Inventory module definition -->
+  <application-module name="inventory_module">
+    <application-role name="capitaine">
+      <role-right operation="Create" />
+      <role-right operation="Read" />
+      <role-right operation="Update" />
+      <role-right operation="Delete" />
+    </application-role>
+    <application-role name="membre">
+      <role-right operation="Read" />
+    </application-role>
+  </application-module>
+  
+  <!-- Suppliers module definition -->
+  <application-module name="suppliers_module">
+    <application-role name="capitaine">
+      <role-right operation="Create" />
+      <role-right operation="Read" />
+      <role-right operation="Update" />
+      <role-right operation="Delete" />
+    </application-role>
+    <application-role name="membre">
+      <role-right operation="Read" />
+    </application-role>
+  </application-module>
+  
+  <!-- Sponsors module definition -->
+  <application-module name="sponsors_module">
+    <application-role name="capitaine">
+      <role-right operation="Create" />
+      <role-right operation="Read" />
+      <role-right operation="Update" />
+      <role-right operation="Delete" />
+    </application-role>
+    <application-role name="membre">
+      <role-right operation="Read" />
+    </application-role>
+  </application-module>
+</application-security>

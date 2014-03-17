@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-messages SYSTEM "xml-schemas\application_message.schema.dtd">
+
+<application-messages locale="fr-ca">
+  <message key="message1" message="Ceci est le message 1." />
+  <message key="message2" message="Ceci est le message 2." />
+  <message key="message3" message="Ceci est le message 3." />
+  <message key="message4" message="Ceci est le message 4." />
+</application-messages>

@@ -1,0 +1,40 @@
+body {
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+/** Color definitions **/
+body, .menu-container, .status-bar-container {
+	background-color: #3E3E42;
+}
+
+body, .menu-container, .menu-container a,
+.status-bar-container, .status-bar-container a {
+	color: white;
+}
+
+.menu-container a:hover,
+.status-bar-container a:hover {
+	color: #1C97EA;
+	/*color: white;*/
+}
+
+.menu-item .menu-item-header {
+	background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
+	background-size: 100% 100%;
+	color: white;
+}
+
+.form-button, .form-submit {
+	background: #81969A url(../../images/black_glass_back.png) no-repeat top left;
+	background-size: 100% 100%;
+}
+
+.form-input {
+	border-color: transparent;
+}
+
+.form-input:focus {
+	border-color: #EC7600;
+}

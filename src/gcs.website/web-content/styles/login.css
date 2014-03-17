@@ -1,0 +1,108 @@
+.ets-bar {
+	position: relative;
+	padding: 15px 20%;
+	padding-bottom: 10px;
+	text-align: right;
+	margin-bottom: 30px;
+}
+
+.ets-bar .ets-logo {
+	background: url(../images/logo-ets.png) no-repeat;
+	background-size: 100% 100%;
+	height: 38px;
+	width: 65px;
+	position: absolute;
+	left: 20%;
+	top: 5px;
+}
+
+.header-container {
+	width: 60%;
+	margin: auto;
+	margin-bottom: 30px;
+}
+
+.header-container .logo-container .logo {
+	display: inline-block;
+	background: url(../images/logo.png) no-repeat;
+	background-size: 100% 100%;
+	height: 115px; 
+	width: 165px;
+}
+
+.header-container .logo-container {
+	border-radius: 5px;
+	border: 1px solid transparent;
+	height: 250px;
+	width: 300px;
+	float: left;
+}
+.header-container .logo-container table,
+.header-container .logo-container table td {
+	text-align: center;
+	height: 70%;
+	width: 100%;
+}
+
+.header-container .logo-container .header1 {
+	padding-left: 15px;
+	padding-right: 15px;
+	text-align: center;
+	font-weight: bold;
+	font-style: italic;
+}
+
+.header-container .gcs-description {
+	margin-left: 350px;
+	height: 170px;
+	padding-bottom: 40px;
+	padding-top: 40px;
+}
+
+.main-content {
+	width: 60%;
+	margin-left: 20%;
+	border-radius: 5px;
+	position: relative;
+}
+
+.main-content .login-form-container {
+	width: 500px;
+	padding-bottom: 20px;
+	border-radius: 5px;
+	float: left;
+}
+
+.main-content .login-form-container .login-form-header {
+	font-weight: bold;
+	text-align: center;
+	padding: 15px;
+	border: 5px solid transparent;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+
+.main-content .login-form-container .form {
+  height: 100%;
+}
+
+.main-content .login-form-container table {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+
+.main-content .login-form-container td {
+  text-align: center;
+}
+
+.main-content .login-form-container .form-submit {
+  width: 200px;
+}
+
+.main-content .gcs-description {
+	margin-left: 550px;
+	color: white;
+	padding-bottom: 40px;
+	padding-top: 40px;
+}
