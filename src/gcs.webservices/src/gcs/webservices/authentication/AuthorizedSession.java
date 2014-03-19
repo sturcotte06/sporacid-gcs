@@ -1,5 +1,7 @@
 package gcs.webservices.authentication;
 
+import gcs.webservices.models.Membre;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,32 +12,41 @@ import java.util.Map;
  */
 public class AuthorizedSession 
 {
-	private String username;
-	private String roleName;
-	private Map<String, Object> cachedObjects = new HashMap<String, Object>();
+	private Membre membre;
+	private LDAPAuthenticationToken authenticationToken;
+	private final Map<String, Object> sessionProperties = new HashMap<String, Object>();
 	
-	public String getUsername() 
+	public AuthorizedSession(Membre membre, LDAPAuthenticationToken token)
 	{
-		return username;
+		this.membre = membre;
+		this.authenticationToken = token;
 	}
 	
-	public void setUsername(String username) 
+	public void setSessionProperty(String key, String value)
 	{
-		this.username = username;
+		if (sessionProperties.containsKey(key)) {
+			throw new IllegalArgumentException(String.format("Property %s already exists.", key));
+		}
+		
+		sessionProperties.put(key, value);
+	}
+	
+	public Object getSessionProperty(String key)
+	{
+		if (!sessionProperties.containsKey(key)) {
+			return null;
+		}
+		
+		return sessionProperties.get(key);
+	}
+	
+	public Membre getMembre() 
+	{
+		return membre;
 	}
 
-	public String getRoleName() 
+	public LDAPAuthenticationToken getAuthenticationToken() 
 	{
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) 
-	{
-		this.roleName = roleName;
-	}
-	
-	public Map<String, Object> getCachedObjects() 
-	{
-		return cachedObjects;
+		return authenticationToken;
 	}
 }

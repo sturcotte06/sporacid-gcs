@@ -14,7 +14,7 @@ public interface ILDAPAuthentication
 	 * @param password	User password for authentication
 	 * @return The authentication result which holds if it was successful or not
 	 */
-	public LDAPAuthenticationResult authenticate(String uid, String password) throws InternalException;
+	public LDAPAuthenticationToken authenticate(String uid, String password) throws InternalException;
 	/**
 	 * Authenticate a user through a LDAP
 	 * @param domain	Domain of the user in the ldap
@@ -22,5 +22,5 @@ public interface ILDAPAuthentication
 	 * @param password	User password for authentication
 	 * @return The authentication result which holds if it was successful or not
 	 */
-	public LDAPAuthenticationResult authenticate(String domain, String uid, String password) throws InternalException;
+	public LDAPAuthenticationToken authenticate(String domain, String uid, String password) throws InternalException;
 }

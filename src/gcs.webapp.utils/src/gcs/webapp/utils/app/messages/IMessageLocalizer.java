@@ -25,6 +25,17 @@ public interface IMessageLocalizer
 	 *         the message key if not
 	 */
 	public String localizeString(String locale, String messageKey);
+	
+	/**
+	 * Localizes and format a message associated with a message key 
+	 * into a given locale.
+	 * @param locale		Locale in which to localize
+	 * @param messageKey	The message key to find the corresponding string
+	 * @param formats		The format objects
+	 * @return The formatted localized message if found; the message key if not
+	 */
+	public String localizeFormatString(String locale, String messageKey, Object... formats);
+	
 	/**
 	 * Getter for the default locale
 	 * @return The default locale

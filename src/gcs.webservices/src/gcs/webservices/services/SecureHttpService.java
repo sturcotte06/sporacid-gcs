@@ -16,7 +16,7 @@ import com.sun.jersey.api.core.InjectParam;
  * @author Simon Turcotte-Langevin
  */
 @Component
-public abstract class SecureHttpService 
+public abstract class SecureHttpService extends BaseHttpService
 {
 	/**
 	 * A security provider to test rights

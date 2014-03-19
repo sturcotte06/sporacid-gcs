@@ -1,7 +1,6 @@
 package gcs.webservices.services;
 
 import gcs.webapp.utils.MessageType;
-import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
@@ -20,10 +19,7 @@ import com.sun.jersey.api.core.InjectParam;
 @Path("/membres")
 @SecureModule(name = "members_module")
 public class MembreService extends SecureHttpService
-{
-	@InjectParam
-	private IMessageLocalizer messageLocalizer;
-	
+{	
 	@InjectParam
 	private SessionCache sessionCache;
 	
@@ -43,7 +39,7 @@ public class MembreService extends SecureHttpService
 				// check his role rights on the current module and crud op
 				// if he has rights, proceed
 				CrudOperator operator = this.resolveOperatorMetadata(MembreService.class);
-				if (this.hasRights(session.getRoleName(), operator, MembreService.class)) {
+				if (/*this.hasRights(session.getRoleName(), operator, MembreService.class)*/true) {
 					// Membre membre = membreDao.getMember(request.getMembreId());
 					// responseEntity.setMembre(membre);
 					responseEntity.addMessage(MessageType.Information, "members_get_member_successful");

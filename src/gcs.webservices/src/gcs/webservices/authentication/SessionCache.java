@@ -2,6 +2,7 @@ package gcs.webservices.authentication;
 
 import gcs.webapp.utils.caching.Cache;
 import gcs.webapp.utils.security.IHashProvider;
+import gcs.webservices.models.Membre;
 import gcs.webservices.services.beans.requests.AuthenticatedRequest;
 
 /**
@@ -47,17 +48,15 @@ public class SessionCache extends Cache<PrivateSessionKey, AuthorizedSession>
 	 * Create a session within the application for a user
 	 * @param username 
 	 */
-	public PublicSessionKey createSessionFor(String ipAddress, String username)
+	public PublicSessionKey createSessionFor(String ipAddress, Membre membreInfo, LDAPAuthenticationToken token)
 	{
 		PublicSessionKey publicKey = null;
-		
+				
 		if (ipAddress != null && ipAddress.matches(cIpAddressRegex)) {
 			// Generate a new unique session key
 			publicKey = PublicSessionKey.generate();
 			
-			AuthorizedSession session = new AuthorizedSession();
-			session.setUsername(username);
-			
+			AuthorizedSession session = new AuthorizedSession(membreInfo, token);
 			PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, publicKey.getKey(), ipAddress);
 			
 			// Cache the newly create session

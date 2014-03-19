@@ -67,7 +67,8 @@
     <!-- LDAP authenticator for authenticating clients -->
     <bean id="ldapAuthenticator" name="ldapAuthenticator" 
       class="gcs.webservices.authentication.ActiveDirectoryAuthentication" scope="singleton">
-      <property name="ldapUrl" value="ldap://ens.ad.etsmtl.ca:389" />
-      <property name="defaultUserDomain" value="ens.etsmtl.ca" />
+      <property name="defaultUserDomain" value="ens.ad.etsmtl.ca" />
     </bean>
+    
+    <bean id="membresDao" class="gcs.webservices.dao.MembreDao" scope="singleton" />
 </beans>
