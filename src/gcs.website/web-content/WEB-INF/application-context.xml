@@ -47,7 +47,7 @@
     </property>
   </bean>
   
-  <!-- Factory for jersey clients; Spring wouldn't let me put it static -->
+  <!-- Factory for jersey clients -->
   <bean id="jerseyClientFactory" name="jerseyClientFactory" scope="singleton" 
     class="gcs.webapp.utils.ws.JerseyClientFactory" />
    

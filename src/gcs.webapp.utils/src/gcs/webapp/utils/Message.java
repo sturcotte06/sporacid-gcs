@@ -1,5 +1,7 @@
 package gcs.webapp.utils;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import gcs.webapp.utils.app.messages.ILocalizable;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 
@@ -12,13 +14,17 @@ public class Message implements ILocalizable
 	private MessageType messageType;
 	private String message;
 	
+	@JsonIgnore
+	private Object[] format;
+	
 	public Message()
 	{ }
 	
-	public Message(MessageType messageType, String messageContent)
+	public Message(MessageType messageType, String messageContent, Object... format)
 	{
 		this.messageType= messageType; 
 		this.message = messageContent;
+		this.format = format;
 	}
 	
 	public MessageType getMessageType()
@@ -41,6 +47,16 @@ public class Message implements ILocalizable
 		this.message = messageContent;
 	}
 
+	public Object[] getFormat() 
+	{
+		return format;
+	}
+
+	public void setFormat(Object[] format) 
+	{
+		this.format = format;
+	}
+	
 	@Override
 	public void localize(IMessageLocalizer localizer) 
 	{
@@ -50,6 +66,6 @@ public class Message implements ILocalizable
 	@Override
 	public void localize(IMessageLocalizer localizer, String locale) 
 	{
-		this.setMessageContent(localizer.localizeString(locale, getMessageContent()));
+		this.setMessageContent(localizer.localizeFormatString(locale, getMessageContent(), format));
 	}
 }

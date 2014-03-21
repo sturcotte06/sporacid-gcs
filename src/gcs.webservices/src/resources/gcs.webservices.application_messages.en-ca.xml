@@ -2,6 +2,8 @@
 <!DOCTYPE application-messages SYSTEM "xml-schemas\application_message.schema.dtd">
 
 <application-messages locale="en-ca">
+  <!-- Base messages -->
+  <message key="base_exception_cause" message="Caused by: %s" />
   <!-- Authentication messages -->
   <message key="authentication_login_success" message="The authentication was successful." />
   <message key="authentication_login_invalid_request" message="The authentication request was invalid." />

@@ -1,6 +1,6 @@
 package gcs.webservices.dao;
 
-import gcs.webservices.exceptions.InternalException;
+import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webservices.models.Membre;
 
 public class MembreDao implements IMembreDao

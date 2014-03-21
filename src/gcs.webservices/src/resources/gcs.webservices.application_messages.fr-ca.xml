@@ -2,8 +2,8 @@
 <!DOCTYPE application-messages SYSTEM "xml-schemas\application_message.schema.dtd">
 
 <application-messages locale="fr-ca">
-  <!-- Ldap authentication messages -->
-  
+  <!-- Base messages -->
+  <message key="base_exception_cause" message="Causé par: %s" />
   <!-- Authentication service messages -->
   <message key="authentication_login_success" message="L'authentification a été effectuée avec succès." />
   <message key="authentication_login_invalid_request" message="La requête d'authentification est malformée." />

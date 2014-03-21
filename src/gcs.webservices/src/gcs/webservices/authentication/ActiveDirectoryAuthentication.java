@@ -1,6 +1,6 @@
 package gcs.webservices.authentication;
 
-import gcs.webservices.exceptions.InternalException;
+import gcs.webapp.utils.exceptions.InternalException;
 
 import java.io.IOException;
 
@@ -47,17 +47,18 @@ public class ActiveDirectoryAuthentication implements ILDAPAuthentication
 	public LDAPAuthenticationToken authenticate(String domain, String uid, String password) throws InternalException 
 	{
 		LDAPAuthenticationToken token = null;
-		
+
 		try {
 			LoginContext loginContext = new LoginContext(System.getProperty("gcs.login.context.id"), 
 					new AuthenticationCallbackHandler(uid, password));
 			loginContext.login();
 			
 			// Emit a new token
-			token = new LDAPAuthenticationToken(loginContext.getSubject().toString(), loginContext);
-		} catch (LoginException e) {
+			token = new LDAPAuthenticationToken(uid, loginContext);
+		} catch (LoginException ex) {
 			throw new InternalException(
-					"An exception has occured while authenticating the user " + uid, e);
+					"ldap_authentication_fail", 
+					"An exception has occured while authenticating the user " + uid, ex);
 		}
 		
 		return token;

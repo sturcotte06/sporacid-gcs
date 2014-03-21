@@ -1,12 +1,10 @@
 package gcs.webapp.utils.caching;
 
 import gcs.webapp.utils.caching.providers.IKeyProvider;
-import gcs.webapp.utils.reflect.ReflectionUtils;
+import gcs.webapp.utils.exceptions.ArgumentNullException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.google.gson.Gson;
 
 /**
  * A cache provider for caching requests and responses for Http services
@@ -27,23 +25,18 @@ public abstract class Cache <K, V>
 	/**
 	 * Hash table for the cache
 	 */
-	private Map<CacheKey, V> cache;
-
-	/**
-	 * Cache key provider for handling keys
-	 */
-	private IKeyProvider keyProvider;
+	protected final Map<CacheKey, V> cache;
 	
 	/**
 	 * An invalidator thread to remove "dirty" cache entries 
 	 * from the cache
 	 */
-	private CacheInvalidator invalidator;
-	
+	private final CacheInvalidator invalidator;
+
 	/**
-	 * Json serialiser for deep cloning
+	 * Cache key provider for handling keys
 	 */
-	private Gson jsonSerialiser;
+	protected IKeyProvider keyProvider;
 	
 	/**
 	 * Constructor
@@ -51,8 +44,8 @@ public abstract class Cache <K, V>
 	 */
 	public Cache(int validitySecondsSpan)
 	{
-		this.cache = new ConcurrentHashMap<CacheKey, V>(cHashMapInitialCapacity, cHashMapLoadFactor);
-		this.jsonSerialiser = new Gson();
+		this.cache = new ConcurrentHashMap<>(cHashMapInitialCapacity, cHashMapLoadFactor);
+		
 		this.invalidator = new CacheInvalidator(validitySecondsSpan, cache);
 		this.invalidator.start();
 	}
@@ -75,18 +68,18 @@ public abstract class Cache <K, V>
 	 */
 	public synchronized boolean isValueCached(K keyObj, Class<K> keyClass)
 	{
+		if (keyObj == null) {
+			throw new ArgumentNullException("keyObj");
+		}
+		
+		if (keyClass == null) {
+			throw new ArgumentNullException("keyClass");
+		}
+		
 		CacheKey key = keyProvider.toKey(keyObj, keyClass);
 		return cache.containsKey(key);
 	}
-	
-	/*public synchronized Date valueExpirationDate(K keyObj, Class<K> keyClass)
-	{
-		Date expirationDate = null;
-		CacheKey key = keyProvider.toKey(keyObj, keyClass);
-		if (cache.containsKey(keyObj)) {
-		}
-	}*/
-	
+		
 	/**
 	 * Cache an object into the cache
 	 * @param keyObj	The key object
@@ -95,13 +88,25 @@ public abstract class Cache <K, V>
 	 */
 	public synchronized void cacheValue(K keyObj, Class<K> keyClass, V value)
 	{
-		CacheKey key = keyProvider.toKey(keyObj, keyClass);
-		if (cache.containsKey(key)) {
-			cache.remove(key);
+		if (keyObj == null) {
+			throw new ArgumentNullException("keyObj");
 		}
 		
-		// cache.put(key, cloneValue(value));
-		cache.put(key, ReflectionUtils.deepCopy(value, jsonSerialiser));
+		if (keyClass == null) {
+			throw new ArgumentNullException("keyClass");
+		}
+		
+		if (value == null) {
+			throw new ArgumentNullException("value");
+		}
+		
+		CacheKey key = keyProvider.toKey(keyObj, keyClass);
+		if (cache.containsKey(key)) {
+			throw new IllegalArgumentException("Cache key already exists.");
+			// cache.remove(key);
+		}
+		
+		cache.put(key, value);
 	}
 	
 	/**
@@ -112,13 +117,20 @@ public abstract class Cache <K, V>
 	 */
 	public synchronized V getCacheValue(K keyObj, Class<K> keyClass)
 	{
+		if (keyObj == null) {
+			throw new ArgumentNullException("keyObj");
+		}
+		
+		if (keyClass == null) {
+			throw new ArgumentNullException("keyClass");
+		}
+		
 		V value = null;
 		CacheKey key = keyProvider.toKey(keyObj, keyClass);
 		if (cache.containsKey(key)) {
-			value = ReflectionUtils.deepCopy(cache.get(key), jsonSerialiser);
+			value = cache.get(key);
 		}
 		
-		// return cloneValue(value);
 		return value;
 	}
 	
@@ -129,27 +141,19 @@ public abstract class Cache <K, V>
 	 */
 	public synchronized void removeCacheValue(K keyObj, Class<K> keyClass)
 	{
+		if (keyObj == null) {
+			throw new ArgumentNullException("keyObj");
+		}
+		
+		if (keyClass == null) {
+			throw new ArgumentNullException("keyClass");
+		}
+		
 		CacheKey key = keyProvider.toKey(keyObj, keyClass);
 		if (cache.containsKey(key)) {
 			cache.remove(key);
 		}
 	}
-
-	/**
-	 * 
-	 * @param model
-	 * @return
-	 */
-	/*@SuppressWarnings("unchecked")*/
-	/*private synchronized V cloneValue(V model) 
-	{
-		V clone = null;
-		if (model != null) {
-			String json = jsonSerialiser.toJson(model);
-			clone = (V) jsonSerialiser.fromJson(json, model.getClass());
-		}
-	   return clone;
-	}*/
 	
 	/**
 	 * Getter for the key provider

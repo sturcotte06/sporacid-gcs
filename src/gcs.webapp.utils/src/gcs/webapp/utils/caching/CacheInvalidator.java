@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Date;
 
 /**
- * Thread-safe cache invalidator
+ * Thread-safe cache invalidator.
  * Thread that checks for cached responses invalidity and
- * remove them from the cache
+ * remove them from the cache.
  * @author Simon Turcotte-Langevin
  */
 public class CacheInvalidator extends Thread

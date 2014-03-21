@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright: Sporacid Studios 2013
 	Author: Patrick Lavallee
 	Initial Revision: 31/10/2013 Happy Halloween !!!
@@ -25,9 +25,16 @@ CREATE SEQUENCE suivie_statuts_seq INCREMENT 1  MINVALUE 1  MAXVALUE 92233720368
 CREATE SEQUENCE contacts_urgence_id_seq INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;
 CREATE SEQUENCE liens_parente_id_seq INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;
 CREATE SEQUENCE allergies_id_seq INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1;
+CREATE SEQUENCE roles_id_seq  INCREMENT 1  MINVALUE 1  MAXVALUE 9223372036854775807  START 1  CACHE 1; 
 -----------------------------------
 -- CREATING TABLES & CONSTRAINTS --
 -----------------------------------
+CREATE TABLE roles
+(id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('roles_id_seq'::regclass)
+,nom VARCHAR(32) NOT NULL
+,description VARCHAR(6128) NOT NULL
+);
+
 CREATE TABLE clubs
 (id INTEGER PRIMARY KEY NOT NULL DEFAULT NEXTVAL('clubs_id_seq'::regclass)
 ,nom VARCHAR(50) NOT NULL
@@ -79,6 +86,7 @@ CREATE TABLE formations
 CREATE TABLE membres_clubs
 (membre_id INTEGER NOT NULL REFERENCES membres(id)
 ,club_id INTEGER NOT NULL REFERENCES clubs(id)
+,role_id INTEGER NOT NULL REFERENCES roles(id)
 ,date_debut DATE NOT NULL
 ,date_fin DATE
 );

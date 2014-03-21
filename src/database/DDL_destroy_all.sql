@@ -1,4 +1,4 @@
-/*
+﻿/*
 	Copyright: Sporacid Studios 2013
 	Author: Patrick Lavallee
 	Initial Revision: 31/10/2013 Happy Halloween !!!
@@ -23,12 +23,13 @@ DROP TABLE fournisseurs;
 DROP TABLE adresses;
 DROP TABLE formations;
 DROP TABLE membres;
-DROP TABLE contacts_urgence;
+DROP TABLE contact_urgences;
 DROP TABLE liens_parente;
 DROP TABLE allergies;
 DROP TABLE clubs;
 DROP TABLE concentrations;
 DROP TABLE suivie_statuts;
+DROP TABLE roles;
 
 ------------------------
 -- DROPPING SEQUENCES --
@@ -44,5 +45,6 @@ DROP SEQUENCE units_id_seq;
 DROP SEQUENCE commandites_id_seq;
 DROP SEQUENCE suivie_statuts_seq;
 DROP SEQUENCE liens_parente_id_seq;
-DROP SEQUENCE contacts_urgences_id_seq;
+DROP SEQUENCE contacts_urgence_id_seq;
 DROP SEQUENCE allergies_id_seq;
+DROP SEQUENCE roles_id_seq;

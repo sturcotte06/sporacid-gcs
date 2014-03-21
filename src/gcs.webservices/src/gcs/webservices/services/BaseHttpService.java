@@ -7,6 +7,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
+import gcs.webservices.authentication.SessionCache;
 import gcs.webservices.services.beans.responses.Response;
 
 /**
@@ -17,7 +18,10 @@ import gcs.webservices.services.beans.responses.Response;
 @Component
 public abstract class BaseHttpService 
 {
-	private Logger logger = Logger.getLogger(this.getClass());
+	private static final Logger logger = Logger.getLogger(BaseHttpService.class);
+
+	@InjectParam
+	protected SessionCache sessionCache;
 	
 	@InjectParam
 	protected IMessageLocalizer messageLocalizer;
@@ -31,7 +35,7 @@ public abstract class BaseHttpService
 	{
 		response.addMessage(MessageType.Error, exception.getMessage());
 		if (exception.getCause() != null) {
-			response.addMessage(MessageType.Error, "Caused by : " + exception.getCause().getMessage());
+			response.addMessage(MessageType.Error, "base_exception_cause", exception.getCause().getMessage());
 		}
 		
 		logger.error("An exception occured in an http service : ", exception);

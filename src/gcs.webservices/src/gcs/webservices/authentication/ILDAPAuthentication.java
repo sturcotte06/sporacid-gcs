@@ -1,6 +1,6 @@
 package gcs.webservices.authentication;
 
-import gcs.webservices.exceptions.InternalException;
+import gcs.webapp.utils.exceptions.InternalException;
 
 /**
  * 

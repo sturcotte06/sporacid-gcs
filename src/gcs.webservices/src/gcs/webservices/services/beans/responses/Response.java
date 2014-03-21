@@ -18,16 +18,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Response implements ILocalizable
 {
 	private boolean success;
-	private List<Message> messages = new ArrayList<Message>();
+	private List<Message> messages = new ArrayList<>();
 	
 	public List<Message> getMessages()
 	{
 		return messages;
 	}
 
-	public void addMessage(MessageType type, String messageContent)
+	public void addMessage(MessageType type, String messageContent, Object... format)
 	{
-		messages.add(new Message(type, messageContent));
+		messages.add(new Message(type, messageContent, format));
 	}
 	
 	public boolean isSuccess()

@@ -22,6 +22,7 @@
       <security:user-service>
         <security:user name="sturcotte" password="Spor@cid" authorities="ROLE_ADMIN" />
         <security:user name="plavallee" password="Spor@cid" authorities="ROLE_ADMIN" />
+        <security:user name="jbvibert" password="Spor@cid" authorities="ROLE_ADMIN" />
         <security:user name="gcswebsite" password="QuTTcccIh%?hg$/-00GFvSasa" authorities="ROLE_APPLICATION" />
       </security:user-service>
     </security:authentication-provider>

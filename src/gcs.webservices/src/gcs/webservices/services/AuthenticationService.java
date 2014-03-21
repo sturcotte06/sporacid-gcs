@@ -1,12 +1,11 @@
 package gcs.webservices.services;
 
 import gcs.webapp.utils.MessageType;
+import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webservices.authentication.ILDAPAuthentication;
 import gcs.webservices.authentication.LDAPAuthenticationToken;
-import gcs.webservices.authentication.SessionCache;
 import gcs.webservices.authentication.PublicSessionKey;
 import gcs.webservices.dao.IMembreDao;
-import gcs.webservices.exceptions.InternalException;
 import gcs.webservices.models.Membre;
 import gcs.webservices.services.beans.requests.LoginRequest;
 import gcs.webservices.services.beans.requests.LogoutRequest;
@@ -28,9 +27,6 @@ import com.sun.jersey.api.core.InjectParam;
 @Path("/authentication")
 public class AuthenticationService extends BaseHttpService
 {
-	@InjectParam
-	private SessionCache sessionCache;
-	
 	@InjectParam
 	private ILDAPAuthentication ldapAuthenticator;
 	
@@ -79,7 +75,6 @@ public class AuthenticationService extends BaseHttpService
 				} else {
 					// TODO
 				}
-				
 			} else {
 				responseEntity.addMessage(MessageType.Error, "authentication_login_wrong_username");
 			}
