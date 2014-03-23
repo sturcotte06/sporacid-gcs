@@ -25,7 +25,7 @@ public class MembreService extends SecureHttpService
 	public Response getMembre(@InjectParam GetMembreRequest request)
 	{
 		gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
-		
+
 //		if (request != null) {
 //			// Get the session from the session cache
 //			AuthorizedSession session = sessionCache.acquireSession(request);

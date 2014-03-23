@@ -3,7 +3,6 @@
  */
 $(document).ready(
 	function () {
-	  
 		// Prevent non-numeric characters from being sent in input
 		$("input[type=\"number\"]").keypress(
 	    function (event) {
@@ -16,17 +15,25 @@ $(document).ready(
 		);
 		
 		// Transform splitters into splitters from jqWidgets
-		$(".jqx-splitter").jqxSplitter({ 
-		  theme: cJqWidgetTheme, width: '100%', height: '100%', splitBarSize: 10,
-		  panels: [{ size: '20%', min: '15%' }, { size: '80%', min: '65%' }] }
-	  );
-    
+		if ($(".jqw-splitter").length > 0) {
+	    $(".jqw-splitter").jqxSplitter({ 
+	      theme: cJqWidgetTheme, width: '100%', height: '100%', splitBarSize: 10,
+	      panels: [{ size: '20%', min: '15%' }, { size: '80%', min: '65%' }] }
+	    );
+		}
+
     // Transform expanders into expanders from jqWidgets
-    $(".jqw-expander").jqxExpander({ theme: cJqWidgetTheme });
+		if ($(".jqw-expander").length > 0) {
+		  $(".jqw-expander").jqxExpander({ theme: cJqWidgetTheme });
+		}
+		
+		// Transform menus into menus from jqWidgets
+		if ($(".jqw-menu-container").length > 0) {
+		  $(".jqw-menu-container").jqxMenu({theme: cJqWidgetTheme});
+		}
 		
     // Attach resize event for full screen user experience (lol buzzword)
     $(window).resize(resizeContent);
-    resizeContent();
 	}
 );
 
@@ -39,6 +46,12 @@ function resizeContent()
   var mainContentHeight = $(window).innerHeight() - $(".status-bar-container").outerHeight();
   $(".main-content").height(mainContentHeight);
   $(".content-container").height($(window).innerHeight());
+  // Resize grids
+  $(".jq-grid").each(function() {
+    var $this = $(this);
+    $this.setGridWidth($this.parents(".management-grid-container").width());
+    $this.setGridHeight($this.parents(".management-grid-container").height());
+  });
 }
 
 /**

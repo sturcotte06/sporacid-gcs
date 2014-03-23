@@ -25,7 +25,8 @@
   
   <appender name="fileAppender" class="gcs.webapp.utils.logging.CustodianDailyRollingFileAppender">
     <param name="Threshold" value="info" />
-    <param name="File" value="C:/logs/webservices.log" />
+<!--     <param name="File" value="C:/logs/webservices.log" /> -->
+    <param name="File" value="${catalina.home}/logs/webservices.log" />
     <param name="datePattern" value="'.'yyyy-MM-dd" />
     <param name="maxNumberOfDays" value="14" />
     <param name="compressBackups" value="true" />

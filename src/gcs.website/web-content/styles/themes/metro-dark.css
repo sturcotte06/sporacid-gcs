@@ -1,0 +1,72 @@
+/** Color definitions **/
+body, 
+.menu-container/*,
+.status-bar-container*/ {
+    background-color: #3E3E42;
+    border-color: #35353A;
+}
+
+/*.status-bar-container {
+	background-color: #007ACC;
+	border-color: #007ACC;
+}
+
+.status-bar-container:hover {
+    background-color: #007ACC;
+    border-color: #007ACC;
+}*/
+
+body, 
+.menu-container, 
+.menu-container a/*,
+.status-bar-container, 
+.status-bar-container a*/ {
+    color: white;
+}
+
+.menu-container a:hover/*,
+.status-bar-container a:hover*/ {
+    color: #1C97EA;
+}
+
+.menu-item .menu-item-header {
+    background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
+    background-size: 100% 100%;
+    color: white;
+}
+
+.menu-item .menu-item-header:hover {
+	background-color: #1C97EA;
+}
+
+.main-content {
+    background-color: white;
+    color: #3E3E42;
+}
+
+.status-bar-container .form-button, 
+.status-bar-container .form-submit {
+    background: #007ACC url(../../images/black_glass_back.png) no-repeat top left;
+    background-size: 100% 100%;
+}
+
+.main-content .form-button, 
+.main-content .form-submit {
+    background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
+    background-size: 100% 100%;
+    color: white;
+}
+
+.form-label {
+    background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
+    background-size: 100% 100%;
+    color: white;
+}
+
+.form-input {
+    border-color: #3E3E42;
+}
+
+.form-input:focus {
+    border-color: #EC7600;
+}

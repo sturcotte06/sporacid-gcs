@@ -1,7 +1,7 @@
 /**
  * Constant for the current jqWidget theme
  */
-var cJqWidgetTheme = "shinyblack";
+var cJqWidgetTheme = "metrodark"; //"shinyblack";
 
 /**
  * Constant for the current jqWidget theme

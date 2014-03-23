@@ -112,6 +112,9 @@ public class AuthenticationController implements ApplicationContextAware
 				for (Message message : response.getMessages()) {
 					SessionUtils.addMessage(message.getMessageType(), message.getMessageContent(), session);
 				}
+				
+	      request.setAttribute("authenticationForm", form);
+	      direction = "login";
 			}
 		}
 		

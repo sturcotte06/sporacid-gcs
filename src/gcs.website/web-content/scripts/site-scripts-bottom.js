@@ -3,14 +3,14 @@
  */
 $(document).ready(
 	function () {
-
     // Transform dropdownlists into dropdownlists from jqWidgets
-    $(".jqw-dropdownlist").each(
+    /*$(".jqw-dropdownlist").each(
       function () {
         var $this = $(this);
         var source = $this.data(cJqWidgetDataSourceKey);
+        
         $this.jqxDropDownList({
-          theme: "",
+          theme: cJqWidgetTheme, //"";
           source: source, selectedIndex: 0,
           valueMember: "id", displayMember: "value"
         });
@@ -21,8 +21,13 @@ $(document).ready(
             var $this = $(this);
             $this.jqxDropDownList({ dropDownWidth: $this.innerWidth() }); 
           }
-        ); 
+        );
+        
       }
-    );
+    );*/
+	  
+	  $(".jqw-dropdownlist")
+    
+    resizeContent();
 	}
 );

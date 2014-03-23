@@ -19,7 +19,6 @@
             <div class="menu-item-header">
               <% if (item.getPath() != null && !item.getPath().equals("")) { %>
                 <a class="menu-item-link" href="javascript:loadContentAjax('<%=context + item.getPath()%>', 'get');"><%=item.getName()%></a>
-<%--                 <a class="menu-item-link" href="<%=context + item.getPath()%>"><%=item.getName()%></a> --%>
               <% } else { %>
                 <%=item.getName()%>
               <% } %>
@@ -29,8 +28,9 @@
                 <ul class="sub-menu">
                   <% for (SubMenuItem submenuItem : submenu.getItems()) { %>
                     <li class="sub-menu-item">
-                      <a class="sub-menu-item-link" href="javascript:loadContentAjax('<%=context + submenuItem.getPath()%>', 'get');"><%=submenuItem.getName()%></a>
-<%--                       <a class="sub-menu-item-link" href="<%=context + submenuItem.getPath()%>"><%=submenuItem.getName()%></a> --%>
+                      <a class="sub-menu-item-link" href="javascript:loadContentAjax('<%=context + submenuItem.getPath()%>', 'get');">
+                        <%=submenuItem.getName()%>
+                      </a>
                     </li>
                   <% } %>
                 </ul>

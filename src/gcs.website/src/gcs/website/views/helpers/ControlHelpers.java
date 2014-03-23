@@ -1,32 +1,31 @@
 package gcs.website.views.helpers;
 
 import gcs.webapp.utils.reflect.ReflectionUtils;
+import gcs.website.views.helpers.models.GridColumnModel;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
+
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.log4j.Logger;
+
+import com.google.gson.Gson;
 
 public final class ControlHelpers
 {
 	/**
-	 * 
-	 * @param toEncode
-	 * @return
+	 * log4j logger.
 	 */
-	public static String htmlEncode(String toEncode)
-	{
-		StringBuffer out = new StringBuffer();
-	    for(int i = 0; i < toEncode.length(); i++)
-	    {
-	        char c = toEncode.charAt(i);
-	        if(c > 127 || c=='"' || c=='<' || c=='>') {
-	           out.append("&#"+(int)c+";");
-	        }
-	        else {
-	            out.append(c);
-	        }
-	    }
-	    return out.toString();
-	}
-
+	private static final Logger logger = Logger.getLogger(ControlHelpers.class);
+	
+	/**
+	 * Json serializer for javascript conversion.
+	 */
+	private static final Gson jsonSerializer = new Gson();
+	
 	/**
 	 * Serialize an object into hidden field inputs.
 	 * @param object		An object to serialize
@@ -34,26 +33,104 @@ public final class ControlHelpers
 	 * @param propertyName	Name of the property
 	 * @return				An html string with hidden inputs for every properties of the object				
 	 */
-	public static <E> String serializeToHiddenFields(E object, Class<E> classObj, String propertyName)
+	public static <E> HtmlString serializeToHiddenFields(E object, Class<E> classObj, String propertyName)
 	{
 		StringBuffer out = new StringBuffer();
 		
+		Map<String, Object> objProperties = null;
 		try {
 			// Get the object properties through reflection
-			Map<String, Object> objProperties = ReflectionUtils.getObjectProperties(object, classObj);
-			
-			// For each object properties
-			for (Map.Entry<String, Object> entry : objProperties.entrySet()) {
-				// Modify the key with the property name in parameter
-				String modifiedKey = propertyName + "." + entry.getKey();
-				// We want the value as a string
-				String strValue = entry.getValue().toString();
-				out.append("<input type=\"hidden\" name=\"" + modifiedKey + "\" value=\"" + strValue + "\" />\n");
-			}
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
+			objProperties = ReflectionUtils.getObjectProperties(object, classObj);
+
+		} catch (IllegalAccessException ex) {
+			logger.error(String.format("Cannot reflect the class %s: ", classObj), ex);
 		}
 		
-		return out.toString();
+		// For each object properties
+		for (Map.Entry<String, Object> entry : objProperties.entrySet()) {
+			// Modify the key with the property name in parameter
+			String modifiedKey = propertyName + "." + entry.getKey();
+			// We want the value as a string
+			String strValue = entry.getValue().toString();
+			out.append("<input type=\"hidden\" name=\"" + modifiedKey + "\" value=\"" + strValue + "\" />\n");
+		}
+		
+		return new HtmlString(out.toString());
+	}
+	
+	/**
+	 * 
+	 * @param objects
+	 * @param classObj
+	 * @return
+	 */
+	public static <E> HtmlAndJavaScript getGridForObjects(Collection<E> objects, Class<E> classObj, String cssClass)
+	{
+		String gridId = "gcs_grid_" + RandomStringUtils.random(12, true, true);
+		
+		StringBuilder htmlOut = new StringBuilder();
+		htmlOut.append(String.format("<table id=\"%s\" class=\"%s\">", gridId, cssClass));
+		htmlOut.append("</table>");
+
+		Collection<GridColumnModel> columns = new ArrayList<>();
+		StringBuilder columnsDisplayOut = new StringBuilder();		
+		columnsDisplayOut.append("[");
+		
+		Field[] fields = classObj.getDeclaredFields();
+		for (Field field : fields) {			
+			Display display = field.getAnnotation(Display.class);
+			columnsDisplayOut.append(String.format("\"%s\",", 
+					display != null ? display.value() : field.getName()));
+			
+			GridColumnModel column = new GridColumnModel();
+			column.setName(field.getName());
+			column.setIndex(field.getName());
+			column.setWidth(String.valueOf(100f / fields.length) + "%");
+			
+			if (field.getType().isAssignableFrom(Float.class)) {
+				column.setSorttype("number");
+				column.setAlign("right");
+			} else if (field.getType().isAssignableFrom(Byte.class)) {
+				column.setSorttype("int");
+				column.setAlign("right");
+			} else if (field.getType().isAssignableFrom(Date.class)) {
+				column.setSorttype("date");
+				column.setAlign("right");
+			} else {
+				column.setSorttype("string");
+				column.setAlign("left");
+			}
+			
+			columns.add(column);
+		}
+		
+		// Strip the last char
+		int lastIndex = columnsDisplayOut.length() - 1;
+		if (columnsDisplayOut.charAt(lastIndex) == ',') {
+			columnsDisplayOut.deleteCharAt(lastIndex);
+		}
+		
+		columnsDisplayOut.append("]");
+		
+		// Generate the json data from the collection
+		String data = jsonSerializer.toJson(objects);
+		String colData = jsonSerializer.toJson(columns);
+		
+		StringBuilder jsOut = new StringBuilder();
+		
+		//jsOut.append(String.format("jQuery(document).ready(function () { "));
+		jsOut.append(String.format("  var data = " + data + ";"));
+		jsOut.append(String.format("  $(\"#%s\").jqGrid({", gridId));
+		jsOut.append(String.format("    data: data, "));
+		jsOut.append(String.format("    datatype: \"local\", "));
+		jsOut.append(String.format("    colNames: %s, ", columnsDisplayOut.toString()));
+		jsOut.append(String.format("    colModel: %s,", colData));
+		//jsOut.append(String.format("    height: \"100%%\","));
+		//jsOut.append(String.format("    width: \"100%%\""));
+		jsOut.append(String.format("    autowidth: true"));		
+		jsOut.append(String.format("  });"));
+		//jsOut.append(String.format("});"));
+				
+		return new HtmlAndJavaScript(htmlOut.toString(), jsOut.toString());
 	}
 }

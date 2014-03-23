@@ -4,13 +4,13 @@ body, .menu-container, .status-bar-container {
 	/*border-color: #555;*/
 }
 
-body, .menu-container, .menu-container a,
-.status-bar-container, .status-bar-container a {
+body, .menu-container, .menu-container a/*,*/
+/*.status-bar-container, .status-bar-container a*/ {
 	color: white;
 }
 
 .menu-container a:hover,
-.status-bar-container a:hover {
+/*.status-bar-container a:hover*/ {
 	color: #678CB1;
 }
 

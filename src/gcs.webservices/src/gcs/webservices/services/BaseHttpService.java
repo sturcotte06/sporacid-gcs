@@ -7,6 +7,7 @@ import com.sun.jersey.api.core.InjectParam;
 
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
+import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webservices.authentication.SessionCache;
 import gcs.webservices.services.beans.responses.Response;
 
@@ -33,7 +34,13 @@ public abstract class BaseHttpService
 	 */
 	public void handleException(Exception exception, Response response)
 	{
-		response.addMessage(MessageType.Error, exception.getMessage());
+		if (exception instanceof InternalException) {
+			InternalException internalEx = (InternalException) exception;
+			response.addMessage(MessageType.Error, internalEx.getMessageKey());
+		} else {
+			response.addMessage(MessageType.Error, exception.getMessage());
+		}
+		
 		if (exception.getCause() != null) {
 			response.addMessage(MessageType.Error, "base_exception_cause", exception.getCause().getMessage());
 		}

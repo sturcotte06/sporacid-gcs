@@ -17,14 +17,14 @@
   </head>
   <body class="unselectable">    
   
-    <div class="content-container jqx-splitter">
-      <div class="content-pane jqx-splitter-pane">
+    <div class="content-container jqw-splitter">
+      <div class="content-pane jqw-splitter-pane">
       
         <%-- Include the menu in the page --%>
         <jsp:include page="partial-views/layout/menu.jsp"></jsp:include>
         
       </div>
-      <div class="content-pane jqx-splitter-pane">
+      <div class="content-pane jqw-splitter-pane">
       
         <%-- Include the menu in the page --%>
         <jsp:include page="partial-views/layout/status-bar.jsp"></jsp:include>

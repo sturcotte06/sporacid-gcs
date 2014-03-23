@@ -1,14 +1,21 @@
 package gcs.website.models;
 
 import gcs.webapp.utils.hibernate.AbstractModelObject;
+import gcs.website.views.helpers.Display;
 
 public class Membre extends AbstractModelObject
 {
+	@Display("Id") // todo : localize
 	private int id;
+	
+	@Display("Prénom")
 	private String prenom;
+	
+	@Display("Nom")
 	private String nom;
 	
-	public int getId() {
+	public int getId() 
+	{
 		return id;
 	}
 	
