@@ -30,6 +30,15 @@ $(document).ready(
 		// Transform menus into menus from jqWidgets
 		if ($(".jqw-menu-container").length > 0) {
 		  $(".jqw-menu-container").jqxMenu({theme: cJqWidgetTheme});
+//		  $(".jqw-menu-container").each(function()  {
+//		    var $this = $(this);
+//		    $this.on('shown', function () {
+//	        $(".jqx-menu-popup").width($this.width());
+//	      }); 
+//		  });
+		  $("#club_selector_item").on("mouseover", function () {
+		    $(".jqx-menu-popup").width($(this).outerWidth());
+		  }); 
 		}
 		
     // Attach resize event for full screen user experience (lol buzzword)

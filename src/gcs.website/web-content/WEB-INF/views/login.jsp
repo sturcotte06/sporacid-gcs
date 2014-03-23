@@ -17,7 +17,7 @@
     <%-- Include common scripts and styles in the page --%>
     <jsp:include page="partial-views/layout/includes-top.jsp"></jsp:include>
     <link rel="stylesheet" type="text/css" href="<%=context%>/styles/login.css" />
-    <link rel="stylesheet" type="text/css" href="<%=context%>/styles/themes/login.obsidian.css" />
+    <link rel="stylesheet" type="text/css" href="<%=context%>/styles/themes/login.metro-dark.css" />
     
   </head>
   <body>

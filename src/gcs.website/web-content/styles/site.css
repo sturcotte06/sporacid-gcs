@@ -37,6 +37,10 @@ body {
 	float: right !important;
 }
 
+.jqx-menu-dropdown {
+	width: auto !important;
+}
+
 
 /*.status-bar-item-content {
 	padding-top: 10px;
@@ -176,7 +180,7 @@ body {
 }
 
 .form-textbox {
-	height: 19px;
+	height: 21px;
 	border-radius: 0px 6px 6px 0px;
 	padding: 8px 10px;
 }

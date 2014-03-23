@@ -25,9 +25,7 @@ $(document).ready(
         
       }
     );*/
-	  
-	  $(".jqw-dropdownlist")
-    
+	  	      
     resizeContent();
 	}
 );
