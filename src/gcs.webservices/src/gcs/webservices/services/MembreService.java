@@ -1,10 +1,8 @@
 package gcs.webservices.services;
 
-import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
-import gcs.webservices.authentication.AuthorizedSession;
 import gcs.webservices.services.beans.requests.GetMembreRequest;
 
 import javax.ws.rs.GET;

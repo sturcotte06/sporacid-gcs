@@ -1,11 +1,14 @@
 package gcs.webapp.utils.xml;
 
+import gcs.webapp.utils.aop.LoggingAspect;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -17,6 +20,8 @@ import org.jdom2.input.SAXBuilder;
  */
 public final class XmlUtils 
 {
+   private static final Logger logger = Logger.getLogger(LoggingAspect.class);
+   
 	/**
 	 * Returns a collection of root elements for all found xml files
 	 * that match a file name filter within a folder
@@ -28,7 +33,7 @@ public final class XmlUtils
 	{
 		Collection<Element> rootElements = new ArrayList<Element>();
 		File folder = new File(messagesFolderAbsolutePath);
-		
+
 		if (folder.exists() && folder.isDirectory()) {
 			// The supplied path to the application messages
 			// is valid

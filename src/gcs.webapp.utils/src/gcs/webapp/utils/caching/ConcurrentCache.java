@@ -56,8 +56,27 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 	{
 		throw new NotImplementedException("Use acquireCacheValue() and releaseCacheValue() instead.");
 	}
-		
-	public synchronized V acquireCacheValue(K keyObj, Class<K> keyClass)
+	
+	public synchronized void withCacheValue(K keyObj, Class<K> keyClass, IWithCacheValueAction<V> action)
+	{
+      if (keyObj == null) {
+         throw new ArgumentNullException("keyObj");
+      }
+      
+      if (keyClass == null) {
+         throw new ArgumentNullException("keyClass");
+      }
+      
+      if (action == null) {
+         throw new ArgumentNullException("action");
+      }
+      
+      V value = acquireCacheValue(keyObj, keyClass);
+      action.withCacheValueDo(value);
+      releaseCacheValue(keyObj, keyClass);
+	}
+	
+	private synchronized V acquireCacheValue(K keyObj, Class<K> keyClass)
 	{
 		if (keyObj == null) {
 			throw new ArgumentNullException("keyObj");
@@ -76,7 +95,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 		return super.getCacheValue(keyObj, keyClass);
 	}
 	
-	public synchronized void releaseCacheValue(K keyObj, Class<K> keyClass)
+	private synchronized void releaseCacheValue(K keyObj, Class<K> keyClass)
 	{
 		if (keyObj == null) {
 			throw new ArgumentNullException("keyObj");

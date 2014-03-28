@@ -2,30 +2,14 @@
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-
-  <appender name="stdoutConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+  <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
     <param name="Target" value="System.out" />
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="[%d{ISO8601}] %-5p %c %m %n" />
     </layout>
-    <filter class="org.apache.log4j.varia.LevelRangeFilter">
-      <param name="LevelMax" value="info"/>
-    </filter>
   </appender>
-  
-  <appender name="stderrConsoleAppender"  class="org.apache.log4j.ConsoleAppender">
-    <param name="Target" value="System.err" />
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="[%d{ISO8601}] %-5p %c %m %n" />
-    </layout>
-    <filter class="org.apache.log4j.varia.LevelRangeFilter">
-      <param name="LevelMin" value="warn"/>
-    </filter>
-  </appender>
-  
   <appender name="fileAppender" class="gcs.webapp.utils.logging.CustodianDailyRollingFileAppender">
     <param name="Threshold" value="info" />
-<!--     <param name="File" value="C:/logs/webservices.log" /> -->
     <param name="File" value="${catalina.home}/logs/webservices.log" />
     <param name="datePattern" value="'.'yyyy-MM-dd" />
     <param name="maxNumberOfDays" value="14" />
@@ -34,44 +18,9 @@
        <param name="ConversionPattern" value="[%d{ISO8601}] %-5p %c %m %n" />
     </layout>
   </appender>
-  
   <root>
-    <!-- <appender-ref ref="stdoutConsoleAppender" /> -->
-    <appender-ref ref="stderrConsoleAppender" />
+    <level value="info" />
+    <appender-ref ref="consoleAppender" />
     <appender-ref ref="fileAppender" />
   </root>
-
-  <!-- <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
-    <param name="threshold" value="info" />
-    <layout class="org.apache.log4j.PatternLayout">
-       <param name="ConversionPattern" value="%d %-5p  [%c{1}] %m %n" />
-    </layout>
-  </appender>
-
-  <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
-    <param name="Threshold" value="TRACE" />
-    <param name="File" value="./logs/logs.log"/>
-    <layout class="org.apache.log4j.PatternLayout">
-       <param name="ConversionPattern" value="%d %-5p  [%c{1}] %m %n" />
-    </layout>
-  </appender>
-   
-  <logger name="gcs.webservices.services">
-    <level value="debug" />
-    <appender-ref ref="consoleAppender"/>
-    <appender-ref ref="fileAppender"/>
-  </logger>
-
-  <logger name="gcs.webservices.persistence">
-    <level value="debug" />
-    <appender-ref ref="consoleAppender"/>
-    <appender-ref ref="fileAppender"/>
-  </logger>
-
-  <logger name="gcs.webservices.authentication">
-    <level value="debug" />
-    <appender-ref ref="consoleAppender"/>
-    <appender-ref ref="fileAppender"/>
-  </logger> -->
-
 </log4j:configuration>

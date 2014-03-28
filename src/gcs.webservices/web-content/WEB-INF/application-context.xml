@@ -37,6 +37,9 @@
 <!--       	</props> -->
 <!--       </property> -->
 <!-- 	</bean> -->
+  
+    <!-- Weave aspects with the code at load time -->
+    <context:load-time-weaver aspectj-weaving="on" />
 	
     <!-- Application messages cache. This is where configured messages will be loaded. -->
     <bean id="messageLocalizer" name="messageLocalizer"

@@ -13,6 +13,7 @@ import gcs.webservices.services.beans.responses.LoginResponse;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,6 +34,15 @@ public class AuthenticationService extends BaseHttpService
 	@InjectParam
 	private IMembreDao membreDao;
 		
+	@GET @Path("/test")
+   @Produces({ MediaType.APPLICATION_JSON })
+   public Response test()
+   {
+	   gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
+	   responseEntity.addMessage(MessageType.Information, "Hello world.");
+	   return endRequest(responseEntity);
+   }
+	
 	@POST @Path("/login")
 	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -82,10 +92,7 @@ public class AuthenticationService extends BaseHttpService
 			responseEntity.addMessage(MessageType.Error, "authentication_login_invalid_request");
 		}
 		
-		// Localize the response in the default application locale
-		responseEntity.localize(messageLocalizer);
-		
-		return Response.ok().entity(responseEntity).build();
+		return endRequest(responseEntity);
 	}
 	
 	@DELETE @Path("/logout")
@@ -107,9 +114,6 @@ public class AuthenticationService extends BaseHttpService
 			responseEntity.addMessage(MessageType.Error, "authentication_logout_invalid_request");
 		}
 		
-		// Localize the response in the default application locale
-		responseEntity.localize(messageLocalizer);
-		
-		return Response.ok().entity(responseEntity).build();
+		return endRequest(responseEntity);
 	}
 }

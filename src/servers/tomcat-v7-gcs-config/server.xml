@@ -73,10 +73,7 @@
          This connector uses the JSSE configuration, when using APR, the
          connector should be using the OpenSSL style configuration
          described in the APR documentation -->
-    <Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"
-               maxThreads="150" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS"
-               keystoreFile="/conf/gcs.web.keystore.debug" keystorePass="Spor@cid" />
+    <Connector SSLEnabled="true" clientAuth="false" keystoreFile="/conf/gcs.web.keystore.debug" keystorePass="Spor@cid" maxThreads="150" port="8443" protocol="HTTP/1.1" scheme="https" secure="true" sslProtocol="TLS"/>
 
     <!-- Define an AJP 1.3 Connector on port 8009 -->
     <Connector port="8009" protocol="AJP/1.3" redirectPort="8443"/>
@@ -123,9 +120,9 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
-        <Context docBase="gcs.webservices" path="/gcs.webservices" reloadable="true" source="org.eclipse.jst.jee.server:gcs.webservices"/>
-        <Context docBase="gcs.website" path="/gcs.website" reloadable="true" source="org.eclipse.jst.jee.server:gcs.website"/>
-        <Context docBase="probe" path="/probe" reloadable="true" source="org.eclipse.jst.jee.server:probe"/>
+        <Context docBase="gcs.webservices" path="/services" reloadable="true" source="org.eclipse.jst.jee.server:gcs.webservices"/>
+        <Context docBase="gcs.website" path="/" reloadable="true" source="org.eclipse.jst.jee.server:gcs.website"/>
+        
       </Host>
       
     </Engine>

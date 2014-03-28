@@ -3,7 +3,7 @@ package gcs.webservices.authentication;
 import javax.security.auth.login.LoginException;
 
 import gcs.webapp.utils.caching.ConcurrentCache;
-import gcs.webapp.utils.exceptions.InternalException;
+import gcs.webapp.utils.caching.IWithCacheValueAction;
 import gcs.webapp.utils.security.IHashProvider;
 import gcs.webservices.models.Membre;
 import gcs.webservices.services.beans.requests.AuthenticatedRequest;
@@ -44,8 +44,22 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 	public void removeSession(String ipAddress, String key)
 	{
 		final PrivateSessionKey sessionKey = new PrivateSessionKey(hashProvider, key, ipAddress);
-
-		AuthorizedSession session = this.acquireCacheValue(sessionKey, PrivateSessionKey.class);		
+		final IWithCacheValueAction<AuthorizedSession> action = new IWithCacheValueAction<AuthorizedSession>() {
+         @Override
+         public void withCacheValueDo(AuthorizedSession value)
+         {
+            removeCacheValue(sessionKey, PrivateSessionKey.class);
+            
+            try {
+               value.getAuthenticationToken().getLoginContext().logout();
+            } catch (LoginException ex) {
+               // logger.error(String.format("Couldn't logout user %s : "), ex);
+            }
+         }
+      };
+      
+      this.withCacheValue(sessionKey, PrivateSessionKey.class, action);
+		/*AuthorizedSession session = this.acquireCacheValue(sessionKey, PrivateSessionKey.class);		
 		this.removeCacheValue(sessionKey, PrivateSessionKey.class);
 		
 		try {
@@ -54,7 +68,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 			// logger.error(String.format("Couldn't logout user %s : "), ex);
 		}
 		
-		this.releaseCacheValue(sessionKey, PrivateSessionKey.class);
+		this.releaseCacheValue(sessionKey, PrivateSessionKey.class);*/
 	}
 	
 	/**
@@ -79,6 +93,17 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 		return publicKey;
 	}
 
+	public void withSession(AuthenticatedRequest authenticatedRequest, IWithCacheValueAction<AuthorizedSession> action)
+	{
+	   withSession(authenticatedRequest.getIpAddress(), authenticatedRequest.getSessionKey(), action);
+	}
+	
+	public void withSession(String ipAddress, String key, IWithCacheValueAction<AuthorizedSession> action)
+   {
+	   PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, key, ipAddress);
+      withCacheValue(privateKey, PrivateSessionKey.class, action);
+   }
+	
 	/**
 	 * Acquire the user session from the application with an exclusive lock.
 	 * <b>
@@ -87,10 +112,10 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 	 * @param authenticatedRequest A request from an authenticated user
 	 * @return The session object
 	 */
-	public AuthorizedSession acquireSession(AuthenticatedRequest authenticatedRequest) throws InternalException
+	/*public AuthorizedSession acquireSession(AuthenticatedRequest authenticatedRequest) throws InternalException
 	{
 		return acquireSession(authenticatedRequest.getIpAddress(), authenticatedRequest.getSessionKey());
-	}
+	}*/
 	
 	/**
 	 * Acquire the user session from the application with an exclusive lock.
@@ -100,11 +125,11 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 	 * @param key The string token from the user
 	 * @return The session object
 	 */
-	public AuthorizedSession acquireSession(String ipAddress, String key) throws InternalException
+	/*public AuthorizedSession acquireSession(String ipAddress, String key) throws InternalException
 	{
 		PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, key, ipAddress);
 		return this.acquireCacheValue(privateKey, PrivateSessionKey.class);
-	}
+	}*/
 
 	/**
 	 * Release the user session's exclusive lock.
@@ -114,10 +139,10 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 	 * @param authenticatedRequest A request from an authenticated user
 	 * @return The session object
 	 */
-	public void releaseSession(AuthenticatedRequest authenticatedRequest) throws InternalException
+	/*public void releaseSession(AuthenticatedRequest authenticatedRequest) throws InternalException
 	{
 		releaseSession(authenticatedRequest.getIpAddress(), authenticatedRequest.getSessionKey());
-	}
+	}*/
 	
 	/**
 	 * Release the user session's exclusive lock.
@@ -127,11 +152,11 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
 	 * @param key The string token from the user
 	 * @return The session object
 	 */
-	public void releaseSession(String ipAddress, String key) throws InternalException
+	/*public void releaseSession(String ipAddress, String key) throws InternalException
 	{
 		PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, key, ipAddress);
 		this.releaseCacheValue(privateKey, PrivateSessionKey.class);
-	}
+	}*/
 	
 	/**
 	 * Getter for the hash provider
