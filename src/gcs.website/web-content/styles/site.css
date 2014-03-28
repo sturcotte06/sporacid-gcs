@@ -7,6 +7,7 @@ body {
 	min-width: 1280px;
 }
 
+.gcs-menu-container .jqx-item,
 .status-bar .jqx-item {
     height:  24px;
     padding-left: 56px;
@@ -15,6 +16,7 @@ body {
     font-size: 14px;
 }
 
+.gcs-menu-container .gcs-menu-icon,
 .status-bar .status-bar-item-image {
 	height: 36px;
 	width: 36px;
@@ -41,7 +43,6 @@ body {
 	width: auto !important;
 }
 
-
 /*.status-bar-item-content {
 	padding-top: 10px;
 }*/
@@ -58,9 +59,9 @@ body {
 	display: inline-block;
 }*/
 
-.status-bar-item .status-bar-item-image {
+/*.status-bar-item .status-bar-item-image {
 	display: inline-block;
-}
+}*/
 
 .menu-container {
 	height: 100%;
@@ -239,6 +240,10 @@ body {
 
 .messages .message.success {
 	color: Black;
+}
+
+.management-grid-container .ui-jqgrid {
+    border-radius: 0px;
 }
 
 /** Utility classes **/

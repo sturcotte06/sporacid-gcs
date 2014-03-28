@@ -30,16 +30,11 @@ $(document).ready(
 		// Transform menus into menus from jqWidgets
 		if ($(".jqw-menu-container").length > 0) {
 		  $(".jqw-menu-container").jqxMenu({theme: cJqWidgetTheme});
-//		  $(".jqw-menu-container").each(function()  {
-//		    var $this = $(this);
-//		    $this.on('shown', function () {
-//	        $(".jqx-menu-popup").width($this.width());
-//	      }); 
-//		  });
-		  $("#club_selector_item").on("mouseover", function () {
-		    $(".jqx-menu-popup").width($(this).outerWidth());
-		  }); 
 		}
+		
+    $("#club_selector_item").on("mouseover", function () {
+      $(".jqx-menu-popup").width($(this).outerWidth());
+    }); 
 		
     // Attach resize event for full screen user experience (lol buzzword)
     $(window).resize(resizeContent);
@@ -58,9 +53,26 @@ function resizeContent()
   // Resize grids
   $(".jq-grid").each(function() {
     var $this = $(this);
-    $this.setGridWidth($this.parents(".management-grid-container").width());
-    $this.setGridHeight($this.parents(".management-grid-container").height());
+    $this.setGridWidth($this.parents(".management-grid-container:first").outerWidth());
+    $this.setGridHeight($this.parents(".management-grid-container:first").innerHeight() -
+        $this.parents(".management-grid-container:first").find(".management-grid-header-container:first").outerHeight() -
+        $this.parents(".management-grid-container:first").find(".jq-grid-pager:first").outerHeight() - 
+        $this.parents(".management-grid-container:first").find(".ui-jqgrid-hdiv:first").outerHeight());
   });
+}
+
+/**
+ * Generates a random string of n alphanumeric characters.
+ * @param length Length of the string to generate
+ */
+function generateRandomString(length) {
+  var text = "";
+  var characterPool = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (var i = 0; i < length; i++) {
+      text += characterPool.charAt(Math.floor(Math.random() * characterPool.length));
+  }
+  
+  return text;
 }
 
 /**
@@ -82,8 +94,38 @@ function loadContentAjax(url, method, data) {
           success: function (data) {
             $(".main-content").hide().html(data).show();
             $(".main-content .form").each(function () { bindFormHandlers(this); });
+            
+            // Trigger the resize 
+            $(window).resize();
           }
       });
     }
   }
 }
+
+/**
+ * Returns whether the jQuery element has any children
+ * matching the selector.
+ * @param selector The selector for children
+ */
+jQuery.fn.exists = function (selector) {
+  return this.find(selector).length > 0;
+};
+
+/**
+ * Returns whether the jQuery element has any element.
+ */
+jQuery.fn.exists = function () {
+  return this.length > 0;
+};
+
+/**
+ * Get or set the id of the element.
+ */
+jQuery.fn.id = function (id) {
+  if (id == undefined) {
+    return this.attr("id");
+  } else {
+    return this.attr("id", id);
+  }
+};

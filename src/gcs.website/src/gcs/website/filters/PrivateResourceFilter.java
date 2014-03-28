@@ -43,7 +43,7 @@ public class PrivateResourceFilter implements Filter
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) 
 			throws IOException, ServletException 
 	{
-		HttpServletRequest request = (HttpServletRequest) req;
+		  HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         String requestUri = request.getRequestURI();
         String contextPath = request.getContextPath();

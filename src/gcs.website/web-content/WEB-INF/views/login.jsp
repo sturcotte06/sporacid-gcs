@@ -47,8 +47,8 @@
       </div>
     </div>
     
-    <div class="content-container">
-      <div class="main-content">
+    <div class="login-content-container">
+      <div class="login-main-content">
         
         <div class="login-form-container">
           <div class="login-form-header">Authentification</div>

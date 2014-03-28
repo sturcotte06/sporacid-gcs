@@ -24,8 +24,7 @@ body,
     color: white;
 }
 
-.menu-container a:hover/*,
-.status-bar-container a:hover*/ {
+.menu-container .sub-menu-item-link:hover {
     color: #1C97EA;
 }
 
@@ -50,6 +49,8 @@ body,
     background-size: 100% 100%;
 }
 
+.login-main-content .form-button,
+.login-main-content .form-submit,  
 .main-content .form-button, 
 .main-content .form-submit {
     background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
@@ -68,5 +69,5 @@ body,
 }
 
 .form-input:focus {
-    border-color: #EC7600;
+    border-color: #EF9C00;
 }

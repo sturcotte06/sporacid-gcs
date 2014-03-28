@@ -46,18 +46,4 @@
        <a class="status-bar-item-link" href="<%=context%>/public/deconnexion">Déconnexion</a>
     </li>
   </ul>
-<!--   <div class="status-bar-identity" style="position: absolute;"> -->
-<!--     <div class="relative"> -->
-<%--       <div class="status-bar-item-image" style="background-image: url(<%=context%>/images/metro-ui-icons/metro-identity.png);"></div> --%>
-<!--     </div> -->
-<%--     Bienvenue, <%=wsSession.getUsername()%> --%>
-<!--   </div> -->
 </div>
-
-<script type="text/javascript">
-  $(document).ready(
-    function () {
-      $(".jqw-menu-container").jqxMenu({theme: cJqWidgetTheme});
-    } 
-  );
-</script>

@@ -59,14 +59,14 @@
 	padding-top: 40px;
 }
 
-.main-content {
+.login-main-content {
 	width: 60%;
 	margin-left: 20%;
 	border-radius: 5px;
 	position: relative;
 }
 
-.main-content .login-form-container {
+.login-main-content .login-form-container {
 	width: 500px;
 	padding-bottom: 20px;
 	border-radius: 5px;
@@ -74,7 +74,7 @@
 	border: 3px solid transparent;
 }
 
-.main-content .login-form-container .login-form-header {
+.login-main-content .login-form-container .login-form-header {
 	font-weight: bold;
 	text-align: center;
 	padding: 15px;
@@ -82,25 +82,25 @@
 	margin-bottom: 15px;
 }
 
-.main-content .login-form-container .form {
+.login-main-content .login-form-container .form {
   height: 100%;
 }
 
-.main-content .login-form-container table {
+.login-main-content .login-form-container table {
   height: 100%;
   width: 100%;
   text-align: center;
 }
 
-.main-content .login-form-container td {
+.login-main-content .login-form-container td {
   text-align: center;
 }
 
-.main-content .login-form-container .form-submit {
+.login-main-content .login-form-container .form-submit {
   width: 200px;
 }
 
-.main-content .gcs-description {
+.login-main-content .gcs-description {
 	margin-left: 550px;
 	color: white;
 	padding-bottom: 40px;

@@ -9,6 +9,9 @@
 		 	http://www.springframework.org/schema/context/spring-context-3.0.xsd
             http://www.springframework.org/schema/util
             http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+          
+  <!-- Weave aspects with the code at load time -->
+  <context:load-time-weaver aspectj-weaving="on" />
             
   <!-- Bean definition for the date formatter throughout the application -->
   <bean id="dateFormatter" name="dateFormatter" class="java.text.SimpleDateFormat"
@@ -82,7 +85,7 @@
   
   <!-- String bean for the location to the web services -->
   <bean id="serviceRepositoryUrl" name="serviceRepositoryUrl" class="java.lang.String">
-    <constructor-arg value="https://localhost:8443/gcs.webservices/rest"/>
+    <constructor-arg value="https://localhost:8443/services/rest"/>
   </bean>
   
   <!-- Authentication service provider implementation -->

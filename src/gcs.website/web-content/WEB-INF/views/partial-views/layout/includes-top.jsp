@@ -28,5 +28,7 @@
 <script type="text/javascript" src="<%=context%>/scripts/libraries/jqwidgets/jqxdata.js"></script> -->
 <script type="text/javascript" src="<%=context%>/scripts/libraries/jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/constants.js"></script>
+<script type="text/javascript" src="<%=context%>/scripts/controls/gcs-grid.js"></script>
+<script type="text/javascript" src="<%=context%>/scripts/controls/gcs-menu.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/form.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/site-scripts-top.js"></script>

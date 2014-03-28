@@ -6,13 +6,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%
-  String context = (String) request.getContextPath();
-  MainMenu applicationMenu = SessionUtils.getApplicationMenu(request.getSession());
+   String context = (String) request.getContextPath();
+   MainMenu applicationMenu = SessionUtils.getApplicationMenu(request.getSession());
 %>
 <div class="menu-container unselectable">
-  <% if (applicationMenu != null) { %>
+  <%
+     if (applicationMenu != null) {
+  %>
     <ul class="menu">
-      <% for (MainMenuItem item : applicationMenu.getItems()) { %>
+      <%
+         for (MainMenuItem item : applicationMenu.getItems()) {
+      %>
         <% SubMenu submenu = item.getSubmenu(); %>
         <li class="menu-item">
           <div class="menu-item-expander<%=(submenu != null ? " jqw-expander" : "") %>">
