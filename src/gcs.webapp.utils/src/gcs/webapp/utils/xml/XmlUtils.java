@@ -1,7 +1,5 @@
 package gcs.webapp.utils.xml;
 
-import gcs.webapp.utils.aop.LoggingAspect;
-
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -20,7 +18,7 @@ import org.jdom2.input.SAXBuilder;
  */
 public final class XmlUtils 
 {
-   private static final Logger logger = Logger.getLogger(LoggingAspect.class);
+   private static final Logger logger = Logger.getLogger(XmlUtils.class);
    
 	/**
 	 * Returns a collection of root elements for all found xml files
