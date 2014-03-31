@@ -59,12 +59,12 @@
           <form id="login_form" class="form" method="post" action="<%=context%>/public/connexion">
             <table><tr><td>
               <div class="form-line">
-                <label class="form-label" for="username">Code AJXXXXX</label>
+                <label class="form-label" for="username">Code Universel</label>
                 <input type="text" class="form-input form-textbox" name="username" 
                   value="<%=(form.getUsername() != null ? form.getUsername() : "")%>" />
               </div>
               <div class="form-line">
-                <label class="form-label" for="password">Mot De Passe</label>
+                <label class="form-label" for="password">Mot de Passe</label>
                 <input type="password" class="form-input form-textbox" name="password" />
               </div>
               <div class="form-line">

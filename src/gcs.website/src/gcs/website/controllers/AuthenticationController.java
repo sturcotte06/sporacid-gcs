@@ -106,7 +106,7 @@ public class AuthenticationController implements ApplicationContextAware
 				SessionUtils.setWsSession(request.getSession(), wsSession);
 				// TODO change forRole param
 				SessionUtils.setApplicationMenu(session, 
-						menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "membre"));
+						menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));
 			} else {
 				// Failure; tell the user why
 				for (Message message : response.getMessages()) {

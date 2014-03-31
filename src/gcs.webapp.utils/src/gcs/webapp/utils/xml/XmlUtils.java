@@ -50,11 +50,11 @@ public final class XmlUtils
 					if (xmlDocument != null) {
 						rootElements.add(xmlDocument.getRootElement());
 					}
-				} catch (JDOMException e) {
-		            e.printStackTrace();
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        }
+				} catch (JDOMException ex) {
+				   logger.error("There was an error while parsing the xml file.", ex);
+		      } catch (IOException ex) {
+		         logger.error("There was an error while loading the xml file.", ex);
+	         }
 			}
 		}
 		

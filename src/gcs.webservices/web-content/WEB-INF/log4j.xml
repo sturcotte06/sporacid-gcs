@@ -9,13 +9,12 @@
     </layout>
   </appender>
   <appender name="fileAppender" class="gcs.webapp.utils.logging.CustodianDailyRollingFileAppender">
-    <param name="Threshold" value="info" />
-    <param name="File" value="${catalina.home}/logs/webservices.log" />
+    <param name="file" value="${catalina.home}/logs/webservices.log" />
     <param name="datePattern" value="'.'yyyy-MM-dd" />
     <param name="maxNumberOfDays" value="14" />
     <param name="compressBackups" value="true" />
     <layout class="org.apache.log4j.PatternLayout">
-       <param name="ConversionPattern" value="[%d{ISO8601}] %-5p %c %m %n" />
+       <param name="conversionPattern" value="[%d{ISO8601}] %-5p %c %m %n" />
     </layout>
   </appender>
   <root>
