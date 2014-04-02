@@ -1,12 +1,10 @@
 package gcs.website.controllers.services;
 
-import gcs.webapp.utils.HandledByHttpService;
 import gcs.webapp.utils.HttpMethod;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.website.controllers.services.beans.requests.Request;
 import gcs.website.controllers.services.beans.responses.Response;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -45,7 +43,7 @@ public abstract class HttpService
 	 * @param classObj 	Class object on which to perform reflection
 	 * @return			The current method http service metadata, if it exists.				
 	 */
-	protected HandledByHttpService resolveHttpServiceMetadata(Class<? extends HttpService> classObj)
+	/*protected HandledByHttpService resolveHttpServiceMetadata(Class<? extends HttpService> classObj)
 	{
 		HandledByHttpService metadata = null;	
 		
@@ -56,14 +54,14 @@ public abstract class HttpService
 		metadata = firstMatchingMethod.getAnnotation(HandledByHttpService.class);
 		
 		return metadata;
-	}
+	}*/
 
 	/**
 	 * 
 	 * @param metadata
 	 * @return
 	 */
-	protected <T extends Response> T getResponse(HandledByHttpService metadata, Class<T> classObj)
+	protected <T extends Response> T getResponse(HttpServiceMetadata metadata, Class<T> classObj)
 	{
 		// Return a get response with a null request
 		return getResponse(metadata, classObj, null);
@@ -77,7 +75,7 @@ public abstract class HttpService
 	 * @return
 	 */
 	protected <T extends Response> T getResponse(
-			HandledByHttpService metadata, Class<T> classObj, Request request)
+			HttpServiceMetadata metadata, Class<T> classObj, Request request)
 	{
 		T response = null;
 		
@@ -85,13 +83,13 @@ public abstract class HttpService
 		Client client = getJerseyClient();
 		
 		// Build the url from the metadata
-		String url = this.getServiceUrl() + metadata.path();
+		String url = this.getServiceUrl() + metadata.getPath();
 		
 		// Build the web response
 		WebResource resource = client.resource(url);
 
 		// If it's an http get, we cannot attach an entity. Parameters must be sent as query strings 
-		if (metadata.method() == HttpMethod.Get) {
+		if (metadata.getMethod() == HttpMethod.Get) {
 			MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
 			Map<String, Object> objectProperties = null;
 			try {
@@ -113,7 +111,7 @@ public abstract class HttpService
 		Builder responseBuilder = resource.accept(MediaType.APPLICATION_JSON);
 		
 		// If it's not http get, attach the entity to the request as json
-		if (metadata.method() != HttpMethod.Get) {
+		if (metadata.getMethod() != HttpMethod.Get) {
 			responseBuilder
 				// Produces only json
 				.type(MediaType.APPLICATION_JSON)
@@ -123,7 +121,7 @@ public abstract class HttpService
 		
 		// Execute the http service request with the metadata method
 		response = responseBuilder
-			.method(metadata.method().name().toUpperCase(), ClientResponse.class)
+			.method(metadata.getMethod().name().toUpperCase(), ClientResponse.class)
 			.getEntity(classObj);
 		
 		return response;
