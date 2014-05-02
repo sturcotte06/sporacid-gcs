@@ -5,16 +5,21 @@ import gcs.webservices.models.Membre;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Getter;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
- *
  */
 public class AuthorizedSession 
 {
+   private final Map<String, Object> sessionProperties = new HashMap<String, Object>();
+   
+   @Getter
 	private Membre membre;
+   
+   @Getter
 	private LDAPAuthenticationToken authenticationToken;
-	private final Map<String, Object> sessionProperties = new HashMap<String, Object>();
 	
 	public AuthorizedSession(Membre membre, LDAPAuthenticationToken token)
 	{
@@ -38,15 +43,5 @@ public class AuthorizedSession
 		}
 		
 		return sessionProperties.get(key);
-	}
-	
-	public Membre getMembre() 
-	{
-		return membre;
-	}
-
-	public LDAPAuthenticationToken getAuthenticationToken() 
-	{
-		return authenticationToken;
 	}
 }

@@ -11,35 +11,36 @@
 	<!-- <context:annotation-config /> -->
 	<!-- <tx:annotation-driven /> -->
 
-	<!-- Data source informations -->
-<!-- 	<bean id="dataSource" -->
-<!--       class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
-<!--       <property name="driverClassName" value="org.postgresql.Driver" /> -->
-<!--       <property name="url" -->
-<!--       	value="jdbc:postgresql://gti710-20133-01.logti.etsmtl.ca:5432/gti710_20123" /> -->
-<!--       <property name="username" value="pgadmin" /> -->
-<!--       <property name="password" value="chAnge_Me" /> -->
-<!-- 	</bean> -->
-
-	<!-- Session factory bean object for hibernate -->
-<!-- 	<bean id="sessionFactory" -->
-<!--       class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" -->
-<!--       lazy-init="true"> -->
-<!--       <property name="dataSource" ref="dataSource" /> -->
-<!--       <property name="annotatedClasses"> -->
-<!--       	<list></list> -->
-<!--       </property> -->
-<!--       <property name="hibernateProperties"> -->
-<!--       	<props> -->
-<!--           <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop> -->
-<!--           <prop key="hibernate.show_sql">true</prop> -->
-<!--           <prop key="hibernate.connection.pool_size">1</prop> -->
-<!--       	</props> -->
-<!--       </property> -->
-<!-- 	</bean> -->
-  
     <!-- Weave aspects with the code at load time -->
     <context:load-time-weaver aspectj-weaving="on" />
+    
+	<!-- Data source informations -->
+	<bean id="dataSource"
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="org.postgresql.Driver" />
+      <property name="url"
+      	value="jdbc:postgresql://ec2-54-235-117-198.compute-1.amazonaws.com:5432/d9sv2493doff58" />
+      <property name="username" value="zljfbeusltippf" />
+      <property name="password" value="87HM8h7QniWdAEwyKI-E276K2I" />
+	</bean>
+
+	<!-- Session factory bean object for hibernate -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+      lazy-init="false">
+      <property name="dataSource" ref="dataSource" />
+      <property name="annotatedClasses">
+      	<list>
+            <value>gcs.webservices.models.Audit</value>
+        </list>
+      </property>
+      <property name="hibernateProperties">
+      	<props>
+          <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+          <prop key="hibernate.show_sql">true</prop>
+          <prop key="hibernate.connection.pool_size">1</prop>
+      	</props>
+      </property>
+	</bean>
 	
     <!-- Application messages cache. This is where configured messages will be loaded. -->
     <bean id="messageLocalizer" name="messageLocalizer"
@@ -73,5 +74,17 @@
       <property name="defaultUserDomain" value="ens.ad.etsmtl.ca" />
     </bean>
     
+    <!-- Define all data access objects below -->
     <bean id="membresDao" class="gcs.webservices.dao.MembreDao" scope="singleton" />
+    <bean id="auditDao" class="gcs.webservices.dao.AuditDao" scope="singleton" />
+    
+    <!-- Internal service instance for auditing  -->
+    <bean id="auditService" class="gcs.webservices.aop.services.AuditService" scope="singleton">
+        <property name="auditDao" ref="auditDao" />
+    </bean>
+    
+    <!-- Inject the auditing service into the security aspect -->
+    <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect" factory-method="aspectOf">
+       <property name="auditService" ref="auditService"/>
+    </bean>
 </beans>

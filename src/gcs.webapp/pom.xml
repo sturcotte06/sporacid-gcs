@@ -13,6 +13,7 @@
     <spring.security.version>3.2.2.RELEASE</spring.security.version>
     <aspectj.version>1.7.4</aspectj.version>
     <hibernate.version>4.3.4.Final</hibernate.version>
+    <lombok.version>1.12.6</lombok.version>
   </properties>
   
   <modules>
@@ -156,6 +157,12 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
       <version>${spring.security.version}</version>
+    </dependency>
+    <!-- Lombok dependencies -->
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
     </dependency>
   </dependencies>
 </project>

@@ -1,5 +1,8 @@
 package gcs.webapp.utils;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import gcs.webapp.utils.app.messages.ILocalizable;
@@ -11,10 +14,14 @@ import gcs.webapp.utils.app.messages.IMessageLocalizer;
  */
 public class Message implements ILocalizable
 {
+   @Getter @Setter
 	private MessageType messageType;
-	private String message;
+   
+   @Getter @Setter
+	private String messageContent;
 	
 	@JsonIgnore
+	@Getter @Setter
 	private Object[] format;
 	
 	public Message()
@@ -23,40 +30,10 @@ public class Message implements ILocalizable
 	public Message(MessageType messageType, String messageContent, Object... format)
 	{
 		this.messageType= messageType; 
-		this.message = messageContent;
+		this.messageContent = messageContent;
 		this.format = format;
 	}
-	
-	public MessageType getMessageType()
-	{
-		return messageType;
-	}
-	
-	public void setMessageType(MessageType messageType)
-	{
-		this.messageType = messageType;
-	}
-	
-	public String getMessageContent()
-	{
-		return message;
-	}
-	
-	public void setMessageContent(String messageContent)
-	{
-		this.message = messageContent;
-	}
-
-	public Object[] getFormat() 
-	{
-		return format;
-	}
-
-	public void setFormat(Object[] format) 
-	{
-		this.format = format;
-	}
-	
+		
 	@Override
 	public void localize(IMessageLocalizer localizer) 
 	{

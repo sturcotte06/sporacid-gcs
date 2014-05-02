@@ -2,20 +2,19 @@ package gcs.webapp.utils.caching;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
 public class CacheKey
 {
-	/**
-	 * 
-	 */
+   @Getter @Setter
 	private String key;
 	
-	/**
-	 * 
-	 */
+   @Getter @Setter
 	private Date timeCached;
 	
 	/**
@@ -44,25 +43,5 @@ public class CacheKey
 			equals = key.equals(cacheKey.getKey());
 		
 		return equals;
-	}
-
-	public String getKey()
-	{
-		return key;
-	}
-
-	public void setKey(String key)
-	{
-		this.key = key;
-	}
-	
-	public Date getTimeCached()
-	{
-		return timeCached;
-	}
-	
-	public void setTimeCached(Date timeCached)
-	{
-		this.timeCached = timeCached;
 	}
 }

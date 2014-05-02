@@ -1,20 +1,14 @@
 package gcs.webservices.services.beans.responses;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
 public class LoginResponse extends Response 
 {
+   @Getter @Setter
 	private String sessionKey;
-
-	public String getSessionKey() 
-	{
-		return sessionKey;
-	}
-
-	public void setSessionKey(String sessionKey) 
-	{
-		this.sessionKey = sessionKey;
-	}
 }

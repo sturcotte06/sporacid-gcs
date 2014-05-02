@@ -7,5 +7,6 @@
   <aspects>
     <!-- weave in just this aspect -->        
     <aspect name="gcs.webapp.utils.aop.LoggingAspect"/>
+    <aspect name="gcs.webservices.aop.AuditAspect"/>
   </aspects>
 </aspectj>

@@ -12,7 +12,6 @@ import java.util.Set;
  */
 public class QueryStringKeyProvider implements IKeyProvider
 {
-
 	@Override
 	public <E> CacheKey toKey(E object, Class<E> classObj)
 	{

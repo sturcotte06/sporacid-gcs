@@ -2,23 +2,17 @@ package gcs.webapp.utils.app.security;
 
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
 public class Rights 
 {
+   @Getter @Setter
 	private Collection<CrudOperation> rights;
-	
-	public Collection<CrudOperation> getRights() 
-	{
-		return rights;
-	}
-
-	public void setRights(Collection<CrudOperation> rights) 
-	{
-		this.rights = rights;
-	}
 
 	public boolean hasRight(CrudOperation operation)
 	{

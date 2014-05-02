@@ -15,7 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
@@ -33,16 +37,22 @@ public class AuthenticationController implements ApplicationContextAware
 	/**
 	 * 
 	 */
+   @Autowired
+   @Getter @Setter
 	private IAuthenticationService authenticationService;
 	
 	/**
 	 * 
 	 */
+   @Autowired
+   @Getter @Setter
 	private IMessageLocalizer messageLocalizer;
 	
 	/**
 	 * 
 	 */
+   @Autowired
+   @Getter @Setter
 	private IMenuProvider menuProvider;
 	
 	/**
@@ -104,6 +114,7 @@ public class AuthenticationController implements ApplicationContextAware
 				wsSession.setSessionKey(response.getSessionKey());
 				wsSession.setUsername(form.getUsername());
 				SessionUtils.setWsSession(request.getSession(), wsSession);
+				
 				// TODO change forRole param
 				SessionUtils.setApplicationMenu(session, 
 						menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));

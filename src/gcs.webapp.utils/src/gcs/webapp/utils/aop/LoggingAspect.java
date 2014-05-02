@@ -11,6 +11,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 public class LoggingAspect 
 {
    private static final Logger logger = Logger.getLogger(LoggingAspect.class);
+   private static final int cExecutionTimeThreshold = 500;
    
    @Around(value = "execution(* gcs..*(..))")
    public Object aroundGcsMethods(ProceedingJoinPoint joinPoint) throws Throwable
@@ -31,8 +32,14 @@ public class LoggingAspect
          throw t;
       } finally {
          watch.stop();
-         logger.info(String.format("Exiting %s.%s(); Total execution time: %dms", 
-               className, methodName, watch.getTime()));
+         if (logger.isDebugEnabled()) {
+            logger.debug(String.format("Exiting %s.%s(); Total execution time: %dms", 
+                  className, methodName, watch.getTime()));
+         } else if (watch.getTime() > cExecutionTimeThreshold) {
+            // Method took more than 500ms, log a warning
+            logger.warn(String.format("Method %s.%s() took more than %dms. Total execution time: %dms",
+                  className, methodName, cExecutionTimeThreshold, watch.getTime()));
+         }
       }
    }
 }

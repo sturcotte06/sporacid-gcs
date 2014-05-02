@@ -1,38 +1,16 @@
 package gcs.webservices.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Membre 
 {
+   @Getter @Setter
 	private int id;
+   
+   @Getter @Setter
 	private String nom;
+   
+   @Getter @Setter
 	private String codePermanent;
-	
-	public String getCodePermanent() 
-	{
-		return codePermanent;
-	}
-	
-	public void setCodePermanent(String codePermanent) 
-	{
-		this.codePermanent = codePermanent;
-	}
-	
-	public String getNom() 
-	{
-		return nom;
-	}
-	
-	public void setNom(String nom) 
-	{
-		this.nom = nom;
-	}
-	
-	public int getId() 
-	{
-		return id;
-	}
-	
-	public void setId(int id) 
-	{
-		this.id = id;
-	}
 }

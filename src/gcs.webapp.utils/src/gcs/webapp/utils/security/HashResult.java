@@ -1,27 +1,13 @@
 package gcs.webapp.utils.security;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class HashResult 
 {
+   @Getter @Setter
 	private String hashedString;
+   
+   @Getter @Setter
 	private String salt;
-	
-	public String getHashedString() 
-	{
-		return hashedString;
-	}
-	
-	public void setHashedString(String hashedString) 
-	{
-		this.hashedString = hashedString;
-	}
-	
-	public String getSalt() 
-	{
-		return salt;
-	}
-	
-	public void setSalt(String salt) 
-	{
-		this.salt = salt;
-	}
 }

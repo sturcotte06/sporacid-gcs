@@ -6,12 +6,14 @@ import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.website.controllers.services.beans.requests.Request;
 import gcs.website.controllers.services.beans.responses.Response;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -28,35 +30,20 @@ public abstract class HttpService
 	/**
 	 * Base url for the http service
 	 */
+   @Getter @Setter
 	private String serviceUrl;
 	
 	/**
 	 * Client for the web service consommation
 	 */
+   @Getter @Setter
 	private Client jerseyClient;
 	
 	/**
 	 * Cache for the responses
 	 */
+   @Getter @Setter
 	private HttpServiceCache cache;
-
-	/**
-	 * Resolves the current method HandledByHttpService annotation.
-	 * @param classObj 	Class object on which to perform reflection
-	 * @return			The current method http service metadata, if it exists.				
-	 */
-	protected HandledByHttpService resolveHttpServiceMetadata(Class<? extends HttpService> classObj)
-	{
-		HandledByHttpService metadata = null;	
-		
-		// Theres no best way in java to identify the right method.
-		// This should work in 99% of cases since overloads probably will share
-		// the same web service metadata
-		Method firstMatchingMethod = ReflectionUtils.getFirstCurrentMethodMetadata(classObj);
-		metadata = firstMatchingMethod.getAnnotation(HandledByHttpService.class);
-		
-		return metadata;
-	}
 
 	/**
 	 * 
@@ -85,13 +72,13 @@ public abstract class HttpService
 		Client client = getJerseyClient();
 		
 		// Build the url from the metadata
-		String url = this.getServiceUrl() + metadata.path();
+		String url = this.getServiceUrl() + metadata.getPath();
 		
 		// Build the web response
 		WebResource resource = client.resource(url);
 
 		// If it's an http get, we cannot attach an entity. Parameters must be sent as query strings 
-		if (metadata.method() == HttpMethod.Get) {
+		if (metadata.getMethod() == HttpMethod.Get) {
 			MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
 			Map<String, Object> objectProperties = null;
 			try {
@@ -113,7 +100,7 @@ public abstract class HttpService
 		Builder responseBuilder = resource.accept(MediaType.APPLICATION_JSON);
 		
 		// If it's not http get, attach the entity to the request as json
-		if (metadata.method() != HttpMethod.Get) {
+		if (metadata.getMethod() != HttpMethod.Get) {
 			responseBuilder
 				// Produces only json
 				.type(MediaType.APPLICATION_JSON)
@@ -123,63 +110,9 @@ public abstract class HttpService
 		
 		// Execute the http service request with the metadata method
 		response = responseBuilder
-			.method(metadata.method().name().toUpperCase(), ClientResponse.class)
+			.method(metadata.getMethod().name().toUpperCase(), ClientResponse.class)
 			.getEntity(classObj);
 		
 		return response;
-	}
-	
-	/**
-	 * Getter for the jersey client
-	 * @return The jersey client
-	 */
-	public Client getJerseyClient()
-	{
-		return jerseyClient;
-	}
-
-	/**
-	 * Setter for the jersey client
-	 * @param jerseyClient The new jersey client
-	 */
-	public void setJerseyClient(Client jerseyClient)
-	{
-		this.jerseyClient = jerseyClient;
-	}
-
-	/**
-	 * Getter for the http service cache
-	 * @return The http service cache
-	 */
-	public HttpServiceCache getCache()
-	{
-		return cache;
-	}
-
-	/**
-	 * Setter for the http service cache
-	 * @param cache The new http service cache
-	 */
-	public void setCache(HttpServiceCache cache)
-	{
-		this.cache = cache;
-	}
-	
-	/**
-	 * Getter for the service url
-	 * @return the server url 
-	 */
-	public String getServiceUrl()
-	{
-		return serviceUrl;
-	}
-
-	/**
-	 * Setter for the service url
-	 * @param serviceUrl the new server url
-	 */
-	public void setServiceUrl(String serviceUrl)
-	{
-		this.serviceUrl = serviceUrl;
 	}
 }

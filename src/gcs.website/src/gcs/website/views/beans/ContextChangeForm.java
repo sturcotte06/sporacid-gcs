@@ -1,16 +1,10 @@
 package gcs.website.views.beans;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class ContextChangeForm 
 {
+   @Getter @Setter
 	private String contextId;
-
-	public String getContextId() 
-	{
-		return contextId;
-	}
-
-	public void setContextId(String contextId) 
-	{
-		this.contextId = contextId;
-	}
 }

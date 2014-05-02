@@ -1,7 +1,10 @@
 package gcs.webservices.authentication;
 
 import java.util.Date;
+
 import javax.security.auth.login.LoginContext;
+
+import lombok.Getter;
 
 /**
  * 
@@ -9,8 +12,13 @@ import javax.security.auth.login.LoginContext;
  */
 public class LDAPAuthenticationToken 
 {
+   @Getter
 	private Date emittedAt;
+   
+   @Getter
 	private String emittedFor;
+   
+   @Getter
 	private LoginContext loginContext;
 	
 	public LDAPAuthenticationToken(String emittedFor, LoginContext context)
@@ -18,20 +26,5 @@ public class LDAPAuthenticationToken
 		this.loginContext = context;
 		this.emittedFor = emittedFor;
 		this.emittedAt = new Date();
-	}
-	
-	public LoginContext getLoginContext() 
-	{
-		return loginContext;
-	}
-
-	public Date getEmittedAt() 
-	{
-		return emittedAt;
-	}
-	
-	public String getEmittedFor() 
-	{
-		return emittedFor;
 	}
 }

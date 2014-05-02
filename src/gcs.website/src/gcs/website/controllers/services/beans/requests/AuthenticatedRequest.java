@@ -2,6 +2,9 @@ package gcs.website.controllers.services.beans.requests;
 
 import javax.ws.rs.QueryParam;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
@@ -9,28 +12,10 @@ import javax.ws.rs.QueryParam;
 public class AuthenticatedRequest extends Request 
 {
 	@QueryParam(value = "sessionKey")
+	@Getter @Setter
 	private String sessionKey;
 	
 	@QueryParam(value = "ipAddress")
+	@Getter @Setter
 	private String ipAddress;
-
-	public String getSessionKey() 
-	{
-		return sessionKey;
-	}
-
-	public void setSessionKey(String sessionKey) 
-	{
-		this.sessionKey = sessionKey;
-	}
-
-	public String getIpAddress() 
-	{
-		return ipAddress;
-	}
-
-	public void setIpAddress(String ipAddress) 
-	{
-		this.ipAddress = ipAddress;
-	}
 }

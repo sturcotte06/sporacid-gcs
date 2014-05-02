@@ -7,6 +7,9 @@ import gcs.webapp.utils.reflect.ReflectionUtils;
 
 import java.lang.reflect.Method;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.stereotype.Component;
 
 import com.sun.jersey.api.core.InjectParam;
@@ -66,23 +69,5 @@ public abstract class SecureHttpService extends BaseHttpService
 	{
 		SecureModule module = resolveSecureModuleMetadata(classObj);
 		return moduleSecurityProvider.hasRights(module.name(), roleName, operator.operation());
-	}
-	
-	/**
-	 * Getter for the module security provider
-	 * @return The module security provider
-	 */
-	public IModuleSecurityProvider getModuleSecurityProvider()
-	{
-		return moduleSecurityProvider;
-	}
-
-	/**
-	 * Setter for the module security provider
-	 * @param securityProvider The new module security provider
-	 */
-	public void setModuleSecurityProvider(IModuleSecurityProvider securityProvider) 
-	{
-		this.moduleSecurityProvider = securityProvider;
 	}
 }

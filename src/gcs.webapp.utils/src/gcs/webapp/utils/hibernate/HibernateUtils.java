@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -54,6 +53,7 @@ public final class HibernateUtils
 			{
 				// An error occured; rollback the transaction
 				tx.rollback();
+				throw e;
 			}
 			finally
 			{
@@ -97,6 +97,7 @@ public final class HibernateUtils
 			{
 				// An error occured; rollback the transaction
 				tx.rollback();
+				throw e;
 			}
 			finally
 			{
@@ -137,6 +138,7 @@ public final class HibernateUtils
 			{
 				// An error occured; rollback the transaction
 				tx.rollback();
+				throw e;
 			}
 			finally
 			{
@@ -232,10 +234,6 @@ public final class HibernateUtils
 			// Resolve the entity list
 			entitiesList = (Collection<E>) criteria.list();
 		}
-		catch(HibernateException e)
-		{
-			// An error occured.
-		}
 		finally
 		{
 			// Always close the session
@@ -268,10 +266,6 @@ public final class HibernateUtils
 			
 			// Put the query result into the list
 			entity = (E) criteria.uniqueResult();
-		}
-		catch(HibernateException e)
-		{
-			// An error occured.
 		}
 		finally
 		{
@@ -329,14 +323,6 @@ public final class HibernateUtils
 			
 			// Resolve the entity list
 			entityCount = ((Long) criteria.uniqueResult()).intValue();
-		}
-		catch(JDBCException e) 
-		{
-
-		}
-		catch(HibernateException e)
-		{
-			// An error occured.
 		}
 		finally
 		{

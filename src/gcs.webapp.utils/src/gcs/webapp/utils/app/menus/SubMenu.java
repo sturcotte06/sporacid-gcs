@@ -6,19 +6,13 @@ import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class SubMenu implements ILocalizable
 {
+   @Getter @Setter
 	private Collection<SubMenuItem> items = new ArrayList<SubMenuItem>();
-
-	public Collection<SubMenuItem> getItems() 
-	{
-		return items;
-	}
-
-	public void setItems(Collection<SubMenuItem> items) 
-	{
-		this.items = items;
-	}
 
 	@Override
 	public void localize(IMessageLocalizer localizer) 
