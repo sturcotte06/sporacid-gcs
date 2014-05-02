@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,44 +36,4 @@ public class Audit extends AbstractModelObject
    @Column(name = "message")
    @Getter @Setter
    private String message;
-   
-   /*public int getId()
-   {
-      return id;
-   }
-
-   public void setId(int id)
-   {
-      this.id = id;
-   }
-
-   public void setUsername(String username)
-   {
-      this.username = username;
-   }
-
-   public void setTimestamp(Date timestamp)
-   {
-      this.timestamp = timestamp;
-   }
-
-   public void setMessage(String message)
-   {
-      this.message = message;
-   }
-
-   public String getUsername()
-   {
-      return username;
-   }
-
-   public Date getTimestamp()
-   {
-      return timestamp;
-   }
-
-   public String getMessage()
-   {
-      return message;
-   }*/
 }

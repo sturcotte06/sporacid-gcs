@@ -7,9 +7,6 @@ import gcs.webapp.utils.reflect.ReflectionUtils;
 
 import java.lang.reflect.Method;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.springframework.stereotype.Component;
 
 import com.sun.jersey.api.core.InjectParam;

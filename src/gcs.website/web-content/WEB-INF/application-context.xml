@@ -11,7 +11,10 @@
             http://www.springframework.org/schema/util/spring-util.xsd
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd">
-          
+            
+  <!-- Allow annotation config for IoC -->
+  <context:annotation-config />
+
   <!-- Weave aspects with the code at load time -->
   <context:load-time-weaver />
   

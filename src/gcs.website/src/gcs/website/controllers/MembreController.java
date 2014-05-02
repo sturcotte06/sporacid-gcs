@@ -7,16 +7,13 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/membres")
-public class MembreController implements ApplicationContextAware 
+public class MembreController
 {
 	@RequestMapping(value = "/gerer", method = RequestMethod.GET)
 	public String getListMembres(HttpServletRequest request)
@@ -63,14 +60,4 @@ public class MembreController implements ApplicationContextAware
 	{
 		return "partial-views/add-membre";
 	}
-	
-	/**
-	 * ApplicationContextAware implementation
-	 * Get specific instances from the application context
-	 * @param context	The application context
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext context) 
-			throws BeansException 
-	{ }
 }

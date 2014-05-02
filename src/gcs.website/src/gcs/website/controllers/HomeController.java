@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/**")
-public class HomeController implements ApplicationContextAware 
+public class HomeController
 {
 	/**
 	 * 
@@ -53,14 +50,4 @@ public class HomeController implements ApplicationContextAware
 			return "redirect:/public/connexion";
 		}
 	}
-
-	/**
-	 * ApplicationContextAware implementation
-	 * Get specific instances from the application context
-	 * @param context	The application context
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext context) 
-			throws BeansException 
-	{ }
 }

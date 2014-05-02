@@ -5,9 +5,6 @@ import gcs.website.views.beans.ContextChangeForm;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/usager")
-public class UserController implements ApplicationContextAware 
+public class UserController
 {
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String getDashboard(HttpServletRequest request)
@@ -38,14 +35,4 @@ public class UserController implements ApplicationContextAware
 	{
 		return "redirect:/";
 	}
-	
-	/**
-	 * ApplicationContextAware implementation
-	 * Get specific instances from the application context
-	 * @param context	The application context
-	 */
-	@Override
-	public void setApplicationContext(ApplicationContext context) 
-			throws BeansException 
-	{ }
 }

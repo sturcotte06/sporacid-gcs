@@ -4,14 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import gcs.webservices.aop.services.IAuditService;
 
-import org.apache.log4j.Logger;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 
 @Aspect
 public class AuditAspect
 {
-   private static final Logger logger = Logger.getLogger(AuditAspect.class);
+   // private static final Logger logger = Logger.getLogger(AuditAspect.class);
    
    @Getter @Setter
    private IAuditService auditService;
@@ -22,7 +21,7 @@ public class AuditAspect
       auditService.audit(request.getSessionKey(), "Test");
    }*/
    
-   @Around(value = "execution(* gcs.webservices.services.*(..))")
+   @Before(value = "execution(* gcs.webservices.services.*(..))")
    public void auditPrivateCall()
    {
       auditService.audit("test", "Test");

@@ -11,6 +11,7 @@ import gcs.website.utils.SessionUtils;
 import gcs.website.views.beans.AuthenticationForm;
 import gcs.website.views.beans.WsSession;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -18,10 +19,6 @@ import javax.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -32,26 +29,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/public/**")
-public class AuthenticationController implements ApplicationContextAware 
+public class AuthenticationController /*implements ApplicationContextAware*/ 
 {
 	/**
 	 * 
 	 */
-   @Autowired
+   @Resource(name = "authenticationService")
    @Getter @Setter
 	private IAuthenticationService authenticationService;
 	
 	/**
 	 * 
 	 */
-   @Autowired
+   @Resource(name = "messageLocalizer")
    @Getter @Setter
 	private IMessageLocalizer messageLocalizer;
 	
 	/**
 	 * 
 	 */
-   @Autowired
+   @Resource(name = "menuProvider")
    @Getter @Setter
 	private IMenuProvider menuProvider;
 	
@@ -107,6 +104,7 @@ public class AuthenticationController implements ApplicationContextAware
 			if (ipAddress == null) {  
 				ipAddress = request.getRemoteAddr();  
 			}
+			
 			LoginResponse response = authenticationService.login(ipAddress, form.getUsername(), form.getPassword());
 			if (response.isSuccess()) {
 				// Success; create a new web services session
@@ -124,8 +122,8 @@ public class AuthenticationController implements ApplicationContextAware
 					SessionUtils.addMessage(message.getMessageType(), message.getMessageContent(), session);
 				}
 				
-	      request.setAttribute("authenticationForm", form);
-	      direction = "login";
+   	      request.setAttribute("authenticationForm", form);
+   	      direction = "login";
 			}
 		}
 		
@@ -205,12 +203,12 @@ public class AuthenticationController implements ApplicationContextAware
 	 * Get specific instances from the application context
 	 * @param context	The application context
 	 */
-	@Override
+	/*@Override
 	public void setApplicationContext(ApplicationContext context) 
 			throws BeansException 
 	{ 
 		authenticationService = context.getBean("authenticationService", IAuthenticationService.class);
 		messageLocalizer = context.getBean("messageLocalizer", IMessageLocalizer.class);
 		menuProvider = context.getBean("menuProvider", IMenuProvider.class);
-	}
+	}*/
 }
