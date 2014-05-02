@@ -4,8 +4,6 @@ import gcs.webapp.utils.Message;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.ILocalizable;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
-import gcs.webservices.dao.IAuditDao;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +19,10 @@ import lombok.Setter;
 @XmlRootElement
 public class Response implements ILocalizable
 {
-   @Getter @Setter
+    @Getter @Setter
 	private boolean success;
    
-   @Getter
+    @Getter
 	private List<Message> messages = new ArrayList<>();
 
 	public void addMessage(MessageType type, String messageContent, Object... format)
