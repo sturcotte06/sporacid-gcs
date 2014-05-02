@@ -6,6 +6,7 @@ import gcs.website.views.helpers.models.Menu;
 import gcs.website.views.helpers.models.MenuItem;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -93,7 +94,12 @@ public final class ControlHelpers
       columnsDisplayOut.append("[");
       
       Field[] fields = classObj.getDeclaredFields();
-      for (Field field : fields) {        
+      for (Field field : fields) {
+         if (Modifier.isStatic(field.getModifiers())) {
+            // Only iterate through non-static fields
+            continue;
+         }
+         
          Display display = field.getAnnotation(Display.class);
          columnsDisplayOut.append(String.format("\"%s\",", 
                display != null ? display.value() : field.getName()));
