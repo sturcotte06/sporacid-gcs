@@ -11,14 +11,6 @@
     <version>0.1</version>
   </parent>
   
-  <properties>
-    <jersey.version>1.18.1</jersey.version>
-    <spring.version>4.0.2.RELEASE</spring.version>
-    <spring.security.version>3.2.2.RELEASE</spring.security.version>
-    <aspectj.version>1.7.4</aspectj.version>
-    <hibernate.version>4.3.4.Final</hibernate.version>
-  </properties>
-  
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -38,33 +30,16 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
-<!--       <plugin> -->
-<!--         <groupId>org.codehaus.mojo</groupId> -->
-<!--         <artifactId>aspectj-maven-plugin</artifactId> -->
-<!--         <version>1.2</version> -->
-<!--         <configuration> -->
-<!--             <source>1.8</source> -->
-<!--             <target>1.8</target> -->
-<!--         </configuration> -->
-<!--         <executions> -->
-<!--           <execution> -->
-<!--             <goals> -->
-<!--                 <goal>compile</goal> -->
-<!--             </goals> -->
-<!--           </execution> -->
-<!--         </executions> -->
-<!--       </plugin> -->
     </plugins>
   </build>
   
-  <dependencies>  
-    <!-- Encoding dependencies -->
+  <dependencies>    
     <dependency>
-      <groupId>commons-codec</groupId>
-      <artifactId>commons-codec</artifactId>
-      <version>1.8</version>
+      <groupId>sporacid.gcs.webapp</groupId>
+      <artifactId>webapp-utils</artifactId>
+      <version>0.1</version>
     </dependency>
-    
+  
     <!-- Itext dependencies for Html to Pdf -->
     <dependency>
       <groupId>com.itextpdf</groupId>
@@ -73,11 +48,6 @@
     </dependency>
     
     <!-- Javax dependencies -->
-<!--     <dependency> -->
-<!--       <groupId>javax.validation</groupId> -->
-<!--       <artifactId>validation-api</artifactId> -->
-<!--       <version>1.1.0.Final</version> -->
-<!--     </dependency> -->
     <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>jsr311-api</artifactId>
@@ -91,91 +61,17 @@
     </dependency>
     
     <!-- Jersey dependencies -->
-<!--     <dependency> -->
-<!--       <groupId>com.sun.jersey</groupId> -->
-<!--       <artifactId>jersey-core</artifactId> -->
-<!--       <version>${jersey.version}</version> -->
-<!--     </dependency> -->
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-client</artifactId>
       <version>${jersey.version}</version>
     </dependency>
-<!--     <dependency> -->
-<!--       <groupId>com.sun.jersey</groupId> -->
-<!--       <artifactId>jersey-json</artifactId> -->
-<!--       <version>${jersey.version}</version> -->
-<!--     </dependency> -->
     
     <!-- Spring dependencies -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework</groupId> -->
-<!--       <artifactId>spring-core</artifactId> -->
-<!--       <version>${spring.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework</groupId> -->
-<!--       <artifactId>spring-context</artifactId> -->
-<!--       <version>${spring.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework</groupId> -->
-<!--       <artifactId>spring-beans</artifactId> -->
-<!--       <version>${spring.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework</groupId> -->
-<!--       <artifactId>spring-web</artifactId> -->
-<!--       <version>${spring.version}</version> -->
-<!--     </dependency> -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
       <version>${spring.version}</version>
     </dependency>
-<!--     <dependency> -->
-<!--       <groupId>org.springframework</groupId> -->
-<!--       <artifactId>spring-aop</artifactId> -->
-<!--       <version>${spring.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework.security</groupId> -->
-<!--       <artifactId>spring-security-core</artifactId> -->
-<!--       <version>${spring.security.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework.security</groupId> -->
-<!--       <artifactId>spring-security-web</artifactId> -->
-<!--       <version>${spring.security.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework.security</groupId> -->
-<!--       <artifactId>spring-security-config</artifactId> -->
-<!--       <version>${spring.security.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.springframework</groupId> -->
-<!--       <artifactId>spring-agent</artifactId> -->
-<!--       <version>2.5.6</version> -->
-<!--     </dependency> -->
-    
-    <!-- Hibernate dependencies -->
-<!--     <dependency> -->
-<!--       <groupId>org.hibernate</groupId> -->
-<!--       <artifactId>hibernate-core</artifactId> -->
-<!--       <version>${hibernate.version}</version> -->
-<!--     </dependency> -->
-<!--     <dependency> -->
-<!--       <groupId>org.hibernate</groupId> -->
-<!--       <artifactId>hibernate-validator</artifactId> -->
-<!--       <version>5.1.0.Final</version> -->
-<!--     </dependency> -->
-    
-    <!-- AspectJ dependencies  -->
-<!--     <dependency> -->
-<!--       <groupId>org.aspectj</groupId> -->
-<!--       <artifactId>aspectjrt</artifactId> -->
-<!--       <version>${aspectj.version}</version> -->
-<!--     </dependency> -->
   </dependencies>
 </project>

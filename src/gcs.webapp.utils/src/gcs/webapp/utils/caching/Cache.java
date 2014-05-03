@@ -6,6 +6,9 @@ import gcs.webapp.utils.exceptions.ArgumentNullException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * A cache provider for caching requests and responses for Http services
  * @author Simon Turcotte-Langevin
@@ -36,7 +39,8 @@ public abstract class Cache <K, V>
 	/**
 	 * Cache key provider for handling keys
 	 */
-	protected IKeyProvider keyProvider;
+	@Getter @Setter
+	private IKeyProvider keyProvider;
 	
 	/**
 	 * Constructor
@@ -153,23 +157,5 @@ public abstract class Cache <K, V>
 		if (cache.containsKey(key)) {
 			cache.remove(key);
 		}
-	}
-	
-	/**
-	 * Getter for the key provider
-	 * @return The key provider
-	 */
-	public IKeyProvider getKeyProvider()
-	{
-		return keyProvider;
-	}
-
-	/**
-	 * Setter for the key provider
-	 * @param keyProvider The new key provider
-	 */
-	public void setKeyProvider(IKeyProvider keyProvider)
-	{
-		this.keyProvider = keyProvider;
 	}
 }

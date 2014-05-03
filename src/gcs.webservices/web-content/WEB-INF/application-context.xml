@@ -84,7 +84,7 @@
     </bean>
     
     <!-- Inject the auditing service into the security aspect -->
-    <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect" factory-method="aspectOf">
-       <property name="auditService" ref="auditService"/>
-    </bean>
+<!--     <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect" factory-method="aspectOf"> -->
+<!--        <property name="auditService" ref="auditService"/> -->
+<!--     </bean> -->
 </beans>

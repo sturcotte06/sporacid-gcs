@@ -42,7 +42,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 			throw new ArgumentNullException("value");
 		}
 		
-		CacheKey key = keyProvider.toKey(keyObj, keyClass);
+		CacheKey key = getKeyProvider().toKey(keyObj, keyClass);
 		if (cache.containsKey(key)) {
 			throw new IllegalArgumentException("Cache key already exists.");
 		}
@@ -86,7 +86,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 			throw new ArgumentNullException("keyClass");
 		}
 		
-		CacheKey key = keyProvider.toKey(keyObj, keyClass);
+		CacheKey key = getKeyProvider().toKey(keyObj, keyClass);
 		if (cacheLocks.containsKey(key)) {
 			Lock lock = cacheLocks.get(key);
 			lock.lock();
@@ -105,7 +105,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 			throw new ArgumentNullException("keyClass");
 		}
 		
-		CacheKey key = keyProvider.toKey(keyObj, keyClass);
+		CacheKey key = getKeyProvider().toKey(keyObj, keyClass);
 		if (cacheLocks.containsKey(key)) {
 			Lock lock = cacheLocks.get(key);
 			lock.unlock();
@@ -123,7 +123,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 			throw new ArgumentNullException("keyClass");
 		}
 		
-		CacheKey key = keyProvider.toKey(keyObj, keyClass);
+		CacheKey key = getKeyProvider().toKey(keyObj, keyClass);
 		if (cacheLocks.containsKey(key)) {
 			Lock lock = cacheLocks.get(key);
 			lock.lock();
