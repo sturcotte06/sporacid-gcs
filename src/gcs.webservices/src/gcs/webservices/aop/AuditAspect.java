@@ -21,7 +21,7 @@ public class AuditAspect
       auditService.audit(request.getSessionKey(), "Test");
    }*/
    
-//   @Before(value = "execution(* gcs.webservices.services.*(..))")
+   @Before(value = "execution(* gcs.webservices.services.*(..))")
    public void auditPrivateCall()
    {
       auditService.audit("test", "Test");

@@ -37,6 +37,7 @@
       <groupId>sporacid.gcs.webapp</groupId>
       <artifactId>webapp-utils</artifactId>
       <version>0.1</version>
+      <type>jar</type>
     </dependency>
   
     <!-- Java extensions dependencies -->
