@@ -1,18 +1,12 @@
 package gcs.webapp.utils.hibernate;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Structure for hibernate entity alias
  * @author Simon Turcotte-Langevin
  */
 public class HibernateAlias
 {
-   @Getter @Setter
 	private String propertyPath;
-   
-   @Getter @Setter
 	private String alias;
 	
 	public HibernateAlias(String propertyPath, String alias)
@@ -20,4 +14,36 @@ public class HibernateAlias
 		this.propertyPath = propertyPath;
 		this.alias = alias;
 	}
+
+    /**
+     * @return the propertyPath
+     */
+    public String getPropertyPath()
+    {
+        return propertyPath;
+    }
+
+    /**
+     * @param propertyPath the propertyPath to set
+     */
+    public void setPropertyPath(String propertyPath)
+    {
+        this.propertyPath = propertyPath;
+    }
+
+    /**
+     * @return the alias
+     */
+    public String getAlias()
+    {
+        return alias;
+    }
+
+    /**
+     * @param alias the alias to set
+     */
+    public void setAlias(String alias)
+    {
+        this.alias = alias;
+    }
 }

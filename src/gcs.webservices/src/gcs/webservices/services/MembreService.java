@@ -1,27 +1,25 @@
 package gcs.webservices.services;
 
 import gcs.webapp.utils.app.security.CrudOperation;
-import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
-import gcs.webservices.services.beans.requests.GetMembreRequest;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.sun.jersey.api.core.InjectParam;
-
-@Path("/membres")
+// @Path("/session/{ipAddress}/{sessionKey}/membre")
 @SecureModule(name = "members_module")
 public class MembreService extends SecureHttpService
-{		
-	@CrudOperator(operation = CrudOperation.Read)
-	@GET @Path("/get-membre") 
+{
+	@GET @Path("/membre/{membreId}") 
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getMembre(@InjectParam GetMembreRequest request)
+	public Response getMembre(@PathParam("sessionKey") String sessionKey, 
+	        @PathParam("membreId") Integer membreId)
 	{
+	    final CrudOperation operation = CrudOperation.Read;
 		gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
 
 //		if (request != null) {
@@ -49,10 +47,7 @@ public class MembreService extends SecureHttpService
 //		} else {
 //			responseEntity.addMessage(MessageType.Error, "security_denied_access");
 //		}
-		
-		// Localize the response in the default application locale
-		responseEntity.localize(messageLocalizer);
-		
-		return Response.ok().entity(responseEntity).build();
+				
+		return endRequest(responseEntity);
 	}
 }

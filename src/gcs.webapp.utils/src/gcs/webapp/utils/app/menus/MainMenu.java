@@ -6,16 +6,12 @@ import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
 public class MainMenu implements ILocalizable
 {
-   @Getter @Setter
 	private Collection<MainMenuItem> items = new ArrayList<MainMenuItem>();
 
 	@Override
@@ -31,4 +27,20 @@ public class MainMenu implements ILocalizable
 			item.localize(localizer, locale);
 		}
 	}
+
+    /**
+     * @return the items
+     */
+    public Collection<MainMenuItem> getItems()
+    {
+        return items;
+    }
+
+    /**
+     * @param items the items to set
+     */
+    public void setItems(Collection<MainMenuItem> items)
+    {
+        this.items = items;
+    }
 }

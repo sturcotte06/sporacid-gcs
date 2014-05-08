@@ -56,7 +56,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 	{
 		throw new NotImplementedException("Use acquireCacheValue() and releaseCacheValue() instead.");
 	}
-	
+		
 	public synchronized void withCacheValue(K keyObj, Class<K> keyClass, IWithCacheValueAction<V> action)
 	{
       if (keyObj == null) {

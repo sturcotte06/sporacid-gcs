@@ -1,10 +1,22 @@
 package gcs.website.views.beans;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public class SearchForm 
+public class SearchForm
 {
-   @Getter @Setter
-	private String searchCriteria;
+    private String searchCriteria;
+
+    /**
+     * @return the searchCriteria
+     */
+    public String getSearchCriteria()
+    {
+        return searchCriteria;
+    }
+
+    /**
+     * @param searchCriteria the searchCriteria to set
+     */
+    public void setSearchCriteria(String searchCriteria)
+    {
+        this.searchCriteria = searchCriteria;
+    }
 }

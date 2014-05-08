@@ -16,23 +16,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/usager")
 public class UserController
 {
-	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String getDashboard(HttpServletRequest request)
-	{
-		return "application";
-	}
-	
-	@RequestMapping(value = "/preferences", method = RequestMethod.GET)
-	public String getPreferences(HttpServletRequest request)
-	{
-		return "redirect:/";
-	}
-	
-	@RequestMapping(value = "/modifier-contexte", method = RequestMethod.POST)
-	public String changeContext(@ModelAttribute @Valid ContextChangeForm form, 
-			BindingResult result, HttpServletRequest request,
-			@RequestHeader(value = "referer", required = true) final String referer)
-	{
-		return "redirect:/";
-	}
+    @RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+    public String getDashboard(HttpServletRequest request)
+    {
+        return "application";
+    }
+
+    @RequestMapping(value = "/preferences", method = RequestMethod.GET)
+    public String getPreferences(HttpServletRequest request)
+    {
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/modifier-contexte", method = RequestMethod.POST)
+    public String changeContext(@ModelAttribute @Valid ContextChangeForm form, BindingResult result, HttpServletRequest request, @RequestHeader(value = "referer", required = true) final String referer)
+    {
+        return "redirect:/";
+    }
 }

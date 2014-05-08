@@ -1,13 +1,43 @@
 package gcs.webapp.utils.security;
 
-import lombok.Getter;
-import lombok.Setter;
-
 public class EncryptionResult 
 {
-   @Getter @Setter
 	private String encryptedString;
-   
-   @Getter @Setter
 	private String key;
+		
+    public EncryptionResult(String encryptedString, String key)
+    {
+        super();
+        this.encryptedString = encryptedString;
+        this.key = key;
+    }
+
+    /**
+     * @return the encryptedString
+     */
+    public String getEncryptedString()
+    {
+        return encryptedString;
+    }
+    /**
+     * @param encryptedString the encryptedString to set
+     */
+    public void setEncryptedString(String encryptedString)
+    {
+        this.encryptedString = encryptedString;
+    }
+    /**
+     * @return the key
+     */
+    public String getKey()
+    {
+        return key;
+    }
+    /**
+     * @param key the key to set
+     */
+    public void setKey(String key)
+    {
+        this.key = key;
+    }
 }

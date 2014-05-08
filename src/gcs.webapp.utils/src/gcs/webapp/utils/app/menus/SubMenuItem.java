@@ -1,16 +1,11 @@
 package gcs.webapp.utils.app.menus;
 
-import lombok.Getter;
-import lombok.Setter;
 import gcs.webapp.utils.app.messages.ILocalizable;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 
 public class SubMenuItem implements ILocalizable
 {
-   @Getter @Setter
 	private String name;
-   
-   @Getter @Setter
 	private String path;
 	
 	@Override
@@ -24,4 +19,36 @@ public class SubMenuItem implements ILocalizable
 	{
 		name = localizer.localizeString(locale, name);
 	}
+
+    /**
+     * @return the name
+     */
+    public String getName()
+    {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    /**
+     * @return the path
+     */
+    public String getPath()
+    {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
 }

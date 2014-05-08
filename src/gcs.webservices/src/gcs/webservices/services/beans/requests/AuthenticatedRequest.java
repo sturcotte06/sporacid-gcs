@@ -2,20 +2,46 @@ package gcs.webservices.services.beans.requests;
 
 import javax.ws.rs.QueryParam;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * 
  * @author Simon Turcotte-Langevin
  */
-public class AuthenticatedRequest extends Request 
+public class AuthenticatedRequest extends Request
 {
-	@QueryParam(value = "sessionKey")
-	@Getter @Setter
-	private String sessionKey;
-	
-	@QueryParam(value = "ipAddress")
-	@Getter @Setter
-	private String ipAddress;
+    @QueryParam(value = "sessionKey")
+    private String sessionKey;
+
+    @QueryParam(value = "ipAddress")
+    private String ipAddress;
+
+    /**
+     * @return the sessionKey
+     */
+    public String getSessionKey()
+    {
+        return sessionKey;
+    }
+
+    /**
+     * @param sessionKey the sessionKey to set
+     */
+    public void setSessionKey(String sessionKey)
+    {
+        this.sessionKey = sessionKey;
+    }
+
+    /**
+     * @return the ipAddress
+     */
+    public String getIpAddress()
+    {
+        return ipAddress;
+    }
+
+    /**
+     * @param ipAddress the ipAddress to set
+     */
+    public void setIpAddress(String ipAddress)
+    {
+        this.ipAddress = ipAddress;
+    }
 }

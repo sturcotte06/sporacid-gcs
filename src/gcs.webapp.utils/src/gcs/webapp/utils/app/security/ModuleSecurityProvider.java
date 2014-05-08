@@ -21,7 +21,7 @@ public class ModuleSecurityProvider implements IModuleSecurityProvider
 	 * The first map sorts them by module;
 	 * The second map sorts them by roles.
 	 */
-	private Map<String, Map<String, Rights>> moduleRights = new HashMap<String, Map<String,Rights>>();
+	private Map<String, Map<String, Rights>> moduleRights = new HashMap<>();
 	
 	/**
 	 * Constructor

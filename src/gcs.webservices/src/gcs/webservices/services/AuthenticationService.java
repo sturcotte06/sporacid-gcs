@@ -28,92 +28,94 @@ import com.sun.jersey.api.core.InjectParam;
 @Path("/authentication")
 public class AuthenticationService extends BaseHttpService
 {
-	@InjectParam
-	private ILDAPAuthentication ldapAuthenticator;
-	
-	@InjectParam
-	private IMembreDao membreDao;
-		
-	@GET @Path("/test")
-   @Produces({ MediaType.APPLICATION_JSON })
-   public Response test()
-   {
-	   gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
-	   responseEntity.addMessage(MessageType.Information, "Hello world.");
-	   return endRequest(responseEntity);
-   }
-	
-	@POST @Path("/login")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response login(LoginRequest loginRequest)
-	{
-		LoginResponse responseEntity = new LoginResponse();
-		
-		if (loginRequest != null) {
-			LDAPAuthenticationToken authenticationToken = null;
-			try {
-				// Try to authenticate the user
-				authenticationToken = ldapAuthenticator.authenticate(
-						loginRequest.getUsername(), loginRequest.getPassword());
-			} catch (InternalException ex) {
-				// Could not authenticate the user
-				handleException(ex, responseEntity);
-			}
-			
-			if (authenticationToken != null) {
-				// Get the member infos from the database for the authenticated user
-				Membre membre = null;
-				try {
-					membre = membreDao.getMembre(loginRequest.getUsername());
-				} catch (InternalException ex) {
-					// Could not authenticate the user
-					handleException(ex, responseEntity);
-				}
-				
-				// The Ldap verified and approved the credentials
-				// Create a new session in the application
-				PublicSessionKey sessionKey = sessionCache.createSessionFor(
-						loginRequest.getIpAddress(), membre, authenticationToken);
-				
-				if (sessionKey != null) {
-					responseEntity.setSessionKey(sessionKey.getKey());
-					responseEntity.addMessage(MessageType.Information, "authentication_login_success");
-					
-					// Set the success flag in the response
-					responseEntity.setSuccess(true);
-				} else {
-					// TODO
-				}
-			} else {
-				responseEntity.addMessage(MessageType.Error, "authentication_login_wrong_username");
-			}
-		} else {
-			responseEntity.addMessage(MessageType.Error, "authentication_login_invalid_request");
-		}
-		
-		return endRequest(responseEntity);
-	}
-	
-	@DELETE @Path("/logout")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	@Produces({ MediaType.APPLICATION_JSON })
-	public Response logout(LogoutRequest logoutRequest)
-	{
-		gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
-		
-		if (logoutRequest != null) {
-			// Remove the session from the cache; Any action taken
-			// from now on with the previous key will be refused
-			sessionCache.removeSession(logoutRequest.getIpAddress(), logoutRequest.getSessionKey());
-			responseEntity.addMessage(MessageType.Information, "authentication_logout_success");
-			
-			// Set the success flag in the response
-			responseEntity.setSuccess(true);
-		} else {
-			responseEntity.addMessage(MessageType.Error, "authentication_logout_invalid_request");
-		}
-		
-		return endRequest(responseEntity);
-	}
+    @InjectParam
+    private ILDAPAuthentication ldapAuthenticator;
+
+    @InjectParam
+    private IMembreDao membreDao;
+
+    @GET
+    @Path("/test")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response test()
+    {
+        gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
+        responseEntity.addMessage(MessageType.Information, "security_denied_access");
+        return Response.ok().entity(responseEntity).build();
+    }
+
+    @POST
+    @Path("/login")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response login(LoginRequest loginRequest)
+    {
+        LoginResponse responseEntity = new LoginResponse();
+
+        if (loginRequest != null) {
+            LDAPAuthenticationToken authenticationToken = null;
+            try {
+                // Try to authenticate the user
+                authenticationToken = ldapAuthenticator.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+            } catch (InternalException ex) {
+                // Could not authenticate the user
+                handleException(ex, responseEntity);
+            }
+
+            if (authenticationToken != null) {
+                // Get the member infos from the database for the authenticated
+                // user
+                Membre membre = null;
+                try {
+                    membre = membreDao.getMembre(loginRequest.getUsername());
+                } catch (InternalException ex) {
+                    // Could not authenticate the user
+                    handleException(ex, responseEntity);
+                }
+
+                // The Ldap verified and approved the credentials
+                // Create a new session in the application
+                PublicSessionKey sessionKey = sessionCache.createSessionFor(loginRequest.getIpAddress(), membre, authenticationToken);
+
+                if (sessionKey != null) {
+                    responseEntity.setSessionKey(sessionKey.getKey());
+                    responseEntity.addMessage(MessageType.Information, "authentication_login_success");
+
+                    // Set the success flag in the response
+                    responseEntity.setSuccess(true);
+                } else {
+                    // TODO
+                }
+            } else {
+                responseEntity.addMessage(MessageType.Error, "authentication_login_wrong_username");
+            }
+        } else {
+            responseEntity.addMessage(MessageType.Error, "authentication_login_invalid_request");
+        }
+
+        return endRequest(responseEntity);
+    }
+
+    @DELETE
+    @Path("/logout")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response logout(LogoutRequest logoutRequest)
+    {
+        gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
+
+        if (logoutRequest != null) {
+            // Remove the session from the cache; Any action taken
+            // from now on with the previous key will be refused
+            sessionCache.removeSession(logoutRequest.getIpAddress(), logoutRequest.getSessionKey());
+            responseEntity.addMessage(MessageType.Information, "authentication_logout_success");
+
+            // Set the success flag in the response
+            responseEntity.setSuccess(true);
+        } else {
+            responseEntity.addMessage(MessageType.Error, "authentication_logout_invalid_request");
+        }
+
+        return endRequest(responseEntity);
+    }
 }

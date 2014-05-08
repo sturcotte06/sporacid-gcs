@@ -5,15 +5,18 @@ import java.util.Collection;
 
 public class Menu
 {
-   private final Collection<MenuItem> items = new ArrayList<MenuItem>();
-   
-   public void addItem(MenuItem item)
-   {
-      items.add(item);
-   }
-   
-   public final Collection<MenuItem> getItems()
-   {
-      return items;
-   }
+    private final Collection<MenuItem> items = new ArrayList<MenuItem>();
+
+    public void addItem(MenuItem item)
+    {
+        items.add(item);
+    }
+
+    /**
+     * @return the items
+     */
+    public Collection<MenuItem> getItems()
+    {
+        return items;
+    }
 }

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:web="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
-						http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" metadata-complete="true">
-  
+<web-app id="WebApp_ID" version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+						http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  metadata-complete="true">
+
   <display-name>website</display-name>
-  
+
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
@@ -14,29 +13,29 @@
       /WEB-INF/application-security-context.xml
     </param-value>
   </context-param>
-  
+
   <context-param>
     <param-name>webAppRootKey</param-name>
     <param-value>website.root</param-value>
   </context-param>
-  
+
   <listener>
     <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
   </listener>
-  
+
   <context-param>
     <param-name>log4jConfigLocation</param-name>
     <param-value>/WEB-INF/log4j.xml</param-value>
   </context-param>
-  
+
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  
+
   <listener>
     <listener-class>gcs.website.listeners.JvmInitializationListener</listener-class>
   </listener>
-  
+
   <!-- Spring Security -->
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
@@ -46,7 +45,7 @@
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
+
   <!-- Custom security -->
   <filter>
     <filter-name>privateResourceFilter</filter-name>
@@ -70,32 +69,27 @@
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  
-  <!--> Mapping for serving static web-content <-->
-  <!--> The resources folder must be in parallel to WEB-INF <-->
-  <!--> The mvc:resources gives "not bound" exception unless bound to a namespace as above for xmlns:mvc <-->
+
+  <!--> Mapping for serving static web-content < -->
+  <!--> The resources folder must be in parallel to WEB-INF < -->
+  <!--> The mvc:resources gives "not bound" exception unless bound to a namespace as above for xmlns:mvc < -->
   <!-- <mvc:resources mapping="/images/**" location="/images/" /> -->
-<!--   <mvc:resources mapping="/scripts/**" location="/scripts/" /> -->
-  
+  <!-- <mvc:resources mapping="/scripts/**" location="/scripts/" /> -->
+
   <!-- Default servlet for css, js and images -->
-  <!-- <servlet>
-    <servlet-name>default</servlet-name>
-    <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
-    <init-param>
-      <param-name>debug</param-name>
-      <param-value>0</param-value>
-    </init-param>
-    <init-param>
-      <param-name>listings</param-name>
-      <param-value>false</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet> -->
-  
+  <!-- <servlet> <servlet-name>default</servlet-name> <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class> 
+    <init-param> <param-name>debug</param-name> <param-value>0</param-value> </init-param> <init-param> <param-name>listings</param-name> 
+    <param-value>false</param-value> </init-param> <load-on-startup>1</load-on-startup> </servlet> -->
+
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/images/*</url-pattern>
     <url-pattern>/styles/*</url-pattern>
     <url-pattern>/scripts/*</url-pattern>
-  </servlet-mapping> 
+  </servlet-mapping>
+
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/error.jsp</location>
+  </error-page>
 </web-app>

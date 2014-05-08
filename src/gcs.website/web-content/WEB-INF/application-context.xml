@@ -16,7 +16,7 @@
   <context:annotation-config />
 
   <!-- Weave aspects with the code at load time -->
-  <context:load-time-weaver />
+<!--   <context:load-time-weaver /> -->
   
   <!-- Bean definition for the date formatter throughout the application -->
   <bean id="dateFormatter" name="dateFormatter" class="java.text.SimpleDateFormat"

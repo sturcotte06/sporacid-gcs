@@ -1,26 +1,47 @@
 package gcs.webapp.utils;
 
-import lombok.Getter;
 import gcs.webapp.utils.HttpMethod;
 
-/*@Retention(RetentionPolicy.RUNTIME)
-public @interface HandledByHttpService 
+public class HandledByHttpService
 {
-	String path();
-	HttpMethod method() default HttpMethod.Get;
-}*/
+    private String path;
+    private HttpMethod method;
 
-public class HandledByHttpService 
-{
-   @Getter
-   private String path;
-   
-   @Getter
-   private HttpMethod method;
-   
-   public HandledByHttpService(String path, HttpMethod method)
-   {
-      this.path = path;
-      this.method = method;
-   }
+    public HandledByHttpService(String path, HttpMethod method)
+    {
+        this.setPath(path);
+        this.setMethod(method);
+    }
+
+    /**
+     * @return the path
+     */
+    public String getPath()
+    {
+        return path;
+    }
+
+    /**
+     * @param path the path to set
+     */
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
+
+    /**
+     * @return the method
+     */
+    public HttpMethod getMethod()
+    {
+        return method;
+    }
+
+    /**
+     * @param method the method to set
+     */
+    public void setMethod(HttpMethod method)
+    {
+        this.method = method;
+    }
 }
