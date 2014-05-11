@@ -10,5 +10,5 @@ public interface IAuditService
     * 
     * @param audit
     */
-   public void audit(String username, String message);
+    public void audit(String ipAddress, String sessionKey, String message);
 }

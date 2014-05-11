@@ -13,10 +13,11 @@ public class LoggingAspect
     private static final Logger logger = Logger.getLogger(LoggingAspect.class);
     private static final int cExecutionTimeThreshold = 500;
 
-    @Around("execution(* gcs..*(..))")
+    @Around("execution(public * *(..))")
     public Object aroundGcsMethods(ProceedingJoinPoint joinPoint) throws Throwable
     {
-        String className = joinPoint.getSignature().getDeclaringTypeName();
+        return joinPoint.proceed();
+        /*String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
         StopWatch watch = new StopWatch();
 
@@ -39,6 +40,6 @@ public class LoggingAspect
                 // Method took more than 500ms, log a warning
                 logger.warn(String.format("Method %s.%s() took more than %dms. Total execution time: %dms", className, methodName, cExecutionTimeThreshold, watch.getTime()));
             }
-        }
+        }*/
     }
 }

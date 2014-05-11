@@ -4,33 +4,40 @@ import javax.ws.rs.core.Response;
 
 import gcs.webapp.utils.app.messages.ILocalizable;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
+import gcs.webapp.utils.exceptions.InternalException;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 
-@Aspect
+// @Aspect
 public class LocalizationAspect
 {
-    private static final Logger logger = Logger.getLogger(LocalizationAspect.class);
+    /** IMessageLocalizer instance to localize application messages. */
     private IMessageLocalizer messageLocalizer;
 
-    // @AfterReturning(pointcut =
-    // "call(public javax.ws.rs.core.Response gcs.webservices.services.*.*(..))",
-    // returning = "response")
-    // @AfterReturning(pointcut =
-    // "within(gcs.webservices.services.AuthenticationService)", returning =
-    // "response")
+    /*@AfterThrowing(pointcut = "within(gcs.webservices..*) || " + 
+                              "within(gcs.webservices.client..*)", throwing = "exception")
+    public void localizeExceptionIfPossible(JoinPoint joinPoint, Throwable exception)
+    {
+        if (exception instanceof InternalException) {
+            String key = ((InternalException)exception).getMessageKey();
+            exception.
+        }
+    }
+    
+    @AfterReturning(pointcut = "within(gcs.webservices.services.*)", returning = "response")
     public void localizeHttpResponseEntity(JoinPoint joinPoint, Response response)
     {
-        logger.error("dagfasgag");
-
         Object entity = response.getEntity();
+
         if (entity.getClass().isAssignableFrom(ILocalizable.class)) {
             ILocalizable localizableEntity = (ILocalizable) entity;
             localizableEntity.localize(messageLocalizer);
-        }
-    }
+        }        
+    }*/
 
     /**
      * @return the messageLocalizer

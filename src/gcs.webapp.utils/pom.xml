@@ -24,13 +24,13 @@
   </build>
 
   <dependencies>
-      <!-- Gcs dependencies -->
+    <!-- Gcs dependencies -->
     <dependency>
       <groupId>sporacid.gcs.webapp</groupId>
       <artifactId>webapp-aspects</artifactId>
-      <version>0.1</version>
+      <version>${gcs.version}</version>
     </dependency>
-  
+
     <!-- Apache dependencies -->
     <dependency>
       <groupId>commons-codec</groupId>
@@ -43,13 +43,6 @@
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
       <version>${hibernate.version}</version>
-    </dependency>
-
-    <!-- Jersey dependencies -->
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-      <version>${jersey.version}</version>
     </dependency>
   </dependencies>
 </project>

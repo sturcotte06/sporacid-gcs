@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
+
+<application-messages language="en">
+  <!-- Base messages -->
+  <message key="base_exception_cause" message="Caused by: %s" />
+  <!-- Authentication messages -->
+  <message key="authentication_login_success" message="The authentication was successful." />
+  <message key="authentication_login_invalid_request" message="The authentication request was invalid." />
+  <message key="authentication_login_wrong_username" message="The username is invalid." />
+  <message key="authentication_login_wrong_password" message="The password is invalid." />
+  <message key="authentication_logout_success" message="The log out was successful." />
+  <message key="authentication_logout_invalid_request" message="The log out request was invalid." />
+  <!-- Members messages -->
+  <message key="members_get_member_successful" message="The get member request was successful." />
+  <message key="members_get_member_invalid_request" message="The get member request was invalid." />
+  <!-- General messages -->
+  <message key="security_authentication_required" message="Authentication is mandatory for this operation." />
+  <message key="security_denied_access" message="User does not have rights." />
+</application-messages>

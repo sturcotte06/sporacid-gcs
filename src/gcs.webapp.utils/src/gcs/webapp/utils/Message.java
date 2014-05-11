@@ -13,8 +13,9 @@ import gcs.webapp.utils.app.messages.IMessageLocalizer;
 public class Message implements ILocalizable
 {
     private MessageType messageType;
-    private String messageContent;
-    
+    private String key;
+    private String content;
+
     @JsonIgnore
     private Object[] format;
 
@@ -22,10 +23,11 @@ public class Message implements ILocalizable
     {
     }
 
-    public Message(MessageType messageType, String messageContent, Object... format)
+    public Message(MessageType messageType, String messageKey, Object... format)
     {
-        this.setMessageType(messageType);
-        this.setMessageContent(messageContent);
+        this.messageType = messageType;
+        this.key = messageKey;
+        this.content = messageKey;
         this.format = format;
     }
 
@@ -38,7 +40,23 @@ public class Message implements ILocalizable
     @Override
     public void localize(IMessageLocalizer localizer, String locale)
     {
-        this.setMessageContent(localizer.localizeFormatString(locale, getMessageContent(), format));
+        this.content = localizer.localizeFormatString(locale, content, format);
+    }
+
+    /**
+     * @return the format
+     */
+    public Object[] getFormat()
+    {
+        return format;
+    }
+
+    /**
+     * @param format the format to set
+     */
+    public void setFormat(Object[] format)
+    {
+        this.format = format;
     }
 
     /**
@@ -58,34 +76,34 @@ public class Message implements ILocalizable
     }
 
     /**
-     * @return the messageContent
+     * @return the key
      */
-    public String getMessageContent()
+    public String getKey()
     {
-        return messageContent;
+        return key;
     }
 
     /**
-     * @param messageContent the messageContent to set
+     * @param key the key to set
      */
-    public void setMessageContent(String messageContent)
+    public void setKey(String key)
     {
-        this.messageContent = messageContent;
+        this.key = key;
     }
 
     /**
-     * @return the format
+     * @return the content
      */
-    public Object[] getFormat()
+    public String getContent()
     {
-        return format;
+        return content;
     }
 
     /**
-     * @param format the format to set
+     * @param content the content to set
      */
-    public void setFormat(Object[] format)
+    public void setContent(String content)
     {
-        this.format = format;
+        this.content = content;
     }
 }

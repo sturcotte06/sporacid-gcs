@@ -33,12 +33,12 @@
     <dependency>
       <groupId>sporacid.gcs.webapp</groupId>
       <artifactId>webapp-aspects</artifactId>
-      <version>0.1</version>
+      <version>${gcs.version}</version>
     </dependency>
     <dependency>
       <groupId>sporacid.gcs.webapp</groupId>
       <artifactId>webapp-utils</artifactId>
-      <version>0.1</version>
+      <version>${gcs.version}</version>
     </dependency>
 
     <!-- Itext dependencies for Html to Pdf -->
@@ -49,12 +49,12 @@
     </dependency>
 
     <!-- Javax dependencies -->
-    <dependency>
-      <groupId>javax.ws.rs</groupId>
-      <artifactId>jsr311-api</artifactId>
-      <version>1.1.1</version>
-      <scope>provided</scope>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>javax.ws.rs</groupId> -->
+<!--       <artifactId>jsr311-api</artifactId> -->
+<!--       <version>1.1.1</version> -->
+<!--       <scope>provided</scope> -->
+<!--     </dependency> -->
     <dependency>
       <groupId>javax.transaction</groupId>
       <artifactId>jta</artifactId>
@@ -62,11 +62,11 @@
     </dependency>
 
     <!-- Jersey dependencies -->
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-client</artifactId>
-      <version>${jersey.version}</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>com.sun.jersey</groupId> -->
+<!--       <artifactId>jersey-client</artifactId> -->
+<!--       <version>${jersey.version}</version> -->
+<!--     </dependency> -->
 
     <!-- Spring dependencies -->
     <dependency>

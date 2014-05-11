@@ -15,7 +15,7 @@ import com.sun.jersey.api.core.InjectParam;
  * @author Simon Turcotte-Langevin
  */
 @Component
-@Path("/session/{ipAddress}/{sessionKey}")
+@Path("/session/{ipv4Address}/{sessionKey}")
 public class SecureHttpService extends BaseHttpService
 {
 	/** A security provider to test user rights. */

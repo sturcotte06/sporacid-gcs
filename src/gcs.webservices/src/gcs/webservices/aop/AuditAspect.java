@@ -1,27 +1,38 @@
 package gcs.webservices.aop;
 
+import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webservices.aop.services.IAuditService;
+import gcs.webservices.client.beans.SessionToken;
+import gcs.webservices.client.requests.AuthenticatedRequest;
 
-import org.apache.log4j.Logger;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 
 @Aspect
 public class AuditAspect
 {
-    /** Log4j logger. */
-    private static final Logger logger = Logger.getLogger(AuditAspect.class);
     /** Audit service that handles audits. */
     private IAuditService auditService;
 
-    /* @Before("args(gcs.webservices.services.beans.requests.AuthenticatedRequest)"
-     * ) public void auditPrivateCall(AuthenticatedRequest request) {
-     * auditService.audit(request.getSessionKey(), "Test"); } */
-
-    @Before("@annotation(javax.ws.rs.Path)")
-    public void auditPrivateCall()
+    /**
+     * @param joinPoint
+     * @param request
+     * @throws ClassNotFoundException
+     */
+    @Before("execution(@gcs.webservices.aop.Auditable * gcs.webservices.services..*(..)) && args(request)")
+    public void auditPrivateCall(JoinPoint joinPoint, AuthenticatedRequest request) throws ClassNotFoundException
     {
-        auditService.audit("test", "Test");
+        String className = joinPoint.getSignature().getDeclaringTypeName();
+        String methodName = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
+        Class<?> cls = Class.forName(className);
+        SecureModule secureModule = cls.getAnnotation(SecureModule.class);
+        String secureModuleString = secureModule != null ? " in module " + secureModule.name() : "";
+        SessionToken token = request.getSessionToken();
+
+        auditService.audit(token.getIpv4Address(), token.getSessionKey(),
+                String.format("Accessing [%s.%s]%s.", className, methodName, secureModuleString));
     }
 
     /**

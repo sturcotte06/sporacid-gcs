@@ -1,0 +1,7 @@
+<!ELEMENT application-security (application-module*)>
+	<!ELEMENT application-module (application-role*)>
+		<!ATTLIST application-module name ID #REQUIRED>
+		<!ELEMENT application-role (role-right*)>
+			<!ATTLIST application-role name CDATA #REQUIRED>
+				<!ELEMENT role-right EMPTY>
+					<!ATTLIST role-right operation (Create | Read | Update | Delete) #REQUIRED>

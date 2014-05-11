@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
+
+<application-messages language="en">
+  <message key="utils_jerseyclientfactory_cannotgenerateconfig" 
+           message="Impossible de créer la configuration client pour les services web jersey." />
+</application-messages>

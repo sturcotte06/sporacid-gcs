@@ -18,17 +18,24 @@ public class AuditService implements IAuditService
 {
     @InjectParam
     private IAuditDao auditDao;
-    
+
     @InjectParam
     private SessionCache sessionCache;
 
     @Override
-    public void audit(String username, String message)
+    public void audit(String ipAddress, String sessionKey, String message)
     {
         Audit audit = new Audit();
-        audit.setUsername(username);
-        audit.setMessage(message);
         audit.setTimestamp(new Date());
+
+        if (!sessionCache.sessionExists(ipAddress, sessionKey)) {
+            message = String.format("Session for ip %s and key %s does not exist.", ipAddress, sessionKey);
+            audit.setMessage(String.format("Session for ip %s and key %s does not exist.", ipAddress, sessionKey));
+        } else {
+            sessionCache.withSession(ipAddress, sessionKey, session -> {
+                audit.setUsername(session.getAuthenticationToken().getEmittedFor());
+            });
+        }
 
         auditDao.addAudit(audit);
     }

@@ -1,5 +1,9 @@
 package gcs.webapp.utils.ws;
 
+import gcs.webapp.utils.exceptions.InternalException;
+
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -7,7 +11,6 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -18,95 +21,72 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.client.urlconnection.HTTPSProperties;
 
 /**
- * 
  * @author Simon Turcotte-Langevin
- * 
  */
-public class JerseyClientFactory
+public final class JerseyClientFactory
 {
-   /**
-	 * 
-	 */
-   private ClientConfig clientConfig;
+    /** The client configuration from whcih we'll create all jersey clients. */
+    private ClientConfig clientConfig;
 
-   /**
-    * Creates a static configuration for all jersey clients
-    * 
-    * @return A jersey client configuration object
-    */
-   private static ClientConfig generateConfiguration()
-   {
-      final TrustManager[] certs = new TrustManager[] { new X509TrustManager() {
-         @Override
-         public X509Certificate[] getAcceptedIssuers()
-         {
-            return null;
-         }
+    /**
+     * Creates a static configuration for all jersey clients
+     * 
+     * @return A jersey client configuration object
+     * @throws KeyManagementException
+     * @throws NoSuchAlgorithmException
+     */
+    private static ClientConfig generateConfiguration() throws KeyManagementException, NoSuchAlgorithmException
+    {
+        /* final TrustManager[] certs = new TrustManager[] { new
+         * X509TrustManager() {
+         * 
+         * @Override public X509Certificate[] getAcceptedIssuers() { return
+         * null; }
+         * 
+         * @Override public void checkServerTrusted(X509Certificate[] arg0,
+         * String arg1) throws CertificateException { }
+         * 
+         * @Override public void checkClientTrusted(X509Certificate[] arg0,
+         * String arg1) throws CertificateException { } } };
+         * 
+         * SSLContext sslContext = null; sslContext =
+         * SSLContext.getInstance("TLS"); sslContext.init(null, certs, new
+         * SecureRandom());
+         * 
+         * // Create all-trusting host name verifier HostnameVerifier
+         * allHostsValid = (hostname, session) -> true;
+         * 
+         * // Install the all-trusting host verifier
+         * HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+         * HttpsURLConnection
+         * .setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+         * 
+         * ClientConfig config = new DefaultClientConfig();
+         * config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,
+         * true);
+         * config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
+         * new HTTPSProperties((hostname, session) -> false, sslContext));
+         * 
+         * return config; */
+        return null;
+    }
 
-         @Override
-         public void checkClientTrusted(X509Certificate[] chain, String authType)
-               throws CertificateException
-         {
-         }
+    /**
+     * Creates a jersey client to consume web services through ssl.
+     * 
+     * @return A jersey client to consume web services through ssl.
+     */
+    public Client createClient() throws InternalException
+    {
+        if (clientConfig == null) {
+            try {
+                clientConfig = generateConfiguration();
+            } catch (KeyManagementException | NoSuchAlgorithmException ex) {
+                throw new InternalException("utils_jerseyclientfactory_cannotgenerateconfig",
+                        "Couldn't create a client for the jersey web services.", ex);
+            }
+        }
 
-         @Override
-         public void checkServerTrusted(X509Certificate[] chain, String authType)
-               throws CertificateException
-         {
-         }
-      } };
-
-      SSLContext ctx = null;
-
-      try {
-         ctx = SSLContext.getInstance("TLS");
-         ctx.init(null, certs, new SecureRandom());
-      } catch (java.security.GeneralSecurityException e) {
-         e.printStackTrace();
-      }
-
-      // Create all-trusting host name verifier
-      HostnameVerifier allHostsValid = new HostnameVerifier() {
-         public boolean verify(String hostname, SSLSession session)
-         {
-            return true;
-         }
-      };
-
-      // Install the all-trusting host verifier
-      HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-      HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSocketFactory());
-
-      ClientConfig config = new DefaultClientConfig();
-      try {
-         config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
-         config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
-               new HTTPSProperties(new HostnameVerifier() {
-                  @Override
-                  public boolean verify(String arg0, SSLSession arg1)
-                  {
-                     return false;
-                  }
-               }, ctx));
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-
-      return config;
-   }
-
-   /**
-    * Creates a jersey client to consume web services through ssl
-    * 
-    * @return A jersey client to consume web services through ssl
-    */
-   public Client createClient()
-   {
-      if (clientConfig == null) {
-         clientConfig = generateConfiguration();
-      }
-
-      final Client client = Client.create(clientConfig);
-      return client;
-   }
+        return Client.create(clientConfig);
+    }
 }

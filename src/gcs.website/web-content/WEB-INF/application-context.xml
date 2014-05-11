@@ -56,19 +56,19 @@
   </bean>
   
   <!-- Factory for jersey clients -->
-  <bean id="jerseyClientFactory" name="jerseyClientFactory" scope="singleton" 
-    class="gcs.webapp.utils.ws.JerseyClientFactory" />
+<!--   <bean id="jerseyClientFactory" name="jerseyClientFactory" scope="singleton"  -->
+<!--     class="gcs.webapp.utils.ws.JerseyClientFactory" /> -->
    
   <!-- Jersey client to consume web services -->
-  <bean id="jerseyClient" name="jerseyClient" scope="singleton" 
-    class="com.sun.jersey.api.client.Client" factory-bean="jerseyClientFactory"
-    factory-method="createClient" />
+<!--   <bean id="jerseyClient" name="jerseyClient" scope="singleton"  -->
+<!--     class="com.sun.jersey.api.client.Client" factory-bean="jerseyClientFactory" -->
+<!--     factory-method="createClient" /> -->
   
   <!-- Application messages cache. This is where configured messages will be loaded. -->
   <bean id="messageLocalizer" name="messageLocalizer"
-    class="gcs.webapp.utils.app.messages.ApplicationMessageLocalizer" scope="singleton">
+    class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
     <constructor-arg name="messagesFolderRelativePath" value="./resources" />
-    <property name="defaultLocale" value="fr-ca" />
+    <property name="defaultLocale" value="fr" />
   </bean>
   
   <!-- Application menus cache. This is where configured menus will be loaded. -->
@@ -82,7 +82,7 @@
   <bean id="httpServiceCache" name="httpServiceCache" 
     class="gcs.website.controllers.services.HttpServiceCache" scope="singleton">
     <!-- 300 seconds of validity for a cached response -->
-    <constructor-arg value="300" />
+    <constructor-arg value="60" />
     <property name="keyProvider">
     	<bean class="gcs.webapp.utils.caching.providers.Base64KeyProvider" />
     </property>
@@ -97,7 +97,7 @@
   <bean id="authenticationService" name="authenticationService"
     class="gcs.website.controllers.services.AuthenticationService" scope="singleton">
     <property name="serviceUrl" ref="serviceRepositoryUrl" />
-    <property name="jerseyClient" ref="jerseyClient" />
+<!--     <property name="jerseyClient" ref="jerseyClient" /> -->
     <property name="cache" ref="httpServiceCache" />
   </bean>
 </beans>

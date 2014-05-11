@@ -22,8 +22,8 @@ public abstract class BaseHttpService
     @InjectParam
     protected SessionCache sessionCache;
 
-    /*@InjectParam
-    protected IMessageLocalizer messageLocalizer;*/
+    /*
+     * @InjectParam protected IMessageLocalizer messageLocalizer; */
 
     /**
      * Handles an exception. Reason and cause of the exception will be added to
@@ -32,7 +32,7 @@ public abstract class BaseHttpService
      * @param exception The exception that has occured
      * @param response The response tntity to enrich
      */
-    public void handleException(Exception exception, gcs.webservices.services.beans.responses.Response response)
+    public void handleException(Exception exception, gcs.webservices.client.responses.Response response)
     {
         if (exception instanceof InternalException) {
             InternalException internalEx = (InternalException) exception;
@@ -55,7 +55,7 @@ public abstract class BaseHttpService
      * @param responseEntity The response entity so far
      * @return The http response to the client
      */
-    public Response endRequest(gcs.webservices.services.beans.responses.Response responseEntity)
+    public Response endRequest(gcs.webservices.client.responses.Response responseEntity)
     {
         // Localize the response in the default application locale
         // responseEntity.localize(messageLocalizer);

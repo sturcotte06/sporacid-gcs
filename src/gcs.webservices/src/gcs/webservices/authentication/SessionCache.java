@@ -2,21 +2,19 @@ package gcs.webservices.authentication;
 
 import javax.security.auth.login.LoginException;
 
+import gcs.webapp.utils.CommonPatterns;
 import gcs.webapp.utils.caching.ConcurrentCache;
 import gcs.webapp.utils.caching.IWithCacheValueAction;
 import gcs.webapp.utils.security.IHashProvider;
+import gcs.webservices.client.beans.SessionToken;
 import gcs.webservices.models.Membre;
-import gcs.webservices.services.beans.requests.AuthenticatedRequest;
 
 /**
  * @author Simon Turcotte-Langevin
  */
 public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedSession>
 {
-    /** Regex to test ip addresses validity */
-    private static final String cIpAddressRegex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-            + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-
+    /** The hash provider to hash ip addresses and session keys. */
     private IHashProvider hashProvider;
 
     /**
@@ -27,6 +25,17 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     public SessionCache(int validitySecondsSpan)
     {
         super(validitySecondsSpan);
+    }
+
+    /**
+     * @param ipAddress
+     * @param key
+     * @return
+     */
+    public boolean sessionExists(String ipAddress, String key)
+    {
+        final PrivateSessionKey sessionKey = new PrivateSessionKey(hashProvider, key, ipAddress);
+        return this.isValueCached(sessionKey, PrivateSessionKey.class);
     }
 
     /**
@@ -59,7 +68,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     {
         PublicSessionKey publicKey = null;
 
-        if (ipAddress != null && ipAddress.matches(cIpAddressRegex)) {
+        if (ipAddress != null && ipAddress.matches(CommonPatterns.Ipv4Address)) {
             // Generate a new unique session key
             publicKey = PublicSessionKey.generate();
 
@@ -73,11 +82,20 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
         return publicKey;
     }
 
-    public void withSession(AuthenticatedRequest authenticatedRequest, IWithCacheValueAction<AuthorizedSession> action)
+    /**
+     * @param sessionToken
+     * @param action
+     */
+    public void withSession(SessionToken sessionToken, IWithCacheValueAction<AuthorizedSession> action)
     {
-        withSession(authenticatedRequest.getIpAddress(), authenticatedRequest.getSessionKey(), action);
+        withSession(sessionToken.getIpv4Address(), sessionToken.getSessionKey(), action);
     }
 
+    /**
+     * @param ipAddress
+     * @param key
+     * @param action
+     */
     public void withSession(String ipAddress, String key, IWithCacheValueAction<AuthorizedSession> action)
     {
         PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, key, ipAddress);

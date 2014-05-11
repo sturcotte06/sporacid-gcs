@@ -2,18 +2,17 @@ package gcs.webservices.services;
 
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.exceptions.InternalException;
-import gcs.webservices.authentication.ILDAPAuthentication;
+import gcs.webservices.authentication.ILDAPAuthenticator;
 import gcs.webservices.authentication.LDAPAuthenticationToken;
 import gcs.webservices.authentication.PublicSessionKey;
+import gcs.webservices.client.beans.SessionToken;
+import gcs.webservices.client.requests.authentication.*;
+import gcs.webservices.client.responses.authentication.LoginResponse;
 import gcs.webservices.dao.IMembreDao;
 import gcs.webservices.models.Membre;
-import gcs.webservices.services.beans.requests.LoginRequest;
-import gcs.webservices.services.beans.requests.LogoutRequest;
-import gcs.webservices.services.beans.responses.LoginResponse;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -25,27 +24,17 @@ import org.springframework.stereotype.Component;
 import com.sun.jersey.api.core.InjectParam;
 
 @Component
-@Path("/authentication")
+@Path("/session")
 public class AuthenticationService extends BaseHttpService
 {
     @InjectParam
-    private ILDAPAuthentication ldapAuthenticator;
+    private ILDAPAuthenticator ldapAuthenticator;
 
     @InjectParam
     private IMembreDao membreDao;
 
-    @GET
-    @Path("/test")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public Response test()
-    {
-        gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
-        responseEntity.addMessage(MessageType.Information, "security_denied_access");
-        return Response.ok().entity(responseEntity).build();
-    }
-
     @POST
-    @Path("/login")
+    @Path("/")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response login(LoginRequest loginRequest)
@@ -97,17 +86,18 @@ public class AuthenticationService extends BaseHttpService
     }
 
     @DELETE
-    @Path("/logout")
+    @Path("/{ipv4Address}/{sessionKey}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response logout(LogoutRequest logoutRequest)
     {
-        gcs.webservices.services.beans.responses.Response responseEntity = new gcs.webservices.services.beans.responses.Response();
+        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
         if (logoutRequest != null) {
             // Remove the session from the cache; Any action taken
             // from now on with the previous key will be refused
-            sessionCache.removeSession(logoutRequest.getIpAddress(), logoutRequest.getSessionKey());
+            SessionToken token = logoutRequest.getSessionToken();
+            sessionCache.removeSession(token.getIpv4Address(), token.getSessionKey());
             responseEntity.addMessage(MessageType.Information, "authentication_logout_success");
 
             // Set the success flag in the response

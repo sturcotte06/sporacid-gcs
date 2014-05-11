@@ -72,7 +72,8 @@ public class AuthenticationController /* implements ApplicationContextAware */
      * @return
      */
     @RequestMapping(value = "/connexion", method = RequestMethod.POST)
-    public String login(@ModelAttribute @Valid AuthenticationForm form, BindingResult result, HttpServletRequest request, @RequestHeader(value = "referer", required = true) final String referer)
+    public String login(@ModelAttribute @Valid AuthenticationForm form, BindingResult result,
+            HttpServletRequest request, @RequestHeader(value = "referer", required = true) final String referer)
     {
         String direction = "redirect:/";
         HttpSession session = request.getSession();
@@ -104,11 +105,12 @@ public class AuthenticationController /* implements ApplicationContextAware */
                 SessionUtils.setWsSession(request.getSession(), wsSession);
 
                 // TODO change forRole param
-                SessionUtils.setApplicationMenu(session, menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));
+                SessionUtils.setApplicationMenu(session,
+                        menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));
             } else {
                 // Failure; tell the user why
                 for (Message message : response.getMessages()) {
-                    SessionUtils.addMessage(message.getMessageType(), message.getMessageContent(), session);
+                    SessionUtils.addMessage(message.getMessageType(), message.getContent(), session);
                 }
 
                 request.setAttribute("authenticationForm", form);
@@ -141,7 +143,7 @@ public class AuthenticationController /* implements ApplicationContextAware */
             if (!response.isSuccess()) {
                 // Failure; tell the user why
                 for (Message message : response.getMessages()) {
-                    SessionUtils.addMessage(message.getMessageType(), message.getMessageContent(), session);
+                    SessionUtils.addMessage(message.getMessageType(), message.getContent(), session);
                 }
             }
 
@@ -174,8 +176,8 @@ public class AuthenticationController /* implements ApplicationContextAware */
      * @return
      */
     @RequestMapping(value = "/reinitialiser-mot-de-passe", method = RequestMethod.POST)
-    public String passwordRetrieval(@ModelAttribute @Valid AuthenticationForm form, BindingResult result, HttpServletRequest request,
-            @RequestHeader(value = "referer", required = true) final String referer)
+    public String passwordRetrieval(@ModelAttribute @Valid AuthenticationForm form, BindingResult result,
+            HttpServletRequest request, @RequestHeader(value = "referer", required = true) final String referer)
     {
         String direction = "redirect:/";
         // HttpSession session = request.getSession();

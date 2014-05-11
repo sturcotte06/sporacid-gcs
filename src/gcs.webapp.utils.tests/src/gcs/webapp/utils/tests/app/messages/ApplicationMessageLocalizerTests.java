@@ -1,13 +1,13 @@
 package gcs.webapp.utils.tests.app.messages;
 
 import static org.junit.Assert.*;
-import gcs.webapp.utils.app.messages.ApplicationMessageLocalizer;
+import gcs.webapp.utils.app.messages.MessageLocalizer;
 
 import org.junit.Test;
 
 public class ApplicationMessageLocalizerTests 
 {
-	private final ApplicationMessageLocalizer localizer = new ApplicationMessageLocalizer("./resources");
+	private final MessageLocalizer localizer = new MessageLocalizer("./resources");
 	
 	@Test
 	public void test() 

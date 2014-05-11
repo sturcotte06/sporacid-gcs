@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
             http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -15,8 +14,7 @@
   <!-- <context:load-time-weaver aspectj-weaving="on" /> -->
 
   <!-- Data source informations -->
-  <bean id="dataSource"
-    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url"
       value="jdbc:postgresql://ec2-54-235-117-198.compute-1.amazonaws.com:5432/d9sv2493doff58?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
@@ -25,9 +23,7 @@
   </bean>
 
   <!-- Session factory bean object for hibernate -->
-  <bean id="sessionFactory"
-    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
-    lazy-init="false">
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">
     <property name="dataSource" ref="dataSource" />
     <property name="annotatedClasses">
       <list>
@@ -43,26 +39,21 @@
     </property>
   </bean>
 
-  <!-- Application messages cache. This is where configured messages will 
-    be loaded. -->
-  <bean id="messageLocalizer" name="messageLocalizer"
-    class="gcs.webapp.utils.app.messages.ApplicationMessageLocalizer"
+  <!-- Application messages cache. This is where configured messages will be loaded. -->
+  <bean id="messageLocalizer" name="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer"
     scope="singleton">
-    <constructor-arg name="messagesFolderRelativePath"
-      value="./resources" />
-    <property name="defaultLocale" value="fr-ca" />
+    <constructor-arg name="messagesFolderRelativePath" value="./resources" />
+    <property name="defaultLocale" value="fr" />
   </bean>
 
   <!-- Custom security provider for the application modules -->
-  <bean id="moduleSecurityProvider" name="moduleSecurityProvider"
-    class="gcs.webapp.utils.app.security.ModuleSecurityProvider" scope="singleton">
-    <constructor-arg name="moduleSecurityFolderRelativePath"
-      value="./resources" />
+  <bean id="moduleSecurityProvider" name="moduleSecurityProvider" class="gcs.webapp.utils.app.security.ModuleSecurityProvider"
+    scope="singleton">
+    <constructor-arg name="moduleSecurityFolderRelativePath" value="./resources" />
   </bean>
 
   <!-- Authenticated sessions cache -->
-  <bean id="sessionCache" name="sessionCache"
-    class="gcs.webservices.authentication.SessionCache" scope="singleton">
+  <bean id="sessionCache" name="sessionCache" class="gcs.webservices.authentication.SessionCache" scope="singleton">
     <!-- 24 hours of validity for a cached session -->
     <constructor-arg value="86400" />
     <property name="keyProvider">
@@ -73,36 +64,44 @@
     </property>
   </bean>
 
+  <!-- Validator factory -->
+  <bean id="validatorFactory" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" scope="singleton" />
+  
+  <!-- Validator prototype -->
+  <bean id="validator" class="org.springframework.validation.Validator" 
+    factory-bean="validatorFactory" factory-method="getValidator" scope="prototype" />
+
   <!-- LDAP authenticator for authenticating clients -->
-  <bean id="ldapAuthenticator" name="ldapAuthenticator"
-    class="gcs.webservices.authentication.ActiveDirectoryAuthentication"
+  <bean id="ldapAuthenticator" name="ldapAuthenticator" class="gcs.webservices.authentication.ActiveDirectoryAuthenticator"
     scope="singleton">
     <property name="defaultUserDomain" value="ens.ad.etsmtl.ca" />
   </bean>
 
   <!-- Define all data access objects below -->
   <bean id="membresDao" class="gcs.webservices.dao.MembreDao" scope="singleton" />
-    
+
   <bean id="auditDao" class="gcs.webservices.dao.AuditDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <!-- Internal service instance for auditing -->
-  <bean id="auditService" class="gcs.webservices.aop.services.AuditService"
-    scope="singleton">
+  <bean id="auditService" class="gcs.webservices.aop.services.AuditService" scope="singleton">
     <property name="auditDao" ref="auditDao" />
     <property name="sessionCache" ref="sessionCache" />
   </bean>
 
   <!-- Inject the auditing service into the audit aspect -->
-  <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect"
-    factory-method="aspectOf">
+  <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect" factory-method="aspectOf">
     <property name="auditService" ref="auditService" />
   </bean>
+  
+  <!-- Inject a validator into the validation aspect -->
+<!--   <bean id="validationAspect" class="gcs.webapp.aspects.ValidationAspect" factory-method="aspectOf"> -->
+<!--     <property name="validator" ref="validator" /> -->
+<!--   </bean> -->
 
   <!-- Inject the message localizer into the localization aspect -->
-  <!-- <bean id="localizationAspect" class="gcs.webservices.aop.LocalizationAspect" 
-    factory-method="aspectOf"> -->
-  <!-- <property name="messageLocalizer" ref="messageLocalizer"/> -->
-  <!-- </bean> -->
+<!--   <bean id="localizationAspect" class="gcs.webservices.aop.LocalizationAspect" factory-method="aspectOf"> -->
+<!--     <property name="messageLocalizer" ref="messageLocalizer" /> -->
+<!--   </bean> -->
 </beans>

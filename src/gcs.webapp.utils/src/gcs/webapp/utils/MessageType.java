@@ -8,5 +8,6 @@ public enum MessageType
 {
 	Information,
 	Warning,
-	Error
+	Error,
+	Validation
 }

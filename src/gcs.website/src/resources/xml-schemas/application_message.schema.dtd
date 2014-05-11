@@ -1,6 +1,0 @@
-<!ELEMENT application-messages (message*)>
-	<!ATTLIST application-messages locale CDATA #REQUIRED>
-	<!ELEMENT message EMPTY>
-		<!ATTLIST message key ID #REQUIRED>
-		<!ATTLIST message message CDATA #REQUIRED>
-		<!ATTLIST message description CDATA "">

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
+
+<application-messages language="fr">
+  <!-- Validation messages -->
+  <message key="contextname_notempty" message="Le nom de contexte ne peut être vide." />
+  <message key="ipaddress_notempty" message="Votre adresse ipv4 ne peut être vide." />
+  <message key="ipaddress_unrecognized_pattern" message="Votre adresse ipv4 doit être dans le format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />
+  <message key="sessionkey_notempty" message="Le clé de session ne peut être vide." />
+</application-messages>

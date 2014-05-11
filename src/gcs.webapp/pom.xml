@@ -39,7 +39,6 @@
   </modules>
 
   <build>
-<!--     <sourceDirectory>src</sourceDirectory> -->
     <pluginManagement>
       <plugins>
         <!-- Compiler plugin -->
@@ -108,15 +107,16 @@
             </weaveDirectories>
             <aspectLibraries>
               <!-- Put aspect libraries here -->
-              <aspectLibrary>
-                <groupId>${gcs.group.id}</groupId>
-                <artifactId>webapp-aspects</artifactId>
-              </aspectLibrary>
-              <aspectLibrary>
-                <groupId>${gcs.group.id}</groupId>
-                <artifactId>webservices</artifactId>
-              </aspectLibrary>
+              <!-- <aspectLibrary> -->
+              <!-- <groupId>${gcs.group.id}</groupId> -->
+              <!-- <artifactId>webapp-aspects</artifactId> -->
+              <!-- </aspectLibrary> -->
+              <!-- <aspectLibrary> -->
+              <!-- <groupId>${gcs.group.id}</groupId> -->
+              <!-- <artifactId>webservices</artifactId> -->
+              <!-- </aspectLibrary> -->
             </aspectLibraries>
+            <compilerVersion>${jdk.compiler}</compilerVersion>
             <source>${jdk.source}</source>
             <target>${jdk.target}</target>
           </configuration>
@@ -276,6 +276,21 @@
       <version>2.0.2</version>
     </dependency>
     <!-- Jersey dependencies -->
+    <!-- <dependency> -->
+    <!-- <groupId>org.glassfish.jersey.core</groupId> -->
+    <!-- <artifactId>jersey-client</artifactId> -->
+    <!-- <version>${jersey.version}</version> -->
+    <!-- </dependency> -->
+    <!-- <dependency> -->
+    <!-- <groupId>org.glassfish.jersey.core</groupId> -->
+    <!-- <artifactId>jersey-server</artifactId> -->
+    <!-- <version>${jersey.version}</version> -->
+    <!-- </dependency> -->
+    <!-- <dependency> -->
+    <!-- <groupId>org.glassfish.jersey.core</groupId> -->
+    <!-- <artifactId>jersey-common</artifactId> -->
+    <!-- <version>${jersey.version}</version> -->
+    <!-- </dependency> -->
     <dependency>
       <groupId>com.sun.jersey</groupId>
       <artifactId>jersey-core</artifactId>
@@ -286,6 +301,17 @@
       <artifactId>jersey-json</artifactId>
       <version>${jersey.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-bundle</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+
     <!-- AspectJ dependencies -->
     <dependency>
       <groupId>org.aspectj</groupId>

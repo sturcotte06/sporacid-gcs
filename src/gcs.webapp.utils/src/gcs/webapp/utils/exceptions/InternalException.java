@@ -3,7 +3,7 @@ package gcs.webapp.utils.exceptions;
 /**
  * @author Simon Turcotte-Langevin
  */
-public class InternalException extends Exception
+public class InternalException extends RuntimeException
 {
     private static final long serialVersionUID = -4517218146505918640L;
     private String messageKey;
