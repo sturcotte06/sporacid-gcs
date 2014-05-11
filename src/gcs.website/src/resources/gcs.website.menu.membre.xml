@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE application-menu SYSTEM "xml-schemas\gcs.menu.schema.dtd">
+
+<application-menu for="membre">
+  <menu-entry name="application_menu_members">
+    <sub-menu>
+      <sub-menu-entry name="application_menu_view_members" path="/membres/gerer" />
+    </sub-menu>
+  </menu-entry>
+  <menu-entry name="application_menu_inventory">
+    <sub-menu>
+      <sub-menu-entry name="application_menu_view_iventory" path="/inventaire/gerer" />
+    </sub-menu>
+  </menu-entry>
+  <menu-entry name="application_menu_suppliers">
+    <sub-menu>
+      <sub-menu-entry name="application_menu_view_suppliers" path="/fournisseurs/gerer" />
+    </sub-menu>
+  </menu-entry>
+  <menu-entry name="application_menu_sponsors">
+    <sub-menu>
+      <sub-menu-entry name="application_menu_view_sponsors" path="/commandites/gerer" />
+    </sub-menu>
+  </menu-entry>
+  <menu-entry name="application_menu_help" path="/aide" />
+</application-menu>
