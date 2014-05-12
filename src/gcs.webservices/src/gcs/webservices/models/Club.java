@@ -11,8 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 
@@ -22,6 +22,7 @@ import javax.persistence.Entity;
  */
 @Entity
 @Table(name = "Clubs")
+@XmlRootElement
 @SequenceGenerator(name = "clubs_id_seq", sequenceName = "clubs_id_seq", allocationSize = 1)
 public class Club extends AbstractModelObject
 {
@@ -35,4 +36,46 @@ public class Club extends AbstractModelObject
 	
 	@Column(name = "description")
 	private String description;
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the nom
+	 */
+	public String getNom() {
+		return nom;
+	}
+
+	/**
+	 * @param nom the nom to set
+	 */
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

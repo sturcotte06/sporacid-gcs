@@ -19,9 +19,9 @@
     class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url"
-      value="jdbc:postgresql://ec2-54-235-117-198.compute-1.amazonaws.com:5432/d9sv2493doff58?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory" />
-    <property name="username" value="zljfbeusltippf" />
-    <property name="password" value="87HM8h7QniWdAEwyKI-E276K2I" />
+      value="jdbc:postgresql://localhost:5432/GCS" />
+    <property name="username" value="postgres" />
+    <property name="password" value="bacon" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -32,6 +32,7 @@
     <property name="annotatedClasses">
       <list>
         <value>gcs.webservices.models.Audit</value>
+        <value>gcs.webservices.models.Club</value>
       </list>
     </property>
     <property name="hibernateProperties">
@@ -84,6 +85,10 @@
   <bean id="membresDao" class="gcs.webservices.dao.MembreDao" scope="singleton" />
     
   <bean id="auditDao" class="gcs.webservices.dao.AuditDao" scope="singleton">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  <bean id="clubDao" class="gcs.webservices.dao.ClubDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
