@@ -17,4 +17,5 @@
   <!-- General messages -->
   <message key="security_authentication_required" message="L'authentification est nécessaire pour cette opération." />
   <message key="security_denied_access" message="L'usager n'a pas les droits." />
+  <message key="entity_is_null" message="Aucun résultat trouvés." />
 </application-messages>
