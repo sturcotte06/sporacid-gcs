@@ -22,6 +22,7 @@ CREATE TABLE Membres (id  SERIAL NOT NULL, Concentrations_id int4 NOT NULL, nom 
 CREATE TABLE Membres_Clubs (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, Membres_id int4 NOT NULL, date_debut date NOT NULL, date_fin date, PRIMARY KEY (id));
 CREATE TABLE Adresses (id  SERIAL NOT NULL, no_civique int4 NOT NULL, rue varchar(64) NOT NULL, appartement varchar(10), ville varchar(128) NOT NULL, code_postal varchar(16) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Clubs (id  SERIAL NOT NULL, nom varchar(50) NOT NULL, description varchar(255), PRIMARY KEY (id));
+ALTER TABLE Membres_Preferences ADD CONSTRAINT FKMembres_Pr229875 FOREIGN KEY (membres_id) REFERENCES Membres (id);
 ALTER TABLE Contacts_Urgence ADD CONSTRAINT FKContacts_U164890 FOREIGN KEY (liens_parente_id) REFERENCES Liens_Parente (id);
 ALTER TABLE Evenements ADD CONSTRAINT FKEvenements917475 FOREIGN KEY (Clubs_id) REFERENCES Clubs (id);
 ALTER TABLE Membres ADD CONSTRAINT FKMembres495106 FOREIGN KEY (Concentrations_id) REFERENCES Concentrations (id);
@@ -45,4 +46,3 @@ ALTER TABLE Membres_Clubs ADD CONSTRAINT FKMembres_Cl269114 FOREIGN KEY (Clubs_i
 ALTER TABLE Membres_Clubs ADD CONSTRAINT FKMembres_Cl936196 FOREIGN KEY (Membres_id) REFERENCES Membres (id);
 ALTER TABLE Contacts_Urgence_Membres ADD CONSTRAINT FKContacts_U960303 FOREIGN KEY (Contacts_Urgence_id) REFERENCES Contacts_Urgence (id);
 ALTER TABLE Contacts_Urgence_Membres ADD CONSTRAINT FKContacts_U30385 FOREIGN KEY (Membres_id) REFERENCES Membres (id);
-ALTER TABLE Membres_Preferences ADD CONSTRAINT FKMembres_Pr229875 FOREIGN KEY (membres_id) REFERENCES Membres (id);

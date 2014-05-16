@@ -28,6 +28,8 @@
     </control>
     <control controlID="7" controlTypeID="com.balsamiq.mockups::Label" x="333" y="159" w="-1" h="-1" measuredW="60" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
+        <href>gcs-all-members%26bm%3Bgcs-all-members.bmml%26bm%3Bgcs-all-members.bmml%26bm%3Bgcs-all-members.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%2217%2C119%2C77%2C140%22%20href%3D%22gcs-all-members.bmml%22%20alt%3D%22gcs-all-members%22%20id%3D%227%22/%3E</map>
         <text>%5BConsulter%5D</text>
       </controlProperties>
     </control>
@@ -107,9 +109,9 @@
         <text>PR%C9CI</text>
       </controlProperties>
     </control>
-    <control controlID="27" controlTypeID="com.balsamiq.mockups::Label" x="541" y="225" w="-1" h="-1" measuredW="428" measuredH="21" zOrder="22" locked="false" isInGroup="-1">
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::Label" x="541" y="225" w="-1" h="-1" measuredW="434" measuredH="21" zOrder="22" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Programme%20de%20Regroupement%20%C9tudiant%20pour%20la%20Coop%E9ration%20Internationale</text>
+        <text>Programme%20de%20Regroupement%20%C9tudiants%20pour%20la%20Coop%E9ration%20Internationale</text>
       </controlProperties>
     </control>
     <control controlID="30" controlTypeID="com.balsamiq.mockups::FieldSet" x="548" y="282" w="157" h="100" measuredW="200" measuredH="170" zOrder="23" locked="false" isInGroup="-1">
@@ -189,5 +191,22 @@
       </controlProperties>
     </control>
     <control controlID="48" controlTypeID="com.balsamiq.mockups::LineChart" x="1181" y="346" w="240" h="240" measuredW="187" measuredH="175" zOrder="39" locked="false" isInGroup="-1"/>
+    <control controlID="56" controlTypeID="com.balsamiq.mockups::StickyNote" x="813" y="606" w="156" h="119" measuredW="109" measuredH="123" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <bold>true</bold>
+        <size>18</size>
+        <text>%20%0ASuggestions%20%3F</text>
+      </controlProperties>
+    </control>
+    <control controlID="60" controlTypeID="com.balsamiq.mockups::Arrow" x="1002" y="140" w="64" h="144" measuredW="150" measuredH="100" zOrder="41" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="61" controlTypeID="com.balsamiq.mockups::StickyNote" x="1073" y="257" w="143" h="116" measuredW="109" measuredH="123" zOrder="42" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Zone%20de%20statistiques%20contextuelles%0Aau%20club%20s%E9lectionn%E9</text>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>
