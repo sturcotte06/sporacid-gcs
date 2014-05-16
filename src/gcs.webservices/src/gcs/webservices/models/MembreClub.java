@@ -43,10 +43,10 @@ public class MembreClub extends AbstractModelObject
 	private Collection<Membre> membres;
 	
 	@Column(name="date_debut")
-	private Date date_debut;
+	private Date dateDebut;
 	
 	@Column(name="date_fin")
-	private Date date_fin;
+	private Date dateFin;
 
 	/**
 	 * @return the id
@@ -62,33 +62,6 @@ public class MembreClub extends AbstractModelObject
 		this.id = id;
 	}
 
-	/**
-	 * @return the date_debut
-	 */
-	public Date getDate_debut() {
-		return date_debut;
-	}
-
-	/**
-	 * @param date_debut the date_debut to set
-	 */
-	public void setDate_debut(Date date_debut) {
-		this.date_debut = date_debut;
-	}
-
-	/**
-	 * @return the date_fin
-	 */
-	public Date getDate_fin() {
-		return date_fin;
-	}
-
-	/**
-	 * @param date_fin the date_fin to set
-	 */
-	public void setDate_fin(Date date_fin) {
-		this.date_fin = date_fin;
-	}
 
 	/**
 	 * @return the clubs
@@ -116,5 +89,33 @@ public class MembreClub extends AbstractModelObject
 	 */
 	public void setMembres(Collection<Membre> membres) {
 		this.membres = membres;
+	}
+
+	/**
+	 * @return the dateDebut
+	 */
+	public Date getDateDebut() {
+		return dateDebut;
+	}
+
+	/**
+	 * @param dateDebut the dateDebut to set
+	 */
+	public void setDateDebut(Date dateDebut) {
+		this.dateDebut = dateDebut;
+	}
+
+	/**
+	 * @return the dateFin
+	 */
+	public Date getDateFin() {
+		return dateFin;
+	}
+
+	/**
+	 * @param dateFin the dateFin to set
+	 */
+	public void setDateFin(Date dateFin) {
+		this.dateFin = dateFin;
 	}
 }

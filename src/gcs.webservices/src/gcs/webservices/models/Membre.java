@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -25,6 +27,7 @@ public class Membre
 	
 	@OneToOne
 	@Fetch(FetchMode.JOIN)
+	//@Cascade({CascadeType., org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumn(name = "concentrations_id", 
 		referencedColumnName = "id",
 		nullable = false)

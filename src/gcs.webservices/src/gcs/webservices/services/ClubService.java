@@ -1,11 +1,16 @@
 package gcs.webservices.services;
 
 import gcs.webapp.utils.exceptions.InternalException;
+import gcs.webservices.authentication.ActiveDirectory;
 import gcs.webservices.dao.IClubDao;
 import gcs.webservices.models.Club;
 
 import java.util.Collection;
 
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.SearchResult;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -40,6 +45,52 @@ public class ClubService
 		catch(InternalException intex)
 		{
 			return null;
+		}
+	}
+	
+	@GET
+	@Path("/ad")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getAD() {
+		try {
+			// Creating instance of ActiveDirectory
+			ActiveDirectory activeDirectory = new ActiveDirectory("aj54280",
+					"MzLaPq21",
+					System.getProperty("java.security.krb5.realm"));
+
+			// Searching
+			NamingEnumeration<SearchResult> result = activeDirectory
+					.searchUser("aj54280", "username",
+							/*"dc=ens;dc=ad;dc=etsmtl;dc=ca;"*/null);
+
+			if (result.hasMore()) 
+			{
+				final String[] adParams = 
+					{ "sAMAccountName", "givenName", "cn",
+						"mail", "objectClass", "objectCategory",
+						"memberOf",  "objectGUID", "objectSid",
+						"distinguishedName", "userPrincipalName",
+						"sAMAccountType", "userAccountControl" 
+						};
+
+				SearchResult rs = (SearchResult) result.next();
+				Attributes attrs = rs.getAttributes();
+
+				for (int i = 0; i < adParams.length; i++) 
+				{
+					System.out.println(i + " : " + attrs.get(adParams[i]).toString());
+				}
+			} 
+			else 
+			{
+				System.out.println("No search result found!");
+			}
+
+			return Response.ok().build();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Response.ok().build();
 		}
 	}
 }
