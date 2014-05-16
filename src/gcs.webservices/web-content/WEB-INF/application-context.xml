@@ -91,6 +91,10 @@
   <bean id="clubDao" class="gcs.webservices.dao.ClubDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
+  
+  <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
 
   <!-- Internal service instance for auditing -->
   <bean id="auditService" class="gcs.webservices.aop.services.AuditService"
