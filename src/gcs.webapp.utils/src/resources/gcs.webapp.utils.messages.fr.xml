@@ -3,5 +3,11 @@
 
 <application-messages language="fr">
   <message key="utils_jerseyclientfactory_cannotgenerateconfig" 
-           message="Couldn't create a client configuration for the jersey web services." />
+           message="Impossible de créer la configuration client pour les services web jersey." />
+           
+  <!-- Exception messages -->
+  <message key="exception_entitynotfound_message" message="L'entité %s qui a pour identifiant %s n'existe pas." />
+  <message key="exception_unauthorized_message" message="L'usager %s n'est pas authorisé à accéder à cette partie de l'application." />
+  <message key="exception_validation_message" message="Certains arguments sont invalides." />
+  <message key="exception_notauthenticated_message" message="L'usager %s n'est pas authentifié et doit l'être pour accéder à cette partie de l'application." />
 </application-messages>

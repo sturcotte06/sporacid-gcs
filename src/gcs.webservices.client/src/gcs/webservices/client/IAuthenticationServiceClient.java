@@ -1,7 +1,7 @@
 package gcs.webservices.client;
 
 import gcs.webservices.client.responses.Response;
-import gcs.webservices.client.responses.authentication.LoginResponse;
+import gcs.webservices.client.responses.sessions.CreateResponse;
 
 /**
  * 
@@ -16,7 +16,7 @@ public interface IAuthenticationServiceClient
 	 * @param password The user's password
 	 * @return The login response from the web services
 	 */
-	public LoginResponse login(String ipAddress, String username, String password);
+	public CreateResponse login(String ipAddress, String username, String password);
 	/**
 	 * Invalidates a web services' session
 	 * @param ipAddress Ip address of the requester

@@ -1,21 +1,29 @@
 package gcs.webservices.client.requests.membres;
 
-import gcs.webservices.client.requests.ContextualAuthenticatedRequest;
+import gcs.webservices.client.requests.Request;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.PathParam;
 
 /**
- * 
  * @author Simon Turcotte-Langevin
  */
-public class DeactivateRequest extends ContextualAuthenticatedRequest
+public class DeactivateRequest extends Request
 {
     @NotNull(message = "membres_membreid_notnull")
     @Min(value = 1, message = "membres_membreid_positive")
     @PathParam(value = "membreId")
     private Integer membreId;
+
+    public DeactivateRequest()
+    {
+    }
+
+    public DeactivateRequest(Integer membreId)
+    {
+        this.membreId = membreId;
+    }
 
     /**
      * @return the membreId

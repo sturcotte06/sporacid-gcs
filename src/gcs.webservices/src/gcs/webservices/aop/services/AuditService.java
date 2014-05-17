@@ -2,24 +2,16 @@ package gcs.webservices.aop.services;
 
 import java.util.Date;
 
-import org.springframework.stereotype.Component;
-
-import com.sun.jersey.api.core.InjectParam;
-
-import gcs.webservices.authentication.SessionCache;
 import gcs.webservices.dao.IAuditDao;
 import gcs.webservices.models.Audit;
+import gcs.webservices.sessions.SessionCache;
 
 /**
  * @author Simon Turcotte-Langevin
  */
-@Component
 public class AuditService implements IAuditService
 {
-    @InjectParam
     private IAuditDao auditDao;
-
-    @InjectParam
     private SessionCache sessionCache;
 
     @Override

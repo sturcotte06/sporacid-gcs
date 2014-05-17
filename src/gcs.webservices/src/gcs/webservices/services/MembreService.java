@@ -3,61 +3,91 @@ package gcs.webservices.services;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webservices.aop.Auditable;
-import gcs.webservices.client.beans.Context;
-import gcs.webservices.client.beans.SessionToken;
-import gcs.webservices.client.beans.providers.InjectContext;
-import gcs.webservices.client.requests.*;
+import gcs.webservices.client.beans.ContextualSessionToken;
 import gcs.webservices.client.requests.membres.*;
+import gcs.webservices.dao.IMembreDao;
+import gcs.webservices.ldap.search.ILdapSearcher;
+import gcs.webservices.ldap.search.LdapUser;
+import gcs.webservices.ldap.search.SearchBy;
 
+import javax.naming.NamingException;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.sun.jersey.api.core.InjectParam;
-
-@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}")
 @Component
 @SecureModule(name = "members_module")
+@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}")
 public class MembreService extends SecureHttpService
 {
+    @Autowired
+    private IMembreDao membreDao;
+    
+    @Autowired
+    private ILdapSearcher ldapSearcher;
+    
     @POST
     @Path("/membre")
     @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response add(@InjectParam Context context, @InjectParam SessionToken sessionToken, AddRequest request)
+    public Response add(@BeanParam ContextualSessionToken sessionToken, AddRequest request)
     {
         final CrudOperation operation = CrudOperation.Create;
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
-        return endRequest(responseEntity);
+        return completeRequest(responseEntity);
     }
 
+    public class LdapResponse extends gcs.webservices.client.responses.Response
+    {
+        private LdapUser ldapUser;
+
+        /**
+         * @return the ldapUser
+         */
+        public LdapUser getLdapUser()
+        {
+            return ldapUser;
+        }
+
+        /**
+         * @param ldapUser the ldapUser to set
+         */
+        public void setLdapUser(LdapUser ldapUser)
+        {
+            this.ldapUser = ldapUser;
+        }
+    }
+    
     @GET
     @Path("/membre")
     @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getAll(@InjectParam Context context, @InjectParam SessionToken sessionToken)
+    public Response getAll(@BeanParam ContextualSessionToken sessionToken) throws NamingException
     {
         final CrudOperation operation = CrudOperation.Create;
-        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
+        LdapResponse responseEntity = new LdapResponse();
 
-        return endRequest(responseEntity);
+        responseEntity.setLdapUser(ldapSearcher.searchUser("AJ50440", SearchBy.SamAccountName));
+        
+        return completeRequest(responseEntity);
     }
 
     @GET
     @Path("/membre/{membreId}")
     @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response get(@InjectParam GetRequest request, @InjectParam Context context)
+    public Response get(@BeanParam ContextualSessionToken sessionToken, @BeanParam GetRequest request)
     {
         final CrudOperation operation = CrudOperation.Read;
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
@@ -94,7 +124,7 @@ public class MembreService extends SecureHttpService
         // "security_denied_access");
         // }
 
-        return endRequest(responseEntity);
+        return completeRequest(responseEntity);
     }
 
     @PUT
@@ -102,12 +132,12 @@ public class MembreService extends SecureHttpService
     @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response deactivate(DeactivateRequest request)
+    public Response deactivate(@BeanParam ContextualSessionToken sessionToken, DeactivateRequest request)
     {
         final CrudOperation operation = CrudOperation.Update;
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
-        return endRequest(responseEntity);
+        return completeRequest(responseEntity);
     }
 
     @PUT
@@ -115,11 +145,43 @@ public class MembreService extends SecureHttpService
     @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response bindRole(BindRoleRequest request)
+    public Response bindRole(@BeanParam ContextualSessionToken sessionToken, BindRoleRequest request)
     {
         final CrudOperation operation = CrudOperation.Update;
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
-        return endRequest(responseEntity);
+        return completeRequest(responseEntity);
+    }
+
+    /**
+     * @return the membreDao
+     */
+    public IMembreDao getMembreDao()
+    {
+        return membreDao;
+    }
+
+    /**
+     * @param membreDao the membreDao to set
+     */
+    public void setMembreDao(IMembreDao membreDao)
+    {
+        this.membreDao = membreDao;
+    }
+
+    /**
+     * @return the ldapSearcher
+     */
+    public ILdapSearcher getLdapSearcher()
+    {
+        return ldapSearcher;
+    }
+
+    /**
+     * @param ldapSearcher the ldapSearcher to set
+     */
+    public void setLdapSearcher(ILdapSearcher ldapSearcher)
+    {
+        this.ldapSearcher = ldapSearcher;
     }
 }

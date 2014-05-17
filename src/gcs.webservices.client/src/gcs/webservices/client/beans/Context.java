@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Context
 {
     @NotEmpty(message = "beans_context_contextname_notempty")
-    @PathParam("context.contextName")
+    @PathParam("contextName")
     private String contextName;
 
     public Context()

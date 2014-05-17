@@ -110,7 +110,7 @@ public class AuthenticationController /* implements ApplicationContextAware */
             } else {
                 // Failure; tell the user why
                 for (Message message : response.getMessages()) {
-                    SessionUtils.addMessage(message.getMessageType(), message.getContent(), session);
+                    SessionUtils.addMessage(message.getType(), message.getContent(), session);
                 }
 
                 request.setAttribute("authenticationForm", form);
@@ -143,7 +143,7 @@ public class AuthenticationController /* implements ApplicationContextAware */
             if (!response.isSuccess()) {
                 // Failure; tell the user why
                 for (Message message : response.getMessages()) {
-                    SessionUtils.addMessage(message.getMessageType(), message.getContent(), session);
+                    SessionUtils.addMessage(message.getType(), message.getContent(), session);
                 }
             }
 

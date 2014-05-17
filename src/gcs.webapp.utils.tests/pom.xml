@@ -20,6 +20,9 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>aspectj-maven-plugin</artifactId>
       </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
 

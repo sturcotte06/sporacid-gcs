@@ -12,7 +12,7 @@
 
 <ul class="messages">
   <% for (Message message : SessionUtils.getMessages(httpSession)) { %>
-    <li class="message <%=(message.getMessageType() == MessageType.Information ? "success" : "failure")%>">
+    <li class="message <%=(message.getType() == MessageType.Information ? "success" : "failure")%>">
       <%=message.getContent() %>
     </li>
   <% } %>

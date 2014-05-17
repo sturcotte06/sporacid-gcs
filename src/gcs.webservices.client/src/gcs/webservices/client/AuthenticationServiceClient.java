@@ -1,14 +1,11 @@
 package gcs.webservices.client;
 
-import org.springframework.validation.BindingResult;
-
 import gcs.webapp.utils.HandledByHttpService;
 import gcs.webapp.utils.HttpMethod;
 import gcs.webservices.client.beans.SessionToken;
-import gcs.webservices.client.requests.authentication.LoginRequest;
-import gcs.webservices.client.requests.authentication.LogoutRequest;
+import gcs.webservices.client.requests.sessions.CreateRequest;
 import gcs.webservices.client.responses.Response;
-import gcs.webservices.client.responses.authentication.LoginResponse;
+import gcs.webservices.client.responses.sessions.CreateResponse;
 
 /**
  * @author Simon Turcotte-Langevin
@@ -24,12 +21,12 @@ public class AuthenticationServiceClient extends HttpServiceClient implements IA
      * @return The login response from the web services
      */
     @Override
-    public LoginResponse login(String username, String ipv4Address, String password)
+    public CreateResponse login(String username, String ipv4Address, String password)
     {
         final HandledByHttpService metadata = new HandledByHttpService("/authentication/login", HttpMethod.Post);
-        LoginRequest request = new LoginRequest(username, ipv4Address, password);
+        CreateRequest request = new CreateRequest(username, ipv4Address, password);
         validateRequest(request);
-        return getResponse(metadata, LoginResponse.class, request);
+        return getResponse(metadata, CreateResponse.class, request);
     }
 
     /**
@@ -45,8 +42,8 @@ public class AuthenticationServiceClient extends HttpServiceClient implements IA
         final HandledByHttpService metadata = new HandledByHttpService("/authentication/logout", HttpMethod.Delete);
 
         SessionToken token = new SessionToken(ipv4Address, sessionKey);
-        LogoutRequest request = new LogoutRequest(token);
-        validateRequest(request);
-        return getResponse(metadata, Response.class, request);
+        // validateRequest(request);
+        return null;
+        // return getResponse(metadata, Response.class, request);
     }
 }

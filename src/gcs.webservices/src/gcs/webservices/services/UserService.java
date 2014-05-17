@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.stereotype.Component;
 
 @Component
+@Path("/session/{ipv4Address}/{sessionKey}")
 public class UserService extends SecureHttpService
 {
     /*@GET
@@ -38,7 +39,7 @@ public class UserService extends SecureHttpService
         final CrudOperation operation = CrudOperation.Create;
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
-        return endRequest(responseEntity);
+        return completeRequest(responseEntity);
     }
 
     @PUT
@@ -51,6 +52,6 @@ public class UserService extends SecureHttpService
         final CrudOperation operation = CrudOperation.Create;
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
-        return endRequest(responseEntity);
+        return completeRequest(responseEntity);
     }
 }

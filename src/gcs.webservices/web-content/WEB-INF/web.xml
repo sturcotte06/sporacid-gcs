@@ -6,6 +6,9 @@
 
   <display-name>webservices</display-name>
 
+  <!-- Keep the order of listeners definition and context params -->
+  <!-- because some of those listeners have other listerners as -->
+  <!-- prerequisites. -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
@@ -41,31 +44,21 @@
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
   </filter>
-
   <filter-mapping>
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- Spring Front Controller -->
+  <!-- Jersey front controller -->
   <servlet>
     <servlet-name>restservices</servlet-name>
-    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
-      <param-name>com.sun.jersey.config.property.packages</param-name>
-      <param-value>gcs.webservices.services;gcs.webservices.client.beans.providers</param-value>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>gcs.webservices.WebApplication</param-value>
     </init-param>
-    <init-param>
-      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-      <param-value>true</param-value>
-    </init-param>
-<!--     <init-param> -->
-<!--       <param-name>jersey.config.server.provider.packages</param-name> -->
-<!--       <param-value>gcs.webservices.client.beans.providers</param-value> -->
-<!--     </init-param> -->
     <load-on-startup>1</load-on-startup>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>restservices</servlet-name>
     <url-pattern>/v1/rest/*</url-pattern>

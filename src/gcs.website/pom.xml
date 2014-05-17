@@ -13,6 +13,11 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -49,12 +54,12 @@
     </dependency>
 
     <!-- Javax dependencies -->
-<!--     <dependency> -->
-<!--       <groupId>javax.ws.rs</groupId> -->
-<!--       <artifactId>jsr311-api</artifactId> -->
-<!--       <version>1.1.1</version> -->
-<!--       <scope>provided</scope> -->
-<!--     </dependency> -->
+    <!-- <dependency> -->
+    <!-- <groupId>javax.ws.rs</groupId> -->
+    <!-- <artifactId>jsr311-api</artifactId> -->
+    <!-- <version>1.1.1</version> -->
+    <!-- <scope>provided</scope> -->
+    <!-- </dependency> -->
     <dependency>
       <groupId>javax.transaction</groupId>
       <artifactId>jta</artifactId>
@@ -62,11 +67,11 @@
     </dependency>
 
     <!-- Jersey dependencies -->
-<!--     <dependency> -->
-<!--       <groupId>com.sun.jersey</groupId> -->
-<!--       <artifactId>jersey-client</artifactId> -->
-<!--       <version>${jersey.version}</version> -->
-<!--     </dependency> -->
+    <!-- <dependency> -->
+    <!-- <groupId>com.sun.jersey</groupId> -->
+    <!-- <artifactId>jersey-client</artifactId> -->
+    <!-- <version>${jersey.version}</version> -->
+    <!-- </dependency> -->
 
     <!-- Spring dependencies -->
     <dependency>

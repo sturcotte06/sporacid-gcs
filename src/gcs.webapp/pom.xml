@@ -16,21 +16,21 @@
     <jdk.target>1.8</jdk.target>
     <!-- Plugins versions -->
     <compiler.plugin.version>3.1</compiler.plugin.version>
+    <clean.plugin.version>2.5</clean.plugin.version>
     <aspectj.plugin.version>1.6</aspectj.plugin.version>
     <war.plugin.version>2.4</war.plugin.version>
-    <!-- <lombok.plugin.version>1.12.6.0</lombok.plugin.version> -->
     <!-- Dependencies version -->
-    <jersey.version>1.18.1</jersey.version>
+    <jersey.version>2.8</jersey.version>
     <spring.version>4.0.2.RELEASE</spring.version>
     <spring.security.version>3.2.3.RELEASE</spring.security.version>
     <aspectj.version>1.8.0</aspectj.version>
     <hibernate.version>4.3.4.Final</hibernate.version>
     <tomcat.version>7.0.42</tomcat.version>
     <log4j.version>1.2.17</log4j.version>
-    <!-- <lombok.version>1.12.6</lombok.version> -->
   </properties>
 
   <modules>
+<!--     <module>gcs.webapp.core</module> -->
     <module>gcs.webapp.aspects</module>
     <module>gcs.webapp.utils</module>
     <module>gcs.webapp.utils.tests</module>
@@ -46,12 +46,28 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${compiler.plugin.version}</version>
           <configuration>
+            <complianceLevel>${jdk.compiler}</complianceLevel>
             <compilerVersion>${jdk.compiler}</compilerVersion>
             <source>${jdk.source}</source>
             <target>${jdk.target}</target>
             <debug>true</debug>
             <verbose>true</verbose>
           </configuration>
+        </plugin>
+        <!-- Clean plugin -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${clean.plugin.version}</version>
+          <executions>
+            <execution>
+              <id>default-clean</id>
+              <phase>clean</phase>
+              <goals>
+                <goal>clean</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
         <!-- War plugin -->
         <plugin>
@@ -88,6 +104,10 @@
               <artifactId>log4j</artifactId>
               <version>${log4j.version}</version>
             </dependency>
+            <!-- <dependency> -->
+            <!-- <groupId>${gcs.group.id}</groupId> -->
+            <!-- <artifactId>webapp-aspects</artifactId> -->
+            <!-- </dependency> -->
           </dependencies>
           <executions>
             <execution>
@@ -98,129 +118,33 @@
             </execution>
           </executions>
           <configuration>
-            <showWeaveInfo />
-            <!-- Important for lombok -->
-            <!-- <forceAjcCompile>true</forceAjcCompile> -->
-            <!-- <sources /> -->
-            <weaveDirectories>
-              <weaveDirectory>${project.build.directory}/classes</weaveDirectory>
-            </weaveDirectories>
+            <XnoInline>true</XnoInline>
+            <showWeaveInfo>true</showWeaveInfo>
+            <outxml>true</outxml>
+            <outxmlfile>C:\aspectj.build.xml</outxmlfile>
+            <!-- <weaveDirectories> -->
+            <!-- <weaveDirectory>${project.build.directory}/classes</weaveDirectory> -->
+            <!-- </weaveDirectories> -->
             <aspectLibraries>
               <!-- Put aspect libraries here -->
               <!-- <aspectLibrary> -->
               <!-- <groupId>${gcs.group.id}</groupId> -->
               <!-- <artifactId>webapp-aspects</artifactId> -->
               <!-- </aspectLibrary> -->
-              <!-- <aspectLibrary> -->
-              <!-- <groupId>${gcs.group.id}</groupId> -->
-              <!-- <artifactId>webservices</artifactId> -->
-              <!-- </aspectLibrary> -->
+              <aspectLibrary>
+                <groupId>${gcs.group.id}</groupId>
+                <artifactId>webapp-utils</artifactId>
+              </aspectLibrary>
             </aspectLibraries>
+            <complianceLevel>${jdk.compiler}</complianceLevel>
             <compilerVersion>${jdk.compiler}</compilerVersion>
             <source>${jdk.source}</source>
             <target>${jdk.target}</target>
           </configuration>
         </plugin>
-        <!-- Lombok plugin -->
-        <!-- <plugin> -->
-        <!-- <groupId>org.projectlombok</groupId> -->
-        <!-- <artifactId>lombok-maven-plugin</artifactId> -->
-        <!-- <version>${lombok.plugin.version}</version> -->
-        <!-- <dependencies> -->
-        <!-- <dependency> -->
-        <!-- <groupId>sun.jdk</groupId> -->
-        <!-- <artifactId>tools</artifactId> -->
-        <!-- <version>${jdk.target}</version> -->
-        <!-- <scope>system</scope> -->
-        <!-- <systemPath>${java.home}/../lib/tools.jar</systemPath> -->
-        <!-- </dependency> -->
-        <!-- </dependencies> -->
-        <!-- <executions> -->
-        <!-- <execution> -->
-        <!-- <id>delombok</id> -->
-        <!-- <phase>generate-sources</phase> -->
-        <!-- <goals> -->
-        <!-- <goal>delombok</goal> -->
-        <!-- </goals> -->
-        <!-- <configuration> -->
-        <!-- <encoding>cp1252</encoding> -->
-        <!-- <addOutputDirectory>false</addOutputDirectory> -->
-        <!-- <sourceDirectory>src</sourceDirectory> -->
-        <!-- <verbose>true</verbose> -->
-        <!-- </configuration> -->
-        <!-- </execution> -->
-        <!-- <execution> -->
-        <!-- <id>test-delombok</id> -->
-        <!-- <phase>generate-test-sources</phase> -->
-        <!-- <goals> -->
-        <!-- <goal>testDelombok</goal> -->
-        <!-- </goals> -->
-        <!-- <configuration> -->
-        <!-- <encoding>UTF-8</encoding> -->
-        <!-- <addOutputDirectory>false</addOutputDirectory> -->
-        <!-- <sourceDirectory>src/test/java</sourceDirectory> -->
-        <!-- </configuration> -->
-        <!-- </execution> -->
-        <!-- </executions> -->
-        <!-- </plugin> -->
-        <!-- This plugin's configuration is used to store Eclipse m2e settings -->
-        <!-- only. It has no influence on the Maven build itself. -->
-        <!-- <plugin> -->
-        <!-- <groupId>org.eclipse.m2e</groupId> -->
-        <!-- <artifactId>lifecycle-mapping</artifactId> -->
-        <!-- <version>1.0.0</version> -->
-        <!-- <configuration> -->
-        <!-- <lifecycleMappingMetadata> -->
-        <!-- <pluginExecutions> -->
-        <!-- <pluginExecution> -->
-        <!-- <pluginExecutionFilter> -->
-        <!-- <groupId>org.projectlombok</groupId> -->
-        <!-- <artifactId>lombok-maven-plugin</artifactId> -->
-        <!-- <versionRange>[1.0.0.0,)</versionRange> -->
-        <!-- <goals> -->
-        <!-- <goal>delombok</goal> -->
-        <!-- </goals> -->
-        <!-- </pluginExecutionFilter> -->
-        <!-- <action> -->
-        <!-- <execute /> -->
-        <!-- </action> -->
-        <!-- </pluginExecution> -->
-        <!-- </pluginExecutions> -->
-        <!-- </lifecycleMappingMetadata> -->
-        <!-- </configuration> -->
-        <!-- </plugin> -->
       </plugins>
     </pluginManagement>
   </build>
-
-  <!-- <profiles> -->
-  <!-- <profile> -->
-  <!-- <id>lombok-needs-tools-jar</id> -->
-  <!-- <activation> -->
-  <!-- <activeByDefault>true</activeByDefault> -->
-  <!-- <file> -->
-  <!-- <exists>${java.home}/../lib/tools.jar</exists> -->
-  <!-- </file> -->
-  <!-- </activation> -->
-  <!-- <build> -->
-  <!-- <plugins> -->
-  <!-- <plugin> -->
-  <!-- <groupId>org.projectlombok</groupId> -->
-  <!-- <artifactId>lombok-maven-plugin</artifactId> -->
-  <!-- <dependencies> -->
-  <!-- <dependency> -->
-  <!-- <groupId>sun.jdk</groupId> -->
-  <!-- <artifactId>tools</artifactId> -->
-  <!-- <version>${jdk.target}</version> -->
-  <!-- <scope>system</scope> -->
-  <!-- <systemPath>${java.home}/../lib/tools.jar</systemPath> -->
-  <!-- </dependency> -->
-  <!-- </dependencies> -->
-  <!-- </plugin> -->
-  <!-- </plugins> -->
-  <!-- </build> -->
-  <!-- </profile> -->
-  <!-- </profiles> -->
 
   <dependencies>
     <dependency>
@@ -276,42 +200,37 @@
       <version>2.0.2</version>
     </dependency>
     <!-- Jersey dependencies -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.glassfish.jersey.core</groupId> -->
-    <!-- <artifactId>jersey-client</artifactId> -->
-    <!-- <version>${jersey.version}</version> -->
-    <!-- </dependency> -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.glassfish.jersey.core</groupId> -->
-    <!-- <artifactId>jersey-server</artifactId> -->
-    <!-- <version>${jersey.version}</version> -->
-    <!-- </dependency> -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.glassfish.jersey.core</groupId> -->
-    <!-- <artifactId>jersey-common</artifactId> -->
-    <!-- <version>${jersey.version}</version> -->
-    <!-- </dependency> -->
     <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-core</artifactId>
-      <version>${jersey.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-json</artifactId>
-      <version>${jersey.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.jersey</groupId>
+      <groupId>org.glassfish.jersey.core</groupId>
       <artifactId>jersey-client</artifactId>
       <version>${jersey.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.sun.jersey</groupId>
-      <artifactId>jersey-bundle</artifactId>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
       <version>${jersey.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-common</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-spring3</artifactId>
+      <version>${jersey.version}</version>
+    </dependency>
+    <!-- Jackson dependencies -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <version>2.4.0-rc2</version>
+    </dependency>
     <!-- AspectJ dependencies -->
     <dependency>
       <groupId>org.aspectj</groupId>
@@ -376,11 +295,5 @@
       <artifactId>spring-security-config</artifactId>
       <version>${spring.security.version}</version>
     </dependency>
-    <!-- Lombok dependencies -->
-    <!-- <dependency> -->
-    <!-- <groupId>org.projectlombok</groupId> -->
-    <!-- <artifactId>lombok</artifactId> -->
-    <!-- <version>${lombok.version}</version> -->
-    <!-- </dependency> -->
   </dependencies>
 </project>

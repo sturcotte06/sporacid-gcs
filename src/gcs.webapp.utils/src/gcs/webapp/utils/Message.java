@@ -1,6 +1,6 @@
 package gcs.webapp.utils;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import gcs.webapp.utils.app.messages.ILocalizable;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
@@ -12,7 +12,7 @@ import gcs.webapp.utils.app.messages.IMessageLocalizer;
  */
 public class Message implements ILocalizable
 {
-    private MessageType messageType;
+    private MessageType type;
     private String key;
     private String content;
 
@@ -25,7 +25,7 @@ public class Message implements ILocalizable
 
     public Message(MessageType messageType, String messageKey, Object... format)
     {
-        this.messageType = messageType;
+        this.setType(messageType);
         this.key = messageKey;
         this.content = messageKey;
         this.format = format;
@@ -60,22 +60,6 @@ public class Message implements ILocalizable
     }
 
     /**
-     * @return the messageType
-     */
-    public MessageType getMessageType()
-    {
-        return messageType;
-    }
-
-    /**
-     * @param messageType the messageType to set
-     */
-    public void setMessageType(MessageType messageType)
-    {
-        this.messageType = messageType;
-    }
-
-    /**
      * @return the key
      */
     public String getKey()
@@ -105,5 +89,21 @@ public class Message implements ILocalizable
     public void setContent(String content)
     {
         this.content = content;
+    }
+
+    /**
+     * @return the type
+     */
+    public MessageType getType()
+    {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(MessageType type)
+    {
+        this.type = type;
     }
 }

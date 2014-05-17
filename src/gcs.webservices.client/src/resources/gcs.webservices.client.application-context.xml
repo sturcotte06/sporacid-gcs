@@ -43,7 +43,7 @@
   <bean id="messageLocalizer" name="messageLocalizer" class="gcs.webapp.utils.app.messages.ApplicationMessageLocalizer"
     scope="singleton">
     <constructor-arg name="messagesFolderRelativePath" value="./resources" />
-    <property name="defaultLocale" value="fr-ca" />
+    <property name="defaultLocale" value="fr" />
   </bean>
 
   <!-- Custom security provider for the application modules -->

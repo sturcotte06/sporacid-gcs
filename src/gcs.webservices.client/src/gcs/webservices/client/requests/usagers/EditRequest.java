@@ -1,12 +1,12 @@
 package gcs.webservices.client.requests.usagers;
 
-import gcs.webservices.client.requests.AuthenticatedRequest;
+import gcs.webservices.client.requests.Request;
 
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
-public class EditRequest extends AuthenticatedRequest
+public class EditRequest extends Request
 {
     
 }

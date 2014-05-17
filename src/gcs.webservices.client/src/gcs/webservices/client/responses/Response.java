@@ -25,6 +25,11 @@ public class Response implements ILocalizable
         messages.add(new Message(type, messageContent, format));
     }
 
+    public void addMessage(Message message) 
+    {
+        messages.add(message);
+    }
+    
     @Override
     public void localize(IMessageLocalizer localizer)
     {

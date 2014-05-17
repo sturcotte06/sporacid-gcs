@@ -1,8 +1,6 @@
 package gcs.webservices.client.requests.membres;
 
-import gcs.webservices.client.beans.Context;
-import gcs.webservices.client.beans.SessionToken;
-import gcs.webservices.client.requests.ContextualAuthenticatedRequest;
+import gcs.webservices.client.requests.Request;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -13,7 +11,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 /**
  * @author Simon Turcotte-Langevin
  */
-public class BindRoleRequest extends ContextualAuthenticatedRequest
+public class BindRoleRequest extends Request
 {
     @NotNull(message = "membres_membreid_notnull")
     @Min(value = 1, message = "membres_membreid_positive")
@@ -26,16 +24,14 @@ public class BindRoleRequest extends ContextualAuthenticatedRequest
 
     public BindRoleRequest()
     {
-        super();
     }
 
-    public BindRoleRequest(SessionToken sessionToken, Context context, Integer membreId, String roleName)
+    public BindRoleRequest(Integer membreId, String roleName)
     {
-        super(sessionToken, context);
         this.membreId = membreId;
         this.roleName = roleName;
     }
-    
+
     /**
      * @return the membreId
      */
