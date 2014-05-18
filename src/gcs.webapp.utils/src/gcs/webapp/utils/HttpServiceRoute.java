@@ -2,12 +2,12 @@ package gcs.webapp.utils;
 
 import gcs.webapp.utils.HttpMethod;
 
-public class HandledByHttpService
+public class HttpServiceRoute
 {
     private String path;
     private HttpMethod method;
 
-    public HandledByHttpService(String path, HttpMethod method)
+    public HttpServiceRoute(String path, HttpMethod method)
     {
         this.setPath(path);
         this.setMethod(method);

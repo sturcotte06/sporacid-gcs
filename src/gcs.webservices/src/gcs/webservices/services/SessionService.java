@@ -69,7 +69,7 @@ public class SessionService extends BaseHttpService
 
     @DELETE
     @Path("/session/{ipv4Address}/{sessionKey}")
-    public Response logout(@BeanParam SessionToken sessionToken)
+    public Response invalidate(@BeanParam SessionToken sessionToken)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 

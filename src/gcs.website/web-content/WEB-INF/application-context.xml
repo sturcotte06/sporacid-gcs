@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:context="http://www.springframework.org/schema/context" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:aop="http://www.springframework.org/schema/aop"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		 	http://www.springframework.org/schema/beans/spring-beans.xsd 
 		 	http://www.springframework.org/schema/context 
@@ -11,38 +11,34 @@
             http://www.springframework.org/schema/util/spring-util.xsd
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop.xsd">
-            
+  
+  <!-- Import the webservices client application context -->
+  <import resource="classpath:gcs.webservices.client.application-context.xml"/>
+
   <!-- Allow annotation config for IoC -->
   <context:annotation-config />
 
-  <!-- Weave aspects with the code at load time -->
-<!--   <context:load-time-weaver /> -->
-  
   <!-- Bean definition for the date formatter throughout the application -->
-  <bean id="dateFormatter" name="dateFormatter" class="java.text.SimpleDateFormat"
-    scope="singleton">
+  <bean id="dateFormatter" class="java.text.SimpleDateFormat" scope="singleton">
     <constructor-arg value="dd/MM/yyyy" />
   </bean>
 
   <!-- Bean definition for the time formatter throughout the application -->
-  <bean id="timeFormatter" name="timeFormatter" class="java.text.SimpleDateFormat"
-    scope="singleton">
+  <bean id="timeFormatter" class="java.text.SimpleDateFormat" scope="singleton">
     <constructor-arg value="hh:mm" />
   </bean>
 
   <!-- Bean definition for the datetime formatter throughout the application -->
-  <bean id="datetimeFormatter" name="datetimeFormatter" class="java.text.SimpleDateFormat"
-    scope="singleton">
+  <bean id="datetimeFormatter" class="java.text.SimpleDateFormat" scope="singleton">
     <constructor-arg value="dd/MM/yyyy hh:mm" />
   </bean>
 
   <!-- Bean definition for the currency formatter throughout the application -->
-  <bean id="currencyFormatter" name="currencyFormatter" class="java.text.NumberFormat"
-    factory-method="getCurrencyInstance" scope="singleton" />
-  
-  <!--  -->
+  <bean id="currencyFormatter" class="java.text.NumberFormat" factory-method="getCurrencyInstance" scope="singleton" />
+
+  <!-- -->
   <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="staticMethod" value="gcs.webapp.utils.format.FormatterRepository.registerFormatters"/>
+    <property name="staticMethod" value="gcs.webapp.utils.format.FormatterRepository.registerFormatters" />
     <property name="arguments">
       <list>
         <map key-type="gcs.webapp.utils.format.SupportedFormatter">
@@ -54,50 +50,44 @@
       </list>
     </property>
   </bean>
-  
+
   <!-- Factory for jersey clients -->
-<!--   <bean id="jerseyClientFactory" name="jerseyClientFactory" scope="singleton"  -->
-<!--     class="gcs.webapp.utils.ws.JerseyClientFactory" /> -->
-   
+  <bean id="jerseyClientFactory" scope="singleton" class="gcs.webapp.utils.ws.AllTrustingClientFactory" />
+
   <!-- Jersey client to consume web services -->
-<!--   <bean id="jerseyClient" name="jerseyClient" scope="singleton"  -->
-<!--     class="com.sun.jersey.api.client.Client" factory-bean="jerseyClientFactory" -->
-<!--     factory-method="createClient" /> -->
-  
+  <bean id="jerseyClient" scope="prototype" class="javax.ws.rs.client.Client" factory-bean="jerseyClientFactory"
+    factory-method="createClient" />
+
   <!-- Application messages cache. This is where configured messages will be loaded. -->
-  <bean id="messageLocalizer" name="messageLocalizer"
-    class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
+  <bean id="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
     <constructor-arg name="messagesFolderRelativePath" value="./resources" />
     <property name="defaultLocale" value="fr" />
   </bean>
-  
+
   <!-- Application menus cache. This is where configured menus will be loaded. -->
-  <bean id="menuProvider" name="menuProvider"
-    class="gcs.webapp.utils.app.menus.MenuProvider" scope="singleton">
+  <bean id="menuProvider" class="gcs.webapp.utils.app.menus.MenuProvider" scope="singleton">
     <constructor-arg name="menusFolderRelativePath" value="./resources" />
     <constructor-arg name="localizer" ref="messageLocalizer" />
   </bean>
-  
+
   <!-- Requests/Responses cache to mitigate web services performances issues -->
-  <bean id="httpServiceCache" name="httpServiceCache" 
-    class="gcs.website.controllers.services.HttpServiceCache" scope="singleton">
+  <bean id="httpServiceCache" class="gcs.webservices.client.HttpServiceCache" scope="prototype">
     <!-- 300 seconds of validity for a cached response -->
     <constructor-arg value="60" />
     <property name="keyProvider">
-    	<bean class="gcs.webapp.utils.caching.providers.Base64KeyProvider" />
+      <bean class="gcs.webapp.utils.caching.providers.Base64KeyProvider" />
     </property>
   </bean>
-  
+
   <!-- String bean for the location to the web services -->
-  <bean id="serviceRepositoryUrl" name="serviceRepositoryUrl" class="java.lang.String">
-    <constructor-arg value="https://localhost:8443/services/rest"/>
+  <bean id="serviceRepositoryUrl" class="java.lang.String">
+    <constructor-arg value="https://localhost:8443/services/v1/rest" />
   </bean>
-  
+
   <!-- Authentication service provider implementation -->
-  <bean id="authenticationService" name="authenticationService"
-    class="gcs.website.controllers.services.AuthenticationService" scope="singleton">
+  <bean id="sessionServiceClient" class="gcs.webservices.client.SessionServiceClient" scope="singleton">
     <property name="serviceUrl" ref="serviceRepositoryUrl" />
-<!--     <property name="jerseyClient" ref="jerseyClient" /> -->
+    <property name="jerseyClient" ref="jerseyClient" />
     <property name="cache" ref="httpServiceCache" />
   </bean>
 </beans>

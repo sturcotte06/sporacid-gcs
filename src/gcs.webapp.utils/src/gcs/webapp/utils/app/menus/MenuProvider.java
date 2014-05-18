@@ -75,7 +75,7 @@ public class MenuProvider implements IMenuProvider
 	private Map<String, MainMenu> loadApplicationMenus(String messagesFolderAbsolutePath)
 	{
 		Map<String, MainMenu> unlocalizedMenus = new HashMap<String, MainMenu>();
-		final String appMessagesRegex = ".*\\.?application_menu\\..*\\.xml";
+		final String appMessagesRegex = ".*\\.?menu\\..*\\.xml";
 		Collection<Element> rootElements = 
 				XmlUtils.loadXmlFiles(new RegexFilenameFilter(appMessagesRegex), messagesFolderAbsolutePath);
 		

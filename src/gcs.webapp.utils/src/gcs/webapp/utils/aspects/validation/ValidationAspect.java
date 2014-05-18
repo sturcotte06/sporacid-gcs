@@ -25,14 +25,17 @@ public class ValidationAspect
     private Validator validator;
 
     @Pointcut("within(@gcs.webapp.utils.aspects.validation.Validatable *)")
-    public void validatableType() {}
-    
+    public void validatableType()
+    {}
+
     @Pointcut("execution(@gcs.webapp.utils.aspects.validation.Validatable * *(..))")
-    public void validatableMethod() {}
+    public void validatableMethod()
+    {}
 
     @Pointcut("execution(public * *(..))")
-    public void publicMethod() {}
-    
+    public void publicMethod()
+    {}
+
     @Before("validatableMethod()")
     public void beforeAnnotatedMethods(JoinPoint joinPoint) throws Throwable
     {
@@ -44,38 +47,43 @@ public class ValidationAspect
     {
         validateThenProceed(joinPoint);
     }
-    
+
     /**
      * Validates arguments of all service methods.
      * 
      * @param joinPoint
      * @throws Exception
      */
-    // @Before("execution(* gcs.webservices.services..*(..))")
     private void validateThenProceed(JoinPoint joinPoint) throws Exception
     {
+        // Get the method arguments
         Object[] arguments = joinPoint.getArgs();
-        
-        // If woven into a method that has no argument, getArgs() returns null.
-        /*if (arguments == null || arguments.length == 0) {
-            return;
-        }*/
 
         int iArg = 0;
         List<String> validatonMessageKeys = new ArrayList<>();
+
+        // Iterate through all of the method's argument
         for (Object argument : arguments) {
+            // New binding result to store validation errors
             Errors errors = new MapBindingResult(new HashMap<Object, Object>(), "arg" + (iArg + 1));
+
+            // Validate the argument
             validator.validate(argument, errors);
+
+            // Add all validation errors to the list of validation message keys
+            // (validation annotation must have the message key set as the
+            // message)
             for (ObjectError error : errors.getAllErrors()) {
                 validatonMessageKeys.add(error.getDefaultMessage());
             }
         }
-        
+
         if (!validatonMessageKeys.isEmpty()) {
+            // Validation errors exist; cannot proceed.
             throw new ValidationException(validatonMessageKeys);
         }
     }
-    
+
     /**
      * @return the validator
      */

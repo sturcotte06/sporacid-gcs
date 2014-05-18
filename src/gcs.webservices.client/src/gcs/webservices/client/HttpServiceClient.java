@@ -1,30 +1,22 @@
 package gcs.webservices.client;
 
-import gcs.webapp.utils.HandledByHttpService;
-import gcs.webapp.utils.HttpMethod;
-import gcs.webapp.utils.exceptions.ValidationException;
-import gcs.webapp.utils.reflect.ReflectionUtils;
+import java.util.Map;
+
+import gcs.webapp.utils.HttpServiceRoute;
+import gcs.webapp.utils.aspects.logging.Loggable;
+import gcs.webapp.utils.aspects.validation.Validatable;
 import gcs.webservices.client.requests.Request;
 import gcs.webservices.client.responses.Response;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-
-import org.springframework.validation.Errors;
-import org.springframework.validation.MapBindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
 
 /**
  * @author Simon Turcotte-Langevin
  */
+@Loggable
 public abstract class HttpServiceClient
 {
     /** Base url for the http service. */
@@ -33,99 +25,73 @@ public abstract class HttpServiceClient
     private Client jerseyClient;
     /** Cache for the responses. */
     private HttpServiceCache cache;
-    /** Default validator from javax to validate annotated classes. */
-    private Validator validator;
 
     /**
-     * @param request
-     */
-    protected <TRequest extends Request> void validateRequest(TRequest request)
-    {
-        final String objectName = "request";
-        Errors errors = new MapBindingResult(new HashMap<Object, Object>(), objectName);
-        validator.validate(request, errors);
-        if (!errors.hasErrors()) {
-            return;
-        }
-
-        List<ObjectError> objErrors = errors.getAllErrors();
-        List<String> validationMessageKeys = new ArrayList<>(objErrors.size());
-        for (ObjectError objError : errors.getAllErrors()) {
-            validationMessageKeys.add(objError.getDefaultMessage());
-        }
-
-        throw new ValidationException(validationMessageKeys);
-    }
-
-    /**
-     * @param metadata
+     * @param route
+     * @param classObj
      * @return
      */
-    protected <TResponse extends Response> TResponse getResponse(HandledByHttpService metadata,
-            Class<TResponse> classObj)
+    protected <TResponse extends Response> TResponse getResponse(HttpServiceRoute route, Class<TResponse> classObj)
     {
-        // Return a get response with a null request
-        return getResponse(metadata, classObj, null);
+        // Return get response with a null request and null options
+        return getResponse(route, classObj, null, null);
     }
 
     /**
-     * @param metadata
+     * @param route
+     * @param classObj
+     * @param options
+     * @return
+     */
+    protected <TResponse extends Response> TResponse getResponse(HttpServiceRoute route, Class<TResponse> classObj,
+            Map<String, Object> options)
+    {
+        // Return get response with a null request
+        return getResponse(route, classObj, null, options);
+    }
+
+    /**
+     * @param route
+     * @param classObj
+     * @param options
+     * @return
+     */
+    protected <TResponse extends Response> TResponse getResponse(HttpServiceRoute route, Class<TResponse> classObj,
+            Request request)
+    {
+        // Return a get response with null options
+        return getResponse(route, classObj, request, null);
+    }
+
+    /**
+     * @param route
      * @param classObj
      * @param request
+     * @param options
      * @return
      */
-    protected <TResponse extends Response> TResponse getResponse(HandledByHttpService metadata,
-            Class<TResponse> classObj, Request request)
+    protected <TResponse extends Response> TResponse getResponse(HttpServiceRoute route, Class<TResponse> classObj,
+            Request request, Map<String, Object> options)
     {
-        return null;
-//        TResponse response = null;
-//
-//        // Get the jersey client for this service
-//        Client client = getJerseyClient();
-//
-//        // Build the url from the metadata
-//        String url = this.getServiceUrl() + metadata.getPath();
-//
-//        // Build the web response
-//        WebResource resource = client.resource(url);
-//
-//        // If it's an http get, we cannot attach an entity. Parameters must be
-//        // sent as query strings
-//        if (metadata.getMethod() == HttpMethod.Get) {
-//            MultivaluedMap<String, String> queryParams = new MultivaluedMapImpl();
-//            Map<String, Object> objectProperties = null;
-//            try {
-//                objectProperties = ReflectionUtils.getObjectProperties(request, request.getClass());
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//
-//            if (objectProperties != null) {
-//                // Put each property values as string into the query params
-//                for (Entry<String, Object> entry : objectProperties.entrySet()) {
-//                    queryParams.add(entry.getKey(), entry.getValue().toString());
-//                }
-//            }
-//
-//            resource = resource.queryParams(queryParams);
-//        }
-//
-//        Builder responseBuilder = resource.accept(MediaType.APPLICATION_JSON);
-//
-//        // If it's not http get, attach the entity to the request as json
-//        if (metadata.getMethod() != HttpMethod.Get) {
-//            responseBuilder
-//            // Produces only json
-//                    .type(MediaType.APPLICATION_JSON)
-//                    // Set the request object
-//                    .entity(request);
-//        }
-//
-//        // Execute the http service request with the metadata method
-//        response = responseBuilder.method(metadata.getMethod().name().toUpperCase(), ClientResponse.class).getEntity(
-//                classObj);
-//
-//        return response;
+        TResponse response = null;
+
+        // Set the base url of the services
+        Invocation.Builder builder = jerseyClient.target(serviceUrl + route.getPath()).request(
+                MediaType.APPLICATION_JSON);
+
+        if (options != null) {
+            // Add all options as query string
+            for (Map.Entry<String, Object> option : options.entrySet()) {
+                builder.property(option.getKey(), option.getValue());
+            }
+        }
+
+        // Get the response from the web services
+        response = request != null
+                ? builder.method(route.getMethod().name().toUpperCase(), Entity.json(request), classObj)
+                : builder.method(route.getMethod().name().toUpperCase(), classObj);
+
+        return response;
     }
 
     /**
@@ -174,21 +140,5 @@ public abstract class HttpServiceClient
     public void setCache(HttpServiceCache cache)
     {
         this.cache = cache;
-    }
-
-    /**
-     * @return the validator
-     */
-    public Validator getValidator()
-    {
-        return validator;
-    }
-
-    /**
-     * @param validator the validator to set
-     */
-    public void setValidator(Validator validator)
-    {
-        this.validator = validator;
     }
 }

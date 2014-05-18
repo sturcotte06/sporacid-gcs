@@ -84,7 +84,7 @@ public class ModuleSecurityProvider implements IModuleSecurityProvider
 	 */
 	private void loadModuleSecurity(String moduleSecurityFolderAbsolutePath)
 	{
-		final String appMessagesRegex = ".*\\.?application_security\\.xml";
+		final String appMessagesRegex = ".*\\.?security\\.xml";
 		Collection<Element> rootElements = 
 				XmlUtils.loadXmlFiles(new RegexFilenameFilter(appMessagesRegex), moduleSecurityFolderAbsolutePath);
 		

@@ -4,9 +4,9 @@ import gcs.webapp.utils.Message;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.menus.IMenuProvider;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
-import gcs.website.controllers.services.IAuthenticationService;
-import gcs.website.controllers.services.beans.responses.LoginResponse;
-import gcs.website.controllers.services.beans.responses.Response;
+import gcs.webservices.client.ISessionServiceClient;
+import gcs.webservices.client.responses.Response;
+import gcs.webservices.client.responses.sessions.CreateResponse;
 import gcs.website.utils.SessionUtils;
 import gcs.website.views.beans.AuthenticationForm;
 import gcs.website.views.beans.WsSession;
@@ -24,25 +24,18 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author Simon Turcotte-Langevin
+ */
 @Controller
 @RequestMapping(value = "/public/**")
-public class AuthenticationController /* implements ApplicationContextAware */
+public class AuthenticationController extends BaseController
 {
-    /**
-	 * 
-	 */
-    @Resource(name = "authenticationService")
-    private IAuthenticationService authenticationService;
+    /** */
+    @Resource(name = "sessionServiceClient")
+    private ISessionServiceClient sessionServiceClient;
 
-    /**
-	 * 
-	 */
-    @Resource(name = "messageLocalizer")
-    private IMessageLocalizer messageLocalizer;
-
-    /**
-	 * 
-	 */
+    /** */
     @Resource(name = "menuProvider")
     private IMenuProvider menuProvider;
 
@@ -96,7 +89,7 @@ public class AuthenticationController /* implements ApplicationContextAware */
                 ipAddress = request.getRemoteAddr();
             }
 
-            LoginResponse response = authenticationService.login(ipAddress, form.getUsername(), form.getPassword());
+            CreateResponse response = sessionServiceClient.create(form.getUsername(), ipAddress, form.getPassword());
             if (response.isSuccess()) {
                 // Success; create a new web services session
                 WsSession wsSession = new WsSession();
@@ -133,12 +126,13 @@ public class AuthenticationController /* implements ApplicationContextAware */
         WsSession wsSession = SessionUtils.getWsSession(session);
 
         if (wsSession != null) {
-            // Remove the session from the web services
             String ipAddress = request.getHeader("X-FORWARDED-FOR");
             if (ipAddress == null) {
                 ipAddress = request.getRemoteAddr();
             }
-            Response response = authenticationService.logout(ipAddress, wsSession.getSessionKey());
+
+            // Remove the session
+            Response response = sessionServiceClient.invalidate(ipAddress, wsSession.getSessionKey());
 
             if (!response.isSuccess()) {
                 // Failure; tell the user why
@@ -186,22 +180,6 @@ public class AuthenticationController /* implements ApplicationContextAware */
     }
 
     /**
-     * @return the authenticationService
-     */
-    public IAuthenticationService getAuthenticationService()
-    {
-        return authenticationService;
-    }
-
-    /**
-     * @param authenticationService the authenticationService to set
-     */
-    public void setAuthenticationService(IAuthenticationService authenticationService)
-    {
-        this.authenticationService = authenticationService;
-    }
-
-    /**
      * @return the messageLocalizer
      */
     public IMessageLocalizer getMessageLocalizer()
@@ -231,6 +209,22 @@ public class AuthenticationController /* implements ApplicationContextAware */
     public void setMenuProvider(IMenuProvider menuProvider)
     {
         this.menuProvider = menuProvider;
+    }
+
+    /**
+     * @return the sessionServiceClient
+     */
+    public ISessionServiceClient getSessionServiceClient()
+    {
+        return sessionServiceClient;
+    }
+
+    /**
+     * @param sessionServiceClient the sessionServiceClient to set
+     */
+    public void setSessionServiceClient(ISessionServiceClient sessionServiceClient)
+    {
+        this.sessionServiceClient = sessionServiceClient;
     }
 
     /**
