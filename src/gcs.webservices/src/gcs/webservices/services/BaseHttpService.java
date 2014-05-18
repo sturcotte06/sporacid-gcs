@@ -29,8 +29,8 @@ import gcs.webservices.sessions.SessionCache;
 @Component
 @Validatable
 @Loggable(exitLevel = LoggingLevel.Information)
-// @Produces({ MediaType.APPLICATION_JSON })
-// @Consumes({ MediaType.APPLICATION_JSON })
+@Produces({ MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_JSON })
 public abstract class BaseHttpService
 {
     @Autowired

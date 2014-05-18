@@ -4,7 +4,6 @@ import gcs.webapp.utils.exceptions.NotAuthenticatedException;
 import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webapp.utils.app.security.IModuleSecurityProvider;
-import gcs.webapp.utils.aspects.logging.Loggable;
 import gcs.webapp.utils.exceptions.UnauthorizedException;
 import gcs.webservices.client.beans.SessionToken;
 import gcs.webservices.models.Membre;

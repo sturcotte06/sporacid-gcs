@@ -3,7 +3,6 @@ package gcs.webservices.services;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webservices.client.beans.SessionToken;
-import gcs.webservices.client.requests.Request;
 import gcs.webservices.client.requests.sessions.*;
 import gcs.webservices.client.responses.sessions.CreateResponse;
 import gcs.webservices.dao.IMembreDao;
@@ -16,7 +15,6 @@ import gcs.webservices.sessions.PublicSessionKey;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
@@ -69,7 +67,7 @@ public class SessionService extends BaseHttpService
         return completeRequest(responseEntity);
     }
 
-    @POST
+    @DELETE
     @Path("/session/{ipv4Address}/{sessionKey}")
     public Response invalidate(@BeanParam SessionToken sessionToken)
     {
