@@ -1,9 +1,12 @@
 package gcs.webapp.utils.security;
 
+import gcs.webapp.utils.aspects.logging.Loggable;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
+@Loggable
 public interface IEncryptionProvider 
 {
 	/**

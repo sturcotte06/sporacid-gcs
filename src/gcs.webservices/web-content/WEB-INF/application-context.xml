@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" 
-  xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
             http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -87,10 +86,16 @@
   <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect" factory-method="aspectOf">
     <property name="auditService" ref="auditService" />
   </bean>
-    
+
   <!-- Inject a validator into the validation aspect -->
   <bean id="validationAspect" class="gcs.webapp.utils.aspects.validation.ValidationAspect" factory-method="aspectOf">
     <property name="validator" ref="validatorFactory" />
+  </bean>
+
+  <!-- Inject the session cache and the security provider into the authorization aspect. -->
+  <bean id="authorizationAspect" class="gcs.webservices.aop.AuthorizationAspect" factory-method="aspectOf">
+    <property name="sessionCache" ref="sessionCache" />
+    <property name="moduleSecurityProvider" ref="moduleSecurityProvider" />
   </bean>
 
   <!-- Internal service instance for auditing -->
@@ -98,7 +103,7 @@
     <property name="auditDao" ref="auditDao" />
     <property name="sessionCache" ref="sessionCache" />
   </bean>
-  
+
   <!-- Jersey services bean so jersey does not log a fatal exception. -->
   <bean id="sessionService" class="gcs.webservices.services.SessionService" />
   <bean id="membreService" class="gcs.webservices.services.MembreService" />

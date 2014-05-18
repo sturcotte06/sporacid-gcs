@@ -30,8 +30,6 @@
   </properties>
 
   <modules>
-<!--     <module>gcs.webapp.core</module> -->
-    <module>gcs.webapp.aspects</module>
     <module>gcs.webapp.utils</module>
     <module>gcs.webapp.utils.tests</module>
     <module>gcs.website</module>
@@ -104,10 +102,6 @@
               <artifactId>log4j</artifactId>
               <version>${log4j.version}</version>
             </dependency>
-            <!-- <dependency> -->
-            <!-- <groupId>${gcs.group.id}</groupId> -->
-            <!-- <artifactId>webapp-aspects</artifactId> -->
-            <!-- </dependency> -->
           </dependencies>
           <executions>
             <execution>
@@ -126,11 +120,6 @@
             <!-- <weaveDirectory>${project.build.directory}/classes</weaveDirectory> -->
             <!-- </weaveDirectories> -->
             <aspectLibraries>
-              <!-- Put aspect libraries here -->
-              <!-- <aspectLibrary> -->
-              <!-- <groupId>${gcs.group.id}</groupId> -->
-              <!-- <artifactId>webapp-aspects</artifactId> -->
-              <!-- </aspectLibrary> -->
               <aspectLibrary>
                 <groupId>${gcs.group.id}</groupId>
                 <artifactId>webapp-utils</artifactId>

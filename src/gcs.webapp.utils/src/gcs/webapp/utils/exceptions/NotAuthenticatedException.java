@@ -11,6 +11,11 @@ public class NotAuthenticatedException extends InternalException
     /** Serialization unique identifier. */
     private static final long serialVersionUID = 1917929910851679797L;
 
+    public NotAuthenticatedException()
+    {
+        this("[void]");
+    }
+    
     /**
      * Constructor.
      * 

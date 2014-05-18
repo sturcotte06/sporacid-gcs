@@ -1,6 +1,7 @@
 package gcs.webservices.ldap.authentication;
 
 import gcs.webapp.utils.exceptions.InternalException;
+import gcs.webapp.utils.exceptions.WrongCredentialsException;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -67,7 +68,8 @@ public class ActiveDirectoryAuthenticator implements ILdapAuthenticator
             // Emit a new token
             token = new LdapAuthenticationToken(uid, loginContext);
         } catch (LoginException ex) {
-            throw new InternalException(getErrorMessageKey(ex), ex);
+            throwGoodException(ex);
+            // throw new InternalException(getErrorMessageKey(ex), ex);
         }
 
         return token;
@@ -86,37 +88,44 @@ public class ActiveDirectoryAuthenticator implements ILdapAuthenticator
             String unparsedErrorCode = matcher.group(0).replace("(", "").replace(")", "");
             return Integer.parseInt(unparsedErrorCode);
         }
-        
+
         return -1;
     }
 
     /**
-     * Returns the error message key associated with the login exception.
+     * Wraps the login exception into the good type.
      * 
      * @param loginException The login exception.
-     * @return The error message key.
+     * @throws InternalException If the exception was generated because of a
+     *             server failure.
+     * @throws WrongCredentialsException If the exception was generated because
+     *             of a client's bad credentials.
      */
-    private static String getErrorMessageKey(LoginException loginException)
+    private void throwGoodException(LoginException loginException)
     {
         Throwable inner = loginException.getCause();
-        
-        // Case 1: the message key cannot be determined because there's no cause.
+
+        // Case 1: the message key cannot be determined because there's no
+        // cause.
         if (inner == null) {
-            return "ldap_authentication_general_error";
+            throw new InternalException("ldap_authentication_general_error", loginException);
         }
-        
+
         // Case 2: the message key can be determined only by type
         // check on the inner exception.
         if (inner instanceof UnknownHostException) {
-            return "ldap_authentication_unreachable_host";
+            throw new InternalException("ldap_authentication_unreachable_host", loginException);
         }
-        
+
         // Case 3: the message key can be determined based on the error code
         // embedded in the inner exception message.
         switch (parseErrorCode(inner)) {
-            case 6: return "ldap_authentication_login_wrong_username";
-            case 24: return "ldap_authentication_login_wrong_password";
-            default: return "ldap_authentication_general_error";
+            case 6:
+                throw new WrongCredentialsException("ldap_authentication_login_wrong_username", loginException);
+            case 24:
+                throw new WrongCredentialsException("ldap_authentication_login_wrong_password", loginException);
+            default:
+                throw new InternalException("ldap_authentication_general_error", loginException);
         }
     }
 

@@ -1,5 +1,8 @@
 package gcs.webservices.services;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +15,22 @@ import gcs.webapp.utils.aspects.validation.Validatable;
 import gcs.webservices.sessions.SessionCache;
 
 /**
+ * Base class for all services. This class is :
+ * <ul>
+ * <li>{@link gcs.webapp.utils.aspects.validation.Validatable} so all public
+ * methods of http services have their arguments validated.</li>
+ * <li>{@link gcs.webapp.utils.aspects.logging.Loggable} so all public methods
+ * of http services have logging when entering the method, when exiting the
+ * method, and on exception.</li>
+ * </ul>
+ * 
  * @author Simon Turcotte-Langevin
  */
 @Component
 @Validatable
 @Loggable(exitLevel = LoggingLevel.Information)
+@Produces({ MediaType.APPLICATION_JSON })
+@Consumes({ MediaType.APPLICATION_JSON })
 public abstract class BaseHttpService
 {
     @Autowired

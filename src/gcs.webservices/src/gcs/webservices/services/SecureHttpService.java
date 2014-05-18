@@ -3,6 +3,7 @@ package gcs.webservices.services;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.IModuleSecurityProvider;
 import gcs.webapp.utils.app.security.SecureModule;
+import gcs.webservices.aop.Auditable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Simon Turcotte-Langevin
  */
+@Auditable
 @Component
 public class SecureHttpService extends BaseHttpService
 {

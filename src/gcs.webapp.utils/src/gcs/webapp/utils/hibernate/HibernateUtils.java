@@ -1,5 +1,7 @@
 package gcs.webapp.utils.hibernate;
 
+import gcs.webapp.utils.aspects.logging.Loggable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,6 +17,7 @@ import org.hibernate.criterion.Restrictions;
 /**
  * @author Simon Turcotte-Langevin, François Gagné
  */
+@Loggable
 public final class HibernateUtils
 {
     /**

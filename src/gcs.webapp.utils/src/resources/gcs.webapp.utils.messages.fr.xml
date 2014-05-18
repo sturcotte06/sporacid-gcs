@@ -2,8 +2,8 @@
 <!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
 
 <application-messages language="fr">
-  <message key="utils_jerseyclientfactory_cannotgenerateconfig" 
-           message="Impossible de créer la configuration client pour les services web jersey." />
+  <!-- Hashing message -->
+  <message key="hashing_no_algorithm_found" message="Aucun algorithme de hachage trouvé pour la valeur &quot;%s&quot;." />
            
   <!-- Exception messages -->
   <message key="exception_entitynotfound_message" message="L'entité %s qui a pour identifiant %s n'existe pas." />

@@ -1,5 +1,7 @@
 package gcs.webapp.utils.security;
 
+import gcs.webapp.utils.exceptions.InternalException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -10,6 +12,9 @@ import org.apache.commons.lang.RandomStringUtils;
  */
 public class SHA512HashProvider implements IHashProvider
 {
+    /** Algorithm name for the SHA512 hash provider. */
+    private static final String cAlgorithmName = "SHA-512";
+    
     /**
      * A TESTER
      * 
@@ -35,7 +40,7 @@ public class SHA512HashProvider implements IHashProvider
 
         try {
             // Get the object from java security to hash in SHA512
-            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            MessageDigest digest = MessageDigest.getInstance(cAlgorithmName);
 
             byte[] hashedStringBytes;
             byte[] toHashBytes = (toHash + salt).getBytes();
@@ -46,8 +51,8 @@ public class SHA512HashProvider implements IHashProvider
             // Build the hash result
             hashResult = new HashResult(new String(hashedStringBytes), salt);
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException ex) {
+            throw new InternalException("hashing_no_algorithm_found", ex, cAlgorithmName);
         }
 
         return hashResult;

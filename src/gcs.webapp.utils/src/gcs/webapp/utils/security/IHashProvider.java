@@ -1,10 +1,13 @@
 package gcs.webapp.utils.security;
 
+import gcs.webapp.utils.aspects.logging.Loggable;
+
 /**
  * 
  * @author Simon Turcotte-Langevin
  */
-public interface IHashProvider 
+@Loggable
+public interface IHashProvider  
 {
 	/**
 	 * 

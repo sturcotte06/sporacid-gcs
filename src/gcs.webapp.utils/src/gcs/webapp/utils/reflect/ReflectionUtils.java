@@ -1,5 +1,7 @@
 package gcs.webapp.utils.reflect;
 
+import gcs.webapp.utils.aspects.logging.Loggable;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Date;
@@ -8,6 +10,11 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author Simon Turcotte-Langevin
+ */
+@Loggable
 public final class ReflectionUtils
 {
 	/**

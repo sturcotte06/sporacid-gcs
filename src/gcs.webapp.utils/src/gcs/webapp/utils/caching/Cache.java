@@ -1,5 +1,6 @@
 package gcs.webapp.utils.caching;
 
+import gcs.webapp.utils.aspects.logging.Loggable;
 import gcs.webapp.utils.caching.providers.IKeyProvider;
 import gcs.webapp.utils.exceptions.ArgumentNullException;
 
@@ -10,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * A cache provider for caching requests and responses for Http services
  * @author Simon Turcotte-Langevin
  */
+@Loggable
 public abstract class Cache <K, V>
 {
 	/**

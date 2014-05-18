@@ -3,6 +3,7 @@ package gcs.webservices.providers;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 
+import javax.ws.rs.NotSupportedException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,6 +36,10 @@ public class ThrowableMapper implements ExceptionMapper<Throwable>
     @Produces({ MediaType.APPLICATION_JSON })
     public Response toResponse(Throwable exception)
     {
+        if (exception instanceof NotSupportedException) {
+            Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
+        }
+        
         logger.error("Uncaught exception in ThrowableMapper: ", exception);
         
         // Set up an error response to the client

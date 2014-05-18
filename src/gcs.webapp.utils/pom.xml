@@ -32,13 +32,6 @@
   </build>
 
   <dependencies>
-    <!-- Gcs dependencies -->
-    <dependency>
-      <groupId>sporacid.gcs.webapp</groupId>
-      <artifactId>webapp-aspects</artifactId>
-      <version>${gcs.version}</version>
-    </dependency>
-
     <!-- Apache dependencies -->
     <dependency>
       <groupId>commons-codec</groupId>

@@ -2,8 +2,8 @@
 <!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
 
 <application-messages language="en">
-  <message key="utils_jerseyclientfactory_cannotgenerateconfig" 
-           message="Couldn't create a client configuration for the jersey web services." />
+  <!-- Hashing message -->
+  <message key="hashing_no_algorithm_found" message="No hashing algorithm found for &quot;%s&quot;." />
            
   <!-- Exception messages -->
   <message key="exception_entitynotfound_message" message="The %s entity with id %s does not exist." />

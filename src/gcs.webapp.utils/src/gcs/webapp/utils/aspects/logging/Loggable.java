@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 public @interface Loggable
 {
     /** The logging level at which method entering will be logged. */
-    LoggingLevel enterLevel() default LoggingLevel.Debug;
+    LoggingLevel enterLevel()   default LoggingLevel.Debug;
     /** The logging level at which method exiting will be logged. */
-    LoggingLevel exitLevel() default LoggingLevel.Debug;
+    LoggingLevel exitLevel()    default LoggingLevel.Information;
 }

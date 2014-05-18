@@ -31,7 +31,6 @@ public class UserService extends SecureHttpService
 
     @PUT
     @Path("/user/{membreId}/preferences")
-    @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response editPreferences(EditPreferenceRequest request)
@@ -44,7 +43,6 @@ public class UserService extends SecureHttpService
 
     @PUT
     @Path("/user/{membreId}")
-    @Auditable
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response edit(EditRequest request)

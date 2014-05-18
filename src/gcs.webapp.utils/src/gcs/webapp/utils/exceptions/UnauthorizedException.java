@@ -16,6 +16,16 @@ public class UnauthorizedException extends InternalException
      * 
      * @param username Username of the user that was not authenticated.
      */
+    public UnauthorizedException()
+    {
+        this("[void]");
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param username Username of the user that is unauthorized.
+     */
     public UnauthorizedException(String username)
     {
         super("exception_unauthorized_message", username);

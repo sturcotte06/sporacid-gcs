@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -25,10 +24,10 @@ public class ValidationAspect
     /** Validator to validate objects before methods execution. */
     private Validator validator;
 
-    @Pointcut("within(@gcs.webapp.utils.aspects.logging.Loggable *)")
+    @Pointcut("within(@gcs.webapp.utils.aspects.validation.Validatable *)")
     public void validatableType() {}
     
-    @Pointcut("execution(@gcs.webapp.utils.aspects.logging.Loggable * *(..))")
+    @Pointcut("execution(@gcs.webapp.utils.aspects.validation.Validatable * *(..))")
     public void validatableMethod() {}
 
     @Pointcut("execution(public * *(..))")

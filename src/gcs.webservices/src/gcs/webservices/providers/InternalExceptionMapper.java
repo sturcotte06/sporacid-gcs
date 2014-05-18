@@ -8,6 +8,7 @@ import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webapp.utils.exceptions.NotAuthenticatedException;
 import gcs.webapp.utils.exceptions.UnauthorizedException;
 import gcs.webapp.utils.exceptions.ValidationException;
+import gcs.webapp.utils.exceptions.WrongCredentialsException;
 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -66,7 +67,8 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
 
             // Set the response as status 400
             builder = Response.status(Status.BAD_REQUEST);
-        } else if (exception instanceof UnauthorizedException) {
+        } else if (exception instanceof UnauthorizedException || 
+                   exception instanceof WrongCredentialsException) {
             // Set the response as status 403
             builder = Response.status(Status.FORBIDDEN);
         } else if (exception instanceof NotAuthenticatedException) {
