@@ -29,8 +29,8 @@ import gcs.webservices.sessions.SessionCache;
 @Component
 @Validatable
 @Loggable(exitLevel = LoggingLevel.Information)
-@Produces({ MediaType.APPLICATION_JSON })
-@Consumes({ MediaType.APPLICATION_JSON })
+// @Produces({ MediaType.APPLICATION_JSON })
+// @Consumes({ MediaType.APPLICATION_JSON })
 public abstract class BaseHttpService
 {
     @Autowired
@@ -50,7 +50,7 @@ public abstract class BaseHttpService
     {
         // Localize the response in the default application locale
         responseEntity.localize(messageLocalizer);
-        return Response.ok().entity(responseEntity).build();
+        return Response.ok(responseEntity).build();
     }
 
     /**

@@ -31,14 +31,14 @@
   <dependencies>
     <!-- Gcs dependencies -->
     <dependency>
-      <groupId>sporacid.gcs.webapp</groupId>
+      <groupId>${gcs.group.id}</groupId>
       <artifactId>webapp-utils</artifactId>
       <version>${gcs.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <version>1.0.0.RELEASE</version>
-    </dependency>
+<!--     <dependency> -->
+<!--       <groupId>org.springframework.boot</groupId> -->
+<!--       <artifactId>spring-boot-starter-test</artifactId> -->
+<!--       <version>1.0.0.RELEASE</version> -->
+<!--     </dependency> -->
   </dependencies>
 </project>

@@ -121,9 +121,9 @@
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log." suffix=".txt"/>
 
         
-        <Context docBase="gcs.website" path="/" reloadable="true" source="org.eclipse.jst.jee.server:gcs.website"/>
         
-      <Context docBase="gcs.webservices" path="/services" reloadable="true" source="org.eclipse.jst.jee.server:gcs.webservices"/></Host>
+        
+      <Context docBase="gcs.webservices" path="/services" reloadable="true" source="org.eclipse.jst.jee.server:gcs.webservices"/><Context docBase="gcs.website" path="/" reloadable="true" source="org.eclipse.jst.jee.server:gcs.website"/></Host>
       
     </Engine>
   </Service>

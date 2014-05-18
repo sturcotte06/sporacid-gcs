@@ -6,7 +6,8 @@
   <message key="hashing_no_algorithm_found" message="No hashing algorithm found for &quot;%s&quot;." />
            
   <!-- Exception messages -->
-  <message key="exception_entitynotfound_message" message="The %s entity with id %s does not exist." />
+  <message key="exception_entitynotfound_withid_message" message="The %s entity with id %s does not exist." />
+  <message key="exception_entitynotfound_message" message="The entity (or entities) do(es) not exist." />
   <message key="exception_unauthorized_message" message="The user %s is not authorized to access this section of the application." />
   <message key="exception_validation_message" message="Some arguments were invalid." />
   <message key="exception_notauthenticated_message" message="The user %s is not authenticated and must be to access this section of the application." />

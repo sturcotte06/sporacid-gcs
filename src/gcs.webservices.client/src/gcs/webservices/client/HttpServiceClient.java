@@ -2,9 +2,7 @@ package gcs.webservices.client;
 
 import java.util.Map;
 
-import gcs.webapp.utils.HttpServiceRoute;
 import gcs.webapp.utils.aspects.logging.Loggable;
-import gcs.webapp.utils.aspects.validation.Validatable;
 import gcs.webservices.client.requests.Request;
 import gcs.webservices.client.responses.Response;
 

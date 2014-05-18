@@ -9,8 +9,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 
- * @author Simon
- *
+ * @author Simon Turcotte-Langevin
  */
 public class SessionToken
 {    

@@ -38,12 +38,12 @@
   <dependencies>
     <!-- Gcs dependencies -->
     <dependency>
-      <groupId>sporacid.gcs.webapp</groupId>
+      <groupId>${gcs.group.id}</groupId>
       <artifactId>webapp-utils</artifactId>
       <version>${gcs.version}</version>
     </dependency>
     <dependency>
-      <groupId>sporacid.gcs.webapp</groupId>
+      <groupId>${gcs.group.id}</groupId>
       <artifactId>webservices-client</artifactId>
       <version>${gcs.version}</version>
     </dependency>

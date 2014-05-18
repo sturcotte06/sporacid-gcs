@@ -10,8 +10,6 @@ import gcs.webapp.utils.exceptions.UnauthorizedException;
 import gcs.webapp.utils.exceptions.ValidationException;
 import gcs.webapp.utils.exceptions.WrongCredentialsException;
 
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -26,10 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Provider
 public class InternalExceptionMapper implements ExceptionMapper<InternalException>
-{    
+{
     /** Log4j logger. */
     private static final Logger logger = Logger.getLogger(InternalExceptionMapper.class);
-    
+
     @Autowired
     protected IMessageLocalizer messageLocalizer;
 
@@ -40,11 +38,10 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
      * @param exception The internal exception that has occured.
      */
     @Override
-    @Produces({ MediaType.APPLICATION_JSON })
     public Response toResponse(InternalException exception)
     {
         logger.error("Uncaught exception in InternalExceptionMapper: ", exception);
-        
+
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         ResponseBuilder builder = null;
 
@@ -67,8 +64,7 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
 
             // Set the response as status 400
             builder = Response.status(Status.BAD_REQUEST);
-        } else if (exception instanceof UnauthorizedException || 
-                   exception instanceof WrongCredentialsException) {
+        } else if (exception instanceof UnauthorizedException || exception instanceof WrongCredentialsException) {
             // Set the response as status 403
             builder = Response.status(Status.FORBIDDEN);
         } else if (exception instanceof NotAuthenticatedException) {

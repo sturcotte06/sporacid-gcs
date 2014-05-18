@@ -1,9 +1,6 @@
 package gcs.webservices.client;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import gcs.webapp.utils.HttpMethod;
-import gcs.webapp.utils.HttpServiceRoute;
 import gcs.webservices.client.requests.sessions.CreateRequest;
 import gcs.webservices.client.responses.Response;
 import gcs.webservices.client.responses.sessions.CreateResponse;
@@ -22,7 +19,7 @@ public class SessionServiceClient extends HttpServiceClient implements ISessionS
      * @return The login response from the web services.
      */
     @Override
-    public CreateResponse create(@NotEmpty String username, @NotEmpty String ipv4Address, @NotEmpty String password)
+    public CreateResponse create(String username, String ipv4Address, String password)
     {
         final HttpServiceRoute route = new HttpServiceRoute("/session", HttpMethod.Post);
 
@@ -38,9 +35,9 @@ public class SessionServiceClient extends HttpServiceClient implements ISessionS
      * @return The logout response from the web services.
      */
     @Override
-    public Response invalidate(@NotEmpty String ipv4Address, @NotEmpty String sessionKey)
+    public Response invalidate(String ipv4Address, String sessionKey)
     {
-        final HttpServiceRoute route = new HttpServiceRoute(
+        HttpServiceRoute route = new HttpServiceRoute(
                 String.format("/session/%s/%s", ipv4Address, sessionKey), HttpMethod.Delete);
 
         return getResponse(route, Response.class);

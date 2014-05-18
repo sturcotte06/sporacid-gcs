@@ -3,9 +3,7 @@ package gcs.webservices.providers;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 
-import javax.ws.rs.NotSupportedException;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -19,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Provider
 public class ThrowableMapper implements ExceptionMapper<Throwable>
-{    
+{
     /** Log4j logger. */
     private static final Logger logger = Logger.getLogger(ThrowableMapper.class);
-    
+
     @Autowired
     protected IMessageLocalizer messageLocalizer;
 
@@ -33,17 +31,17 @@ public class ThrowableMapper implements ExceptionMapper<Throwable>
      * @param exception The exception that has occured.
      */
     @Override
-    @Produces({ MediaType.APPLICATION_JSON })
     public Response toResponse(Throwable exception)
     {
-        if (exception instanceof NotSupportedException) {
-            Response.status(Status.UNSUPPORTED_MEDIA_TYPE).build();
+        if (exception instanceof WebApplicationException) {
+            // This is an exception already mapped to an http status.
+            return ((WebApplicationException) exception).getResponse();
         }
-        
+
         logger.error("Uncaught exception in ThrowableMapper: ", exception);
-        
+
         // Set up an error response to the client
-        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();        
+        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         responseEntity.addMessage(MessageType.Error, "base_exception_fatal");
         responseEntity.localize(messageLocalizer);
 
