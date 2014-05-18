@@ -16,5 +16,5 @@ public final class CommonPatterns
      * Regex to test a gcs username validity. Current value is equal to the ets
      * permanent code AJxxxxx.
      */
-    public static final String GcsUsername = "^[aA]{1}[jJ]{1}[0-9]{5}$";
+    public static final String GcsUsername = "^[aA]{1}[A-Za-z]{1}[0-9]{5}$";
 }

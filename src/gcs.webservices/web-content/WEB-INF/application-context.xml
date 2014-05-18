@@ -10,8 +10,7 @@
   <!-- Data source informations -->
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.postgresql.Driver" />
-    <property name="url"
-      value="jdbc:postgresql://localhost:5432/GCS" />
+    <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
     <property name="password" value="bacon" />
   </bean>
@@ -74,11 +73,11 @@
   <bean id="auditDao" class="gcs.webservices.dao.AuditDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
-  
+
   <bean id="clubDao" class="gcs.webservices.dao.ClubDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
-  
+
   <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
@@ -114,7 +113,7 @@
   </bean>
 
   <!-- Jersey services bean so jersey does not log a fatal exception. -->
-  <bean id="sessionService" class="gcs.webservices.services.SessionService" />
-  <bean id="membreService" class="gcs.webservices.services.MembreService" />
-  <bean id="userService" class="gcs.webservices.services.UserService" />
+  <bean id="sessionService" class="gcs.webservices.services.SessionService" scope="singleton" />
+  <bean id="membreService" class="gcs.webservices.services.MembreService" scope="singleton" />
+  <bean id="userService" class="gcs.webservices.services.UserService" scope="singleton" />
 </beans>

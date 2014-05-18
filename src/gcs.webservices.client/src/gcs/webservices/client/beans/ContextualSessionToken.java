@@ -21,6 +21,7 @@ public class ContextualSessionToken extends SessionToken
     public ContextualSessionToken(String sessionKey, String ipv4Address, Context context)
     {
         super(sessionKey, ipv4Address);
+        this.context = context;
     }
 
     /**

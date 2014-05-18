@@ -18,7 +18,7 @@ public class PublicSessionKey implements Serializable
 	/**
 	 * Number of character for a session key.
 	 */
-	private static final int cSessionKeyLength = 64;
+	private static final int cSessionKeyLength = 24;
 	
 	/**
 	 * The key in a string format.

@@ -69,6 +69,8 @@ public class AuditAspect
         if (classObj != null) {
             SecureModule secureModule = classObj.getAnnotation(SecureModule.class);
             if (secureModule != null) {
+                // Secure module annotation was found.
+                // We can specify a message suffix for the module we're in.
                 secureModuleString = " in module " + secureModule.name();
             }
         }

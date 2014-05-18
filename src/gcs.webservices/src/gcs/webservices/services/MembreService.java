@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @SecureModule(name = "members_module")
-@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}")
+@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}/membre")
 public class MembreService extends SecureHttpService
 {
     @Autowired
@@ -34,7 +34,7 @@ public class MembreService extends SecureHttpService
 
     @POST
     @CrudOperator(CrudOperation.Create)
-    @Path("/membre")
+    // @Path("/membre")
     public Response add(@BeanParam ContextualSessionToken sessionToken, AddRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
@@ -44,7 +44,7 @@ public class MembreService extends SecureHttpService
 
     @GET
     @CrudOperator(CrudOperation.Create)
-    @Path("/membre")
+    // @Path("/membre")
     public Response getAll(@BeanParam ContextualSessionToken sessionToken) throws NamingException
     {
         DummyResponse responseEntity = new DummyResponse();
@@ -55,7 +55,7 @@ public class MembreService extends SecureHttpService
 
     @GET
     @CrudOperator(CrudOperation.Read)
-    @Path("/membre/{membreId}")
+    @Path("/{membreId}")
     public Response get(@BeanParam ContextualSessionToken sessionToken, @BeanParam GetRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
@@ -97,7 +97,7 @@ public class MembreService extends SecureHttpService
 
     @PUT
     @CrudOperator(CrudOperation.Update)
-    @Path("/membre/{membreId}/deactivate")
+    @Path("/{membreId}/deactivate")
     public Response deactivate(@BeanParam ContextualSessionToken sessionToken, DeactivateRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
@@ -107,7 +107,7 @@ public class MembreService extends SecureHttpService
 
     @PUT
     @CrudOperator(CrudOperation.Update)
-    @Path("/membre/{membreId}/role/{roleName}")
+    @Path("/{membreId}/role/{roleName}")
     public Response bindRole(@BeanParam ContextualSessionToken sessionToken, BindRoleRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();

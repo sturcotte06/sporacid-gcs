@@ -10,17 +10,20 @@ import gcs.webservices.ldap.authentication.LdapAuthenticationToken;
 import gcs.webservices.models.Membre;
 
 /**
+ * Concurrent cache sub class that stores user sessions. The sessions can only
+ * be accessed by one thread at a time.
+ * 
  * @author Simon Turcotte-Langevin
  */
 public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedSession>
 {
-    /** The hash provider to hash ip addresses and session keys. */
+    /** The hash provider to hash ip addresses and session keys together. */
     private IHashProvider hashProvider;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param validitySecondsSpan Number of second of validity for the session
+     * @param validitySecondsSpan Number of second of validity for the session.
      */
     public SessionCache(int validitySecondsSpan)
     {
@@ -28,59 +31,95 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     }
 
     /**
-     * @param ipAddress
-     * @param key
-     * @return
+     * Returns whether a session exists for the given session token.
+     * 
+     * @param sessionToken The user's session token.
+     * @return Whether a session exists or not.
      */
-    public boolean sessionExists(String ipAddress, String key)
+    public boolean sessionExists(SessionToken sessionToken)
     {
-        final PrivateSessionKey sessionKey = new PrivateSessionKey(hashProvider, key, ipAddress);
-        return this.isValueCached(sessionKey, PrivateSessionKey.class);
+        return sessionExists(sessionToken.getIpv4Address(), sessionToken.getSessionKey());
     }
 
     /**
-     * Remove a session from the application
+     * Returns whether a session exists for the given ipv4 address and session
+     * key.
      * 
-     * @param key
+     * @param ipv4Address The ipv4 address of the user.
+     * @param sessionKey The session key of the user.
+     * @return Whether a session exists or not.
      */
-    public void removeSession(String ipAddress, String key)
+    public boolean sessionExists(String ipv4Address, String sessionKey)
     {
-        final PrivateSessionKey sessionKey = new PrivateSessionKey(hashProvider, key, ipAddress);
-        final IWithCacheValueAction<AuthorizedSession> action = value -> {
-            removeCacheValue(sessionKey, PrivateSessionKey.class);
+        final PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, sessionKey, ipv4Address);
+        return this.isValueCached(privateKey, PrivateSessionKey.class);
+    }
+
+    /**
+     * Removes the session associated with the given session token.
+     * 
+     * @param sessionToken The user's session token.
+     */
+    public void removeSession(SessionToken sessionToken)
+    {
+        removeSession(sessionToken.getIpv4Address(), sessionToken.getSessionKey());
+    }
+
+    /**
+     * Removes the session associated with the given ipv4 address and session
+     * key.
+     * 
+     * @param ipv4Address The ipv4 address of the user.
+     * @param sessionKey The session key of the user.
+     */
+    public void removeSession(String ipv4Address, String sessionKey)
+    {
+        final PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, sessionKey, ipv4Address);
+        final IWithCacheValueAction<AuthorizedSession> withSession = (session) -> {
+            removeCacheValue(privateKey, PrivateSessionKey.class);
 
             try {
-                value.getAuthenticationToken().getLoginContext().logout();
+                session.getAuthenticationToken().getLoginContext().logout();
             } catch (LoginException ex) {
                 // Nothing we can do
             }
         };
 
-        this.withCacheValue(sessionKey, PrivateSessionKey.class, action);
+        // Do the actual remove
+        this.withCacheValue(privateKey, PrivateSessionKey.class, withSession);
     }
 
     /**
-     * Create a session within the application for a user
+     * Creates a new session in the session cache. A new session need the ip
+     * address of the user, its Membre entity from the database and an ldap
+     * authentication token that validates the identity of the user.
      * 
-     * @param username
+     * @param ipv4Address The ipv4 address of the user.
+     * @param membre The membre entity from the database for the user.
+     * @param token The ldap token generated for the user.
+     * @return The public session key to access the session in the future.
      */
-    public PublicSessionKey createSessionFor(String ipAddress, Membre membreInfo, LdapAuthenticationToken token)
-    {        
+    public PublicSessionKey createSessionFor(String ipv4Address, Membre membre, LdapAuthenticationToken token)
+    {
+
         // Generate a new unique session key
         PublicSessionKey publicKey = PublicSessionKey.generate();
 
-        AuthorizedSession session = new AuthorizedSession(membreInfo, token);
-        PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, publicKey.getKey(), ipAddress);
+        AuthorizedSession session = new AuthorizedSession(membre, token);
+        PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, publicKey.getKey(), ipv4Address);
 
         // Cache the newly create session
         this.cacheValue(privateKey, PrivateSessionKey.class, session);
-        
+
         return publicKey;
     }
 
     /**
-     * @param sessionToken
-     * @param action
+     * Executes a given action with a session while having an exclusive lock on
+     * it.
+     * 
+     * @param sessionToken The user's session token.
+     * @param action The action to take with the session.
      */
     public void withSession(SessionToken sessionToken, IWithCacheValueAction<AuthorizedSession> action)
     {
@@ -88,13 +127,16 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     }
 
     /**
-     * @param ipAddress
-     * @param key
-     * @param action
+     * Executes a given action with a session while having an exclusive lock on
+     * it.
+     * 
+     * @param ipv4Address The ipv4 address of the user.
+     * @param sessionKey The session key of the user.
+     * @param action The action to take with the session.
      */
-    public void withSession(String ipAddress, String key, IWithCacheValueAction<AuthorizedSession> action)
+    public void withSession(String ipv4Address, String sessionKey, IWithCacheValueAction<AuthorizedSession> action)
     {
-        PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, key, ipAddress);
+        PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, sessionKey, ipv4Address);
         withCacheValue(privateKey, PrivateSessionKey.class, action);
     }
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import gcs.webapp.utils.aspects.logging.Loggable;
-import gcs.webapp.utils.aspects.logging.LoggingLevel;
 import gcs.webapp.utils.aspects.validation.Validatable;
 import gcs.webservices.sessions.SessionCache;
 
@@ -21,14 +20,14 @@ import gcs.webservices.sessions.SessionCache;
  * methods of http services have their arguments validated.</li>
  * <li>{@link gcs.webapp.utils.aspects.logging.Loggable} so all public methods
  * of http services have logging when entering the method, when exiting the
- * method, and on exception.</li>
+ * method and on exception.</li>
  * </ul>
  * 
  * @author Simon Turcotte-Langevin
  */
 @Component
 @Validatable
-@Loggable(exitLevel = LoggingLevel.Information)
+@Loggable
 @Produces({ MediaType.APPLICATION_JSON })
 @Consumes({ MediaType.APPLICATION_JSON })
 public abstract class BaseHttpService
@@ -50,6 +49,7 @@ public abstract class BaseHttpService
     {
         // Localize the response in the default application locale
         responseEntity.localize(messageLocalizer);
+        
         return Response.ok(responseEntity).build();
     }
 
@@ -67,5 +67,21 @@ public abstract class BaseHttpService
     public void setSessionCache(SessionCache sessionCache)
     {
         this.sessionCache = sessionCache;
+    }
+
+    /**
+     * @return the messageLocalizer
+     */
+    public IMessageLocalizer getMessageLocalizer()
+    {
+        return messageLocalizer;
+    }
+
+    /**
+     * @param messageLocalizer the messageLocalizer to set
+     */
+    public void setMessageLocalizer(IMessageLocalizer messageLocalizer)
+    {
+        this.messageLocalizer = messageLocalizer;
     }
 }

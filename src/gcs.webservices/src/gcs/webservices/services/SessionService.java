@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Path("/")
+@Path("/session")
 public class SessionService extends BaseHttpService
 {
     @Autowired
@@ -35,7 +35,7 @@ public class SessionService extends BaseHttpService
     private ILdapSearcher ldapSearcher;
 
     @POST
-    @Path("/session")
+    // @Path("/session")
     public Response create(CreateRequest request)
     {
         CreateResponse responseEntity = new CreateResponse();
@@ -68,18 +68,20 @@ public class SessionService extends BaseHttpService
     }
 
     @DELETE
-    @Path("/session/{ipv4Address}/{sessionKey}")
+    @Path("/{ipv4Address}/{sessionKey}")
     public Response invalidate(@BeanParam SessionToken sessionToken)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
 
         // Remove the session from the cache; Any action taken
-        // from now on with the previous key will be refused
-        sessionCache.removeSession(sessionToken.getIpv4Address(), sessionToken.getSessionKey());
-        responseEntity.addMessage(MessageType.Information, "session_logout_success");
+        // from now on with this session key will be refused.
+        if (sessionCache.sessionExists(sessionToken)) {
+            sessionCache.removeSession(sessionToken);
+        }
 
         // Set the success flag in the response
         responseEntity.setSuccess(true);
+        responseEntity.addMessage(MessageType.Information, "session_logout_success");
 
         return completeRequest(responseEntity);
     }
@@ -114,5 +116,21 @@ public class SessionService extends BaseHttpService
     public void setMembreDao(IMembreDao membreDao)
     {
         this.membreDao = membreDao;
+    }
+
+    /**
+     * @return the ldapSearcher
+     */
+    public ILdapSearcher getLdapSearcher()
+    {
+        return ldapSearcher;
+    }
+
+    /**
+     * @param ldapSearcher the ldapSearcher to set
+     */
+    public void setLdapSearcher(ILdapSearcher ldapSearcher)
+    {
+        this.ldapSearcher = ldapSearcher;
     }
 }
