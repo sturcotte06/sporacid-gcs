@@ -40,13 +40,8 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
     @Override
     public Response toResponse(InternalException exception)
     {
-        logger.error("Uncaught exception in InternalExceptionMapper: ", exception);
-
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         ResponseBuilder builder = null;
-
-        // Localize the exception
-        // exception.localize(messageLocalizer);
 
         // Add the localized message to the response's messages.
         responseEntity.addMessage(MessageType.Error, exception.getMessageKey());
@@ -77,6 +72,10 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
 
         // Localize the response entity
         responseEntity.localize(messageLocalizer);
+
+        // Localize the exception and log it
+        exception.localize(messageLocalizer);
+        logger.error("Uncaught exception in InternalExceptionMapper: ", exception);
 
         // Return the response with the error status and the response entity
         return builder.entity(responseEntity).build();

@@ -1,7 +1,7 @@
-package gcs.webservices.aop;
+package gcs.webservices.aspects;
 
 import gcs.webapp.utils.app.security.SecureModule;
-import gcs.webservices.aop.services.IAuditService;
+import gcs.webservices.aspects.services.IAuditService;
 import gcs.webservices.client.beans.SessionToken;
 
 import org.apache.log4j.Logger;
@@ -11,6 +11,10 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
+/**
+ * 
+ * @author Simon Turcotte-Langevin
+ */
 @Aspect
 public class AuditAspect
 {
@@ -20,11 +24,11 @@ public class AuditAspect
     /** Audit service that handles audits. */
     private IAuditService auditService;
 
-    @Pointcut("within(@gcs.webservices.aop.Auditable *)")
+    @Pointcut("within(@gcs.webservices.aspects.Auditable *)")
     public void auditableType()
     {}
 
-    @Pointcut("execution(@gcs.webservices.aop.Auditable * *(..))")
+    @Pointcut("execution(@gcs.webservices.aspects.Auditable * *(gcs.webservices.client.beans.SessionToken, ..))")
     public void auditableMethod()
     {}
 
@@ -32,13 +36,13 @@ public class AuditAspect
     public void publicMethod()
     {}
 
-    @Before("auditableMethod() && args(sessionToken)")
+    @Before("auditableMethod() && args(sessionToken, ..)")
     public void beforeAnnotatedMethods(JoinPoint joinPoint, SessionToken sessionToken)
     {
         auditThenProceed(joinPoint, sessionToken);
     }
 
-    @Before("auditableType() && publicMethod() && args(sessionToken)")
+    @Before("auditableType() && publicMethod() && args(sessionToken, ..)")
     public void beforeAnnotatedTypes(JoinPoint joinPoint, SessionToken sessionToken)
     {
         auditThenProceed(joinPoint, sessionToken);

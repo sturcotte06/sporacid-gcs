@@ -18,17 +18,21 @@ import org.apache.commons.lang.NotImplementedException;
  */
 public class ConcurrentCache<K, V> extends Cache<K, V>
 {
+    /** Map of keys and their corresponding lock. */
 	private final Map<CacheKey, Lock> cacheLocks; 
 	
+	/**
+	 * Constructor.
+	 * @param validitySecondsSpan
+	 */
 	public ConcurrentCache(int validitySecondsSpan) 
 	{
-		super(validitySecondsSpan);
-		
+		super(validitySecondsSpan);		
 		this.cacheLocks = new ConcurrentHashMap<>();
 	}
 	
 	@Override
-	public synchronized void cacheValue(K keyObj, Class<K> keyClass, V value)
+	public void cacheValue(K keyObj, Class<K> keyClass, V value)
 	{
 		if (keyObj == null) {
 			throw new ArgumentNullException("keyObj");
@@ -52,12 +56,12 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 	}
 	
 	@Override
-	public synchronized V getCacheValue(K keyObj, Class<K> keyClass)
+	public V getCacheValue(K keyObj, Class<K> keyClass)
 	{
 		throw new NotImplementedException("Use acquireCacheValue() and releaseCacheValue() instead.");
 	}
 		
-	public synchronized void withCacheValue(K keyObj, Class<K> keyClass, IWithCacheValueAction<V> action)
+	public void withCacheValue(K keyObj, Class<K> keyClass, IWithCacheValueAction<V> action)
 	{
       if (keyObj == null) {
          throw new ArgumentNullException("keyObj");
@@ -72,11 +76,15 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
       }
       
       V value = acquireCacheValue(keyObj, keyClass);
-      action.withCacheValueDo(value);
-      releaseCacheValue(keyObj, keyClass);
+      
+      try {
+          action.withCacheValueDo(value);
+      } finally {
+          releaseCacheValue(keyObj, keyClass);
+      }
 	}
 	
-	private synchronized V acquireCacheValue(K keyObj, Class<K> keyClass)
+	private V acquireCacheValue(K keyObj, Class<K> keyClass)
 	{
 		if (keyObj == null) {
 			throw new ArgumentNullException("keyObj");
@@ -87,15 +95,25 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 		}
 		
 		CacheKey key = getKeyProvider().toKey(keyObj, keyClass);
-		if (cacheLocks.containsKey(key)) {
-			Lock lock = cacheLocks.get(key);
-			lock.lock();
-		}
+		Lock lock = null;
 		
-		return super.getCacheValue(keyObj, keyClass);
+		try {
+	        if (cacheLocks.containsKey(key)) {
+	            lock = cacheLocks.get(key);
+	            lock.lock();
+	        }
+	        
+	        return super.getCacheValue(keyObj, keyClass);
+		} catch (Throwable t) {
+		    if (lock != null) {
+		        lock.unlock();
+		    }
+		    
+		    throw t;
+		}
 	}
 	
-	private synchronized void releaseCacheValue(K keyObj, Class<K> keyClass)
+	private void releaseCacheValue(K keyObj, Class<K> keyClass)
 	{
 		if (keyObj == null) {
 			throw new ArgumentNullException("keyObj");
@@ -113,7 +131,7 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 	}
 	
 	@Override
-	public synchronized void removeCacheValue(K keyObj, Class<K> keyClass)
+	public void removeCacheValue(K keyObj, Class<K> keyClass)
 	{
 		if (keyObj == null) {
 			throw new ArgumentNullException("keyObj");
@@ -123,15 +141,23 @@ public class ConcurrentCache<K, V> extends Cache<K, V>
 			throw new ArgumentNullException("keyClass");
 		}
 		
+		// Compute the key with the key provider
 		CacheKey key = getKeyProvider().toKey(keyObj, keyClass);
-		if (cacheLocks.containsKey(key)) {
-			Lock lock = cacheLocks.get(key);
-			lock.lock();
-			cacheLocks.remove(key);
-			lock.unlock();
-			lock = null;
-		}
-		
-		super.removeCacheValue(keyObj, keyClass);
+		Lock lock = null;
+
+        try {
+    		if (cacheLocks.containsKey(key)) {
+			    lock = cacheLocks.get(key);
+			    lock.lock();
+			    
+			    cacheLocks.remove(key);
+		        removeCacheValue(keyObj, keyClass);
+			}
+    		
+		} finally {
+            if (lock != null) {
+                lock.unlock();
+            }
+        }
 	}
 }

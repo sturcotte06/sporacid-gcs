@@ -1,7 +1,6 @@
 package gcs.webservices.ldap.search;
 
 /**
- * 
  * @author Simon Turcotte-Langevin
  */
 public class LdapUser
@@ -10,15 +9,42 @@ public class LdapUser
     private String email;
     private String firstName;
     private String lastName;
-    
+
+    /**
+     * Constructor
+     */
+    public LdapUser()
+    {}
+
+    /**
+     * Constructor
+     * 
+     * @param username
+     * @param email
+     * @param firstName
+     * @param lastName
+     */
     public LdapUser(String username, String email, String firstName, String lastName)
+    {
+        set(username, email, firstName, lastName);
+    }
+
+    /**
+     * Set many properties all at once.
+     * 
+     * @param username
+     * @param email
+     * @param firstName
+     * @param lastName
+     */
+    public void set(String username, String email, String firstName, String lastName)
     {
         this.username = username;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    
+
     /**
      * @return the username
      */
@@ -26,7 +52,7 @@ public class LdapUser
     {
         return username;
     }
-    
+
     /**
      * @param username the username to set
      */
@@ -34,7 +60,7 @@ public class LdapUser
     {
         this.username = username;
     }
-    
+
     /**
      * @return the email
      */
@@ -42,7 +68,7 @@ public class LdapUser
     {
         return email;
     }
-    
+
     /**
      * @param email the email to set
      */
@@ -50,7 +76,7 @@ public class LdapUser
     {
         this.email = email;
     }
-    
+
     /**
      * @return the firstName
      */
@@ -58,7 +84,7 @@ public class LdapUser
     {
         return firstName;
     }
-    
+
     /**
      * @param firstName the firstName to set
      */
@@ -66,7 +92,7 @@ public class LdapUser
     {
         this.firstName = firstName;
     }
-    
+
     /**
      * @return the lastName
      */
@@ -74,7 +100,7 @@ public class LdapUser
     {
         return lastName;
     }
-    
+
     /**
      * @param lastName the lastName to set
      */

@@ -74,8 +74,8 @@ public abstract class HttpServiceClient
         TResponse response = null;
 
         // Set the base url of the services
-        Invocation.Builder builder = jerseyClient.target(serviceUrl + route.getPath()).request(
-                MediaType.APPLICATION_JSON);
+        Invocation.Builder builder = jerseyClient.target(serviceUrl).path(route.getPath())
+                .request(MediaType.APPLICATION_JSON);
 
         if (options != null) {
             // Add all options as query string

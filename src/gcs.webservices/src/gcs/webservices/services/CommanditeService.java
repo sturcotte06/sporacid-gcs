@@ -18,14 +18,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @SecureModule(name = "sponsors_module")
-@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}")
+@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}/commandite")
 public class CommanditeService extends SecureHttpService
 {
     @Autowired
     private ICommanditeDao commanditeDao;
 
     @GET
-    @Path("/commandite")
     @CrudOperator(CrudOperation.Read)
     public Response getAll(@BeanParam ContextualSessionToken sessionToken)
     {

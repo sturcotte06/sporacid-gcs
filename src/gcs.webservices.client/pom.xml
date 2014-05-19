@@ -19,6 +19,9 @@
     </resources>
     <plugins>
       <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
       <plugin>
@@ -35,10 +38,10 @@
       <artifactId>webapp-utils</artifactId>
       <version>${gcs.version}</version>
     </dependency>
-<!--     <dependency> -->
-<!--       <groupId>org.springframework.boot</groupId> -->
-<!--       <artifactId>spring-boot-starter-test</artifactId> -->
-<!--       <version>1.0.0.RELEASE</version> -->
-<!--     </dependency> -->
+    <!-- <dependency> -->
+    <!-- <groupId>org.springframework.boot</groupId> -->
+    <!-- <artifactId>spring-boot-starter-test</artifactId> -->
+    <!-- <version>1.0.0.RELEASE</version> -->
+    <!-- </dependency> -->
   </dependencies>
 </project>

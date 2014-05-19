@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.stereotype.Component;
 
 @Component
-@Path("/session/{ipv4Address}/{sessionKey}")
+@Path("/session/{ipv4Address}/{sessionKey}/user")
 public class UserService extends BaseHttpService
 {
     // @GET
@@ -28,7 +28,7 @@ public class UserService extends BaseHttpService
     // }
 
     @PUT
-    @Path("/user/{membreId}/preferences")
+    @Path("/{membreId}/preferences")
     @CrudOperator(CrudOperation.Update)
     public Response editPreferences(EditPreferenceRequest request)
     {
@@ -37,7 +37,7 @@ public class UserService extends BaseHttpService
     }
 
     @PUT
-    @Path("/user/{membreId}")
+    @Path("/{membreId}")
     @CrudOperator(CrudOperation.Update)
     public Response edit(EditRequest request)
     {

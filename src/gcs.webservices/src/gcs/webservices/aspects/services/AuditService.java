@@ -1,4 +1,4 @@
-package gcs.webservices.aop.services;
+package gcs.webservices.aspects.services;
 
 import java.util.Date;
 

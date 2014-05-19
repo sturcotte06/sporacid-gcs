@@ -3,6 +3,8 @@
 	<name>gcs.website</name>
 	<comment></comment>
 	<projects>
+		<project>gcs.webapp.utils</project>
+		<project>gcs.webservices.client</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

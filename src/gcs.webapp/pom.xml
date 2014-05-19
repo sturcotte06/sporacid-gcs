@@ -21,11 +21,11 @@
     <war.plugin.version>2.4</war.plugin.version>
     <!-- Dependencies version -->
     <jersey.version>2.8</jersey.version>
-    <spring.version>4.0.2.RELEASE</spring.version>
+    <spring.version>4.0.3.RELEASE</spring.version>
     <spring.security.version>3.2.3.RELEASE</spring.security.version>
     <aspectj.version>1.8.0</aspectj.version>
-    <hibernate.version>4.3.4.Final</hibernate.version>
-    <tomcat.version>7.0.42</tomcat.version>
+    <hibernate.version>4.3.5.Final</hibernate.version>
+    <tomcat.version>7.0.53</tomcat.version>
     <log4j.version>1.2.17</log4j.version>
   </properties>
 
@@ -34,6 +34,7 @@
     <module>gcs.webapp.utils.tests</module>
     <module>gcs.website</module>
     <module>gcs.webservices</module>
+    <module>gcs.webservices.client</module>
   </modules>
 
   <build>
@@ -114,8 +115,6 @@
           <configuration>
             <XnoInline>true</XnoInline>
             <showWeaveInfo>true</showWeaveInfo>
-            <outxml>true</outxml>
-            <outxmlfile>C:\aspectj.build.xml</outxmlfile>
             <!-- <weaveDirectories> -->
             <!-- <weaveDirectory>${project.build.directory}/classes</weaveDirectory> -->
             <!-- </weaveDirectories> -->

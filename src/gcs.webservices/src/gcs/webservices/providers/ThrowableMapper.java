@@ -3,7 +3,7 @@ package gcs.webservices.providers;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -33,11 +33,6 @@ public class ThrowableMapper implements ExceptionMapper<Throwable>
     @Override
     public Response toResponse(Throwable exception)
     {
-        if (exception instanceof WebApplicationException) {
-            // This is an exception already mapped to an http status.
-            return ((WebApplicationException) exception).getResponse();
-        }
-
         logger.error("Uncaught exception in ThrowableMapper: ", exception);
 
         // Set up an error response to the client
@@ -45,6 +40,7 @@ public class ThrowableMapper implements ExceptionMapper<Throwable>
         responseEntity.addMessage(MessageType.Error, "base_exception_fatal");
         responseEntity.localize(messageLocalizer);
 
-        return Response.status(Status.INTERNAL_SERVER_ERROR).entity(responseEntity).build();
+        return Response.status(Status.INTERNAL_SERVER_ERROR)
+                .type(MediaType.APPLICATION_JSON).entity(responseEntity).build();
     }
 }

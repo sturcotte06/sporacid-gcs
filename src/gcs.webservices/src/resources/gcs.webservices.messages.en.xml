@@ -6,19 +6,18 @@
   <message key="base_exception_fatal"
     message="There was a fatal exception while trying to serve your request. Please contact the system administrator." />
   <!-- Session service messages -->
-  <message key="session_create_success" message="The authentication was successful." />
-  <message key="session_logout_success" message="The log out was successful." />
+  <message key="session_create_success" message="The session creation was successful." />
+  <message key="session_invalidate_success" message="The session invalidation was successful." />
   <!-- Members service messages -->
   <message key="members_get_member_successful" message="The get member request was successful." />
-  <message key="members_get_member_invalid_request" message="The get member request was invalid." />
-  <!-- Security messages -->
-  <message key="security_authentication_required" message="Authentication is mandatory for this operation." />
-  <message key="security_denied_access" message="User does not have rights." />
+  <message key="members_add_member_successful" message="The add member request was successful." />
   <!-- Ldap Authentication messages -->
   <message key="ldap_authentication_general_error" message="The username is invalid." />
   <message key="ldap_authentication_unreachable_host" message="The ldap system could not be reached. Please contact the system administrator." />
   <message key="ldap_authentication_login_wrong_username" message="The username is invalid." />
   <message key="ldap_authentication_login_wrong_password" message="The password is invalid." />
   <!-- Ldap search messages -->
-  <message key="ldap_search_general_error" message="The username is invalid." />
+  <message key="ldap_search_general_error" message="The application was unable to search the ldap system." />
+  <!-- Utility service -->
+  <message key="utility_generatecsv_unsupported" message="Only json arrays are supported" />
 </application-messages>

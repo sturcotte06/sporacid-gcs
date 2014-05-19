@@ -1,14 +1,18 @@
 package gcs.webservices.services;
 
+import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
+import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webservices.client.beans.ContextualSessionToken;
 import gcs.webservices.client.requests.membres.*;
 import gcs.webservices.client.responses.DummyResponse;
 import gcs.webservices.dao.IMembreDao;
 import gcs.webservices.ldap.search.ILdapSearcher;
+import gcs.webservices.ldap.search.LdapUser;
 import gcs.webservices.ldap.search.SearchBy;
+import gcs.webservices.models.Membre;
 
 import javax.naming.NamingException;
 import javax.ws.rs.BeanParam;
@@ -34,17 +38,48 @@ public class MembreService extends SecureHttpService
 
     @POST
     @CrudOperator(CrudOperation.Create)
-    // @Path("/membre")
     public Response add(@BeanParam ContextualSessionToken sessionToken, AddRequest request)
     {
+        LdapUser ldapUser = new LdapUser();
+        boolean ldapUserFound = false;
+
+        // Search the ldap for all criterion defined in the ldap search.
+        SearchBy[] criterion = SearchBy.values();
+        for (SearchBy criteria : criterion) {
+            // Try to search the user for the current criteria
+            ldapUserFound = ldapSearcher.trySearchUser(request.getLdapSearchString(), criteria, ldapUser);
+            if (ldapUserFound) {
+                // User was found. No need to search further.
+                break;
+            }
+        }
+
+        if (!ldapUserFound) {
+            // We searched the ldap for the user for all supported criterion.
+            // It was not found, nothing we can do.
+            throw new EntityNotFoundException("ldap user", request.getLdapSearchString());
+        }
+
+        // Create a new membre from the information of the ldap user
+        Membre membreToAdd = new Membre();
+        membreToAdd.setCodePermanent(ldapUser.getUsername());
+        membreToAdd.setCourriel(ldapUser.getEmail());
+        membreToAdd.setPrenom(ldapUser.getFirstName());
+        membreToAdd.setNom(ldapUser.getLastName());
+
+        // TODO add the membre to the database using membreDao
+        // membreDao.addMembre(membreToAdd);
+
+        // Set the success flag in the response
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
+        responseEntity.addMessage(MessageType.Information, "members_add_member_successful");
+        responseEntity.setSuccess(true);
 
         return completeRequest(responseEntity);
     }
 
     @GET
     @CrudOperator(CrudOperation.Create)
-    // @Path("/membre")
     public Response getAll(@BeanParam ContextualSessionToken sessionToken) throws NamingException
     {
         DummyResponse responseEntity = new DummyResponse();
@@ -52,45 +87,13 @@ public class MembreService extends SecureHttpService
 
         return completeRequest(responseEntity);
     }
-
+    
     @GET
     @CrudOperator(CrudOperation.Read)
     @Path("/{membreId}")
     public Response get(@BeanParam ContextualSessionToken sessionToken, @BeanParam GetRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
-
-        // if (request != null) {
-        // // Get the session from the session cache
-        // AuthorizedSession session = sessionCache.acquireSession(request);
-        //
-        // if (session != null) {
-        // // User is authenticated;
-        // // check his role rights on the current module and crud op
-        // // if he has rights, proceed
-        // CrudOperator operator =
-        // this.resolveOperatorMetadata(MembreService.class);
-        // if (/*this.hasRights(session.getRoleName(), operator,
-        // MembreService.class)*/true) {
-        // // Membre membre = membreDao.getMember(request.getMembreId());
-        // // responseEntity.setMembre(membre);
-        // responseEntity.addMessage(MessageType.Information,
-        // "members_get_member_successful");
-        //
-        // // Set the success flag in the response
-        // responseEntity.setSuccess(true);
-        // } else {
-        // responseEntity.addMessage(MessageType.Error,
-        // "members_get_member_invalid_request");
-        // }
-        // } else {
-        // responseEntity.addMessage(MessageType.Error,
-        // "security_authentication_required");
-        // }
-        // } else {
-        // responseEntity.addMessage(MessageType.Error,
-        // "security_denied_access");
-        // }
 
         return completeRequest(responseEntity);
     }

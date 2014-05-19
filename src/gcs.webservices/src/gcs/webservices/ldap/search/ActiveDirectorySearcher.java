@@ -24,9 +24,12 @@
  */
 package gcs.webservices.ldap.search;
 
+import gcs.webapp.utils.exceptions.ArgumentNullException;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.exceptions.InternalException;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -47,10 +50,12 @@ import org.apache.log4j.Logger;
  * @author <a href="mailto:jeeva@myjeeva.com">Jeevanandam Madanagopal</a>
  * @copyright &copy; 2010-2012 www.myjeeva.com
  */
-public class ActiveDirectorySearcher implements ILdapSearcher
+public class ActiveDirectorySearcher implements ILdapSearcher, Closeable
 {
-    // Logger
+    /** Log4j logger. */
     private static final Logger logger = Logger.getLogger(ActiveDirectorySearcher.class);
+    /** The base filter where the user search begins. */
+    private static final String cBaseFilter = "(&((&(objectCategory=Person)(objectClass=User)))";
 
     // required private variables
     private Properties properties;
@@ -60,12 +65,8 @@ public class ActiveDirectorySearcher implements ILdapSearcher
             "mail", // email
             "givenName", // first name
             "sn", // last name
-    /* "cn", "mail", "objectClass", "objectCategory", "memberOf", "objectGUID",
-     * "objectSid", "distinguishedName", "userPrincipalName", "sAMAccountType",
-     * "userAccountControl" */
     };
     private String domainBase;
-    private String baseFilter = "(&((&(objectCategory=Person)(objectClass=User)))";
 
     /**
      * constructor with parameter for initializing a LDAP context
@@ -118,7 +119,9 @@ public class ActiveDirectorySearcher implements ILdapSearcher
     private NamingEnumeration<SearchResult> searchUserInternal(String searchValue, SearchBy searchBy, String searchBase)
     {
         String filter = getFilter(searchValue, searchBy);
-        String base = (null == searchBase) ? domainBase : getDomainBase(searchBase);
+        String base = (null == searchBase)
+                ? domainBase
+                : getDomainBase(searchBase);
 
         try {
             return this.dirContext.search(base, filter, this.searchCtls);
@@ -133,44 +136,101 @@ public class ActiveDirectorySearcher implements ILdapSearcher
      * 
      * @param searchValue The value for the search (example: AJ12345).
      * @param searchBy To ldap what property the value should be mapped to.
-     * @param searchBase The domain controllers string (example:
-     *            dc=ens,dc=etsmtl,dc=ca).
      * @return The user with information filled from the ldap.
      */
     @Override
     public LdapUser searchUser(String searchValue, SearchBy searchBy)
     {
-        NamingEnumeration<SearchResult> results = searchUserInternal(searchValue, searchBy, null);
+        LdapUser ldapUser = new LdapUser();
+        boolean found = trySearchUser(searchValue, searchBy, ldapUser);
+        
+        if (!found) {
+            // User was not found
+            throw new EntityNotFoundException("active directory user", searchValue);
+        }
+
+        return ldapUser;
+
+        /* NamingEnumeration<SearchResult> results =
+         * searchUserInternal(searchValue, searchBy, null); try { if
+         * (results.hasMore()) { SearchResult result = results.next();
+         * Attributes attrs = result.getAttributes(); String username =
+         * attrs.get(returnAttributes[0]).get().toString(); String email =
+         * attrs.get(returnAttributes[1]).get().toString(); String firstName =
+         * attrs.get(returnAttributes[2]).get().toString(); String lastName =
+         * attrs.get(returnAttributes[3]).get().toString();
+         * 
+         * return new LdapUser(username, email, firstName, lastName); }
+         * 
+         * // User was not found throw new
+         * EntityNotFoundException("active directory user", searchValue); }
+         * catch (NamingException ex) { throw new
+         * InternalException("ldap_search_general_error", ex); } */
+    }
+
+    /**
+     * Search the ldap for a user with the given searchValue for the searchBy
+     * property. The search will be done in the searchBase domain controllers.
+     * This method will not throw if the user is not found.
+     * 
+     * @param searchValue The value for the search (example: AJ12345).
+     * @param searchBy To what ldap property the value should be mapped to.
+     * @param outUser The user reference thet will be filled from the ldap.
+     * @return Whether the user was found or not.
+     */
+    @Override
+    public boolean trySearchUser(String searchValue, SearchBy searchBy, LdapUser outUser)
+    {
+        if (searchValue == null || searchValue.isEmpty()) {
+            throw new ArgumentNullException("searchValue");
+        }
+
+        if (outUser == null) {
+            throw new ArgumentNullException("outUser");
+        }
+
+        NamingEnumeration<SearchResult> results = null;
         try {
+            // Call the search user internal method to get an enumeration of
+            // results
+            results = searchUserInternal(searchValue, searchBy, null);
+
+            // If there's at least one result
             if (results.hasMore()) {
+                // Get the result
                 SearchResult result = results.next();
+
+                // Get its attributes
                 Attributes attrs = result.getAttributes();
+
+                // Fetch all useful informations from the attributes
                 String username = attrs.get(returnAttributes[0]).get().toString();
                 String email = attrs.get(returnAttributes[1]).get().toString();
                 String firstName = attrs.get(returnAttributes[2]).get().toString();
                 String lastName = attrs.get(returnAttributes[3]).get().toString();
 
-                return new LdapUser(username, email, firstName, lastName);
+                // Set all fetched properties to the ldap user
+                outUser.set(username, email, firstName, lastName);
+
+                // User was found
+                return true;
             }
 
             // User was not found
-            throw new EntityNotFoundException("active directory user", searchValue);
+            return false;
         } catch (NamingException ex) {
+            // Wrap the exception in a more genric exception for the application
             throw new InternalException("ldap_search_general_error", ex);
-        }
-    }
-
-    /**
-     * closes the LDAP connection with Domain controller
-     */
-    public void closeLdapConnection()
-    {
-        try {
-            if (dirContext != null)
-                dirContext.close();
-        } catch (NamingException ex) {
-            // Nothing we can do except log
-            logger.error("Couldn't close the ldap connection.", ex);
+        } finally {
+            // Close the search results
+            if (results != null) {
+                try {
+                    results.close();
+                } catch (NamingException ex) {
+                    // Nothing we can do except log
+                    logger.error("Couldn't close the ldap results.", ex);
+                }
+            }
         }
     }
 
@@ -185,7 +245,7 @@ public class ActiveDirectorySearcher implements ILdapSearcher
      */
     private String getFilter(String searchValue, SearchBy searchBy)
     {
-        String filter = this.baseFilter;
+        String filter = cBaseFilter;
         switch (searchBy) {
             case Mail:
                 filter += "(mail=" + searchValue + "))";
@@ -220,5 +280,21 @@ public class ActiveDirectorySearcher implements ILdapSearcher
             }
         }
         return dn;
+    }
+
+    /**
+     * Closes the LDAP connection.
+     */
+    @Override
+    public void close() throws IOException
+    {
+        try {
+            if (dirContext != null)
+                dirContext.close();
+            dirContext = null;
+        } catch (NamingException ex) {
+            // Nothing we can do except log
+            logger.error("Couldn't close the ldap connection.", ex);
+        }
     }
 }

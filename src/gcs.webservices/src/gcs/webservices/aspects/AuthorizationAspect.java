@@ -1,4 +1,7 @@
-package gcs.webservices.aop;
+package gcs.webservices.aspects;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.core.MediaType;
 
 import gcs.webapp.utils.exceptions.NotAuthenticatedException;
 import gcs.webapp.utils.app.security.CrudOperator;
@@ -47,15 +50,11 @@ public class AuthorizationAspect
     public void publicMethod()
     {}
 
-    /*@Before("secureModuleType() && crudOperationMethod() && publicMethod() && hasSessionToken()"
-            + " && @annotation(secureModule) && @annotation(crudOperator) && args(sessionToken)")
-    public void beforeAnnotatedMethods(JoinPoint joinPoint, SecureModule secureModule, CrudOperator crudOperator,
-            SessionToken sessionToken)
-    {
-        authorizeThenProceed(joinPoint, secureModule, crudOperator, sessionToken);
-    }*/
-    
-    @Before("secureModuleType() && @annotation(crudOperator) && args(sessionToken)")
+    // @Before("secureModuleType() && crudOperationMethod() && publicMethod() && hasSessionToken()"
+    // +
+    // " && @annotation(secureModule) && @annotation(crudOperator) && args(sessionToken)")
+
+    @Before("secureModuleType() && @annotation(crudOperator) && args(sessionToken, ..)")
     public void beforeAnnotatedMethods(JoinPoint joinPoint, CrudOperator crudOperator, SessionToken sessionToken)
     {
         String className = joinPoint.getSignature().getDeclaringTypeName();
@@ -67,7 +66,7 @@ public class AuthorizationAspect
             // Don't take any chances and deny access.
             throw new UnauthorizedException();
         }
-        
+
         // Authorize the user.
         // This will throw if the user is not authenticated or not authorized.
         authorizeThenProceed(joinPoint, secureModule, crudOperator, sessionToken);
@@ -82,38 +81,43 @@ public class AuthorizationAspect
     public void authorizeThenProceed(JoinPoint joinPoint, SecureModule secureModule, CrudOperator crudOperator,
             SessionToken sessionToken)
     {
+        // Check if the user has a session
+        if (!sessionCache.sessionExists(sessionToken)) {
+            // User is not authenticated
+            throw new NotAuthenticatedException();
+        }
+
         // Get the session from the session cache
         sessionCache.withSession(sessionToken, (session) -> {
-            if (session == null) {
-                // User is not authenticated
-                throw new NotAuthenticatedException();
-            }
+            // if (session == null) {
+            // // User is not authenticated
+            // throw new NotAuthenticatedException();
+            // }
 
-            // Get the membre object associated with the session
-            Membre membre = session.getMembre();
+                // Get the membre object associated with the session
+                Membre membre = session.getMembre();
 
-            // TODO This must be pulled from the database
-            // Role[] roles = membre.getRoles();
-            String[] roleNames = { "membre" };
+                // TODO This must be pulled from the database
+                // Role[] roles = membre.getRoles();
+                String[] roleNames = { "membre" };
 
-            boolean hasRight = false;
-            for (String roleName : roleNames) {
-                // Logical "or" to know if one of the user's role has rights
-                // to this module's operation.
-                hasRight |= moduleSecurityProvider.hasRights(secureModule.name(), roleName,
-                        crudOperator.value());
-                if (hasRight) {
-                    // He has rights, no need to check further.
-                    break;
+                boolean hasRight = false;
+                for (String roleName : roleNames) {
+                    // Logical "or" to know if one of the user's role has rights
+                    // to this module's operation.
+                    hasRight |= moduleSecurityProvider.hasRights(secureModule.name(), roleName, crudOperator.value());
+                    if (hasRight) {
+                        // He has rights, no need to check further.
+                        break;
+                    }
                 }
-            }
 
-            if (!hasRight) {
-                // User is not authorized
-                // TODO put the username
-                throw new UnauthorizedException("AJ50440"/*membre.getCodePermanent()*/);
-            }
-        });
+                if (!hasRight) {
+                    // User is not authorized
+                    // TODO put the username
+                    throw new UnauthorizedException("AJ50440");
+                }
+            });
     }
 
     /**

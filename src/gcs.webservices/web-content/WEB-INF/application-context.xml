@@ -33,6 +33,9 @@
     </property>
   </bean>
 
+  <!-- A json parser. -->
+  <bean id="jsonParser" class="com.google.gson.Gson" scope="prototype" />
+
   <!-- Application messages cache. This is where configured messages will be loaded. -->
   <bean id="messageLocalizer" name="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
     <constructor-arg name="messagesFolderRelativePath" value="./resources" />
@@ -91,7 +94,7 @@
   </bean>
 
   <!-- Inject the auditing service into the audit aspect -->
-  <bean id="auditAspect" class="gcs.webservices.aop.AuditAspect" factory-method="aspectOf">
+  <bean id="auditAspect" class="gcs.webservices.aspects.AuditAspect" factory-method="aspectOf">
     <property name="auditService" ref="auditService" />
   </bean>
 
@@ -101,13 +104,13 @@
   </bean>
 
   <!-- Inject the session cache and the security provider into the authorization aspect. -->
-  <bean id="authorizationAspect" class="gcs.webservices.aop.AuthorizationAspect" factory-method="aspectOf">
+  <bean id="authorizationAspect" class="gcs.webservices.aspects.AuthorizationAspect" factory-method="aspectOf">
     <property name="sessionCache" ref="sessionCache" />
     <property name="moduleSecurityProvider" ref="moduleSecurityProvider" />
   </bean>
 
   <!-- Internal service instance for auditing -->
-  <bean id="auditService" class="gcs.webservices.aop.services.AuditService" scope="singleton">
+  <bean id="auditService" class="gcs.webservices.aspects.services.AuditService" scope="singleton">
     <property name="auditDao" ref="auditDao" />
     <property name="sessionCache" ref="sessionCache" />
   </bean>
@@ -116,4 +119,8 @@
   <bean id="sessionService" class="gcs.webservices.services.SessionService" scope="singleton" />
   <bean id="membreService" class="gcs.webservices.services.MembreService" scope="singleton" />
   <bean id="userService" class="gcs.webservices.services.UserService" scope="singleton" />
+  <bean id="utilityService" class="gcs.webservices.services.UtilityService" scope="singleton" />
+  <bean id="clubService" class="gcs.webservices.services.ClubService" scope="singleton" />
+  <bean id="commanditeService" class="gcs.webservices.services.CommanditeService" scope="singleton" />
+  <bean id="fournisseurService" class="gcs.webservices.services.FournisseurService" scope="singleton" />
 </beans>

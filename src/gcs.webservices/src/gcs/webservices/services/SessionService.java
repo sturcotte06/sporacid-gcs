@@ -21,9 +21,13 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * @author Simon Turcotte-Langevin
+ */
 @Component
 @Path("/session")
-public class SessionService extends BaseHttpService
+public class SessionService extends BaseHttpService implements ISessionService
 {
     @Autowired
     private ILdapAuthenticator ldapAuthenticator;
@@ -35,7 +39,7 @@ public class SessionService extends BaseHttpService
     private ILdapSearcher ldapSearcher;
 
     @POST
-    // @Path("/session")
+    @Path("")
     public Response create(CreateRequest request)
     {
         CreateResponse responseEntity = new CreateResponse();
@@ -44,8 +48,7 @@ public class SessionService extends BaseHttpService
         LdapAuthenticationToken authenticationToken = ldapAuthenticator.authenticate(request.getUsername(),
                 request.getPassword());
 
-        // Get the member infos from the database for the authenticated
-        // user
+        // Get the member infos from the database for the authenticated user.
         Membre membre = null;
         try {
             membre = membreDao.getMembre(request.getUsername());
@@ -54,8 +57,8 @@ public class SessionService extends BaseHttpService
             // TODO User does not exist, create it.
         }
 
-        // The Ldap verified and approved the credentials
-        // Create a new session in the application
+        // The Ldap verified and approved the credentials.
+        // Create a new session in the application.
         PublicSessionKey sessionKey = sessionCache.createSessionFor(request.getIpv4Address(), membre,
                 authenticationToken);
         responseEntity.setSessionKey(sessionKey.getKey());
@@ -81,7 +84,7 @@ public class SessionService extends BaseHttpService
 
         // Set the success flag in the response
         responseEntity.setSuccess(true);
-        responseEntity.addMessage(MessageType.Information, "session_logout_success");
+        responseEntity.addMessage(MessageType.Information, "session_invalidate_success");
 
         return completeRequest(responseEntity);
     }

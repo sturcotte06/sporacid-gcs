@@ -1,6 +1,6 @@
 package gcs.webservices.services;
 
-import gcs.webservices.aop.Auditable;
+import gcs.webservices.aspects.Auditable;
 
 import org.springframework.stereotype.Component;
 

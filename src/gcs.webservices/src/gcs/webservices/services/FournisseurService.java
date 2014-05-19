@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @SecureModule(name = "suppliers_module")
-@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}")
+@Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}/fournisseur")
 public class FournisseurService extends SecureHttpService
 {
     

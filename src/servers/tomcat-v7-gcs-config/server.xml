@@ -123,7 +123,7 @@
         
         
         
-      <Context docBase="gcs.webservices" path="/services" reloadable="true" source="org.eclipse.jst.jee.server:gcs.webservices"/><Context docBase="gcs.website" path="/" reloadable="true" source="org.eclipse.jst.jee.server:gcs.website"/></Host>
+      <Context docBase="gcs.webservices" path="/services" reloadable="true" source="org.eclipse.jst.jee.server:gcs.webservices"/><Context docBase="gcs.website" path="/app" reloadable="true" source="org.eclipse.jst.jee.server:gcs.website"/></Host>
       
     </Engine>
   </Service>

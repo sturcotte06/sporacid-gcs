@@ -49,7 +49,7 @@ public abstract class BaseHttpService
     {
         // Localize the response in the default application locale
         responseEntity.localize(messageLocalizer);
-        
+
         return Response.ok(responseEntity).build();
     }
 

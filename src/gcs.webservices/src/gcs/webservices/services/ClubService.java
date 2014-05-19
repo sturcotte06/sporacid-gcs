@@ -25,8 +25,7 @@ public class ClubService extends SecureHttpService
     private IClubDao clubDao;
 
     @GET
-    @Path("/")
-    @Produces({ MediaType.APPLICATION_JSON })
+    // @Path("/")
     public Response getClubs()
     {
         // final CrudOperation operation = CrudOperation.Read;
