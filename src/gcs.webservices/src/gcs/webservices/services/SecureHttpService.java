@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author Simon Turcotte-Langevin
  */
-@Auditable
+// @Auditable
 @Component
 public class SecureHttpService extends BaseHttpService
 {

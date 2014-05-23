@@ -5,6 +5,7 @@ import gcs.webapp.utils.exceptions.ValidationException;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.ws.rs.DefaultValue;
@@ -83,6 +84,43 @@ public class UtilityService
 
         // Return the csv response
         return Response.ok(csvBuilder.toString()).build();
+    }
+    
+    /**
+     * 
+     * @param unflattened
+     * @return
+     */
+    private Collection<Map<String, Object>> flatten(JsonArray jsonArray) 
+    {
+        Collection<Map<String, Object>> flattened = new ArrayList<>();
+        
+        for (JsonElement jsonElement : jsonArray) {
+            Map<String, Object> current;
+            
+            if (jsonElement.isJsonPrimitive()) {
+                // We're dealing with an array of primitives...
+                current = new HashMap<>();
+                current.put("element", jsonElement.getAsString());
+            } else if (jsonElement.isJsonNull()) {
+                // We might need to deal with this another way
+                current = new HashMap<>();
+                current.put("element", null);
+            } else if (jsonElement.isJsonObject()) {
+                current = flatten(jsonElement.getAsJsonObject());
+            } else {
+                throw new UnsupportedOperationException();
+            }
+            
+            flattened.add(current);
+        }
+        
+        return flattened;
+    }
+    
+    private Map<String, Object> flatten(JsonObject jsonObject)
+    {
+        return null;
     }
 
     /**

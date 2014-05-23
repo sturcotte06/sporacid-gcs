@@ -2,6 +2,8 @@ package gcs.webservices.aspects.services;
 
 import java.util.Date;
 
+import org.springframework.scheduling.annotation.Async;
+
 import gcs.webservices.dao.IAuditDao;
 import gcs.webservices.models.Audit;
 import gcs.webservices.sessions.SessionCache;
