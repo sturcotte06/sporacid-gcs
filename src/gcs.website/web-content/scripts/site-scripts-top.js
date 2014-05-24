@@ -46,11 +46,13 @@ $(document).ready(
 */
 function resizeContent()
 {   
-  //Set the content to fit the browser's height
+  // Set the content to fit the browser's height
   var mainContentHeight = $(window).innerHeight() - $(".status-bar-container").outerHeight();
   $(".main-content").height(mainContentHeight);
   $(".content-container").height($(window).innerHeight());
+  
   // Resize grids
+  /*$(".jq-grid").resize();
   $(".jq-grid").each(function() {
     var $this = $(this);
     $this.setGridWidth($this.parents(".management-grid-container:first").outerWidth());
@@ -58,7 +60,7 @@ function resizeContent()
         $this.parents(".management-grid-container:first").find(".management-grid-header-container:first").outerHeight() -
         $this.parents(".management-grid-container:first").find(".jq-grid-pager:first").outerHeight() - 
         $this.parents(".management-grid-container:first").find(".ui-jqgrid-hdiv:first").outerHeight());
-  });
+  });*/
 }
 
 /**
@@ -92,9 +94,17 @@ function loadContentAjax(url, method, data) {
           url: url,
           cache: false,
           success: function (data) {
-            $(".main-content").hide().html(data).show();
-            $(".main-content .form").each(function () { bindFormHandlers(this); });
-            
+    	    var $data = $(data);
+    	    if ($data.find(":root")[0].tagName === "html") {
+    	    	// Trying to load a full page as a partial page.
+    	    	var errorPage = $("<div/>").text("Couldn't load page " + url + " as a partial page.");
+	    	    $(".main-content").hide().html(errorPage).show();
+    	    } else {
+    	    	// Load the partial page
+                $(".main-content").hide().html(data).show();
+                $(".main-content .form").each(function () { bindFormHandlers(this); });
+    	    }
+    	    
             // Trigger the resize 
             $(window).resize();
           }

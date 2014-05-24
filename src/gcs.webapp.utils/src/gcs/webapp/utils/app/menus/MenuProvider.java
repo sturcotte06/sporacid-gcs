@@ -5,6 +5,7 @@ import gcs.webapp.utils.io.RegexFilenameFilter;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webapp.utils.xml.XmlUtils;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 
 /**
  * 
@@ -19,15 +21,16 @@ import org.jdom2.Element;
  */
 public class MenuProvider implements IMenuProvider
 {
-	/**
-	 * 
-	 */
+	/** */
 	private Map<String, Map<String, MainMenu>> availableMenus = new HashMap<String, Map<String, MainMenu>>();
 
-	/**
-	 * Constructor
-	 */
-	public MenuProvider(String menusFolderRelativePath, IMessageLocalizer localizer)
+	    /**
+     * Constructor
+     * 
+     * @throws IOException
+     * @throws JDOMException
+     */
+	public MenuProvider(String menusFolderRelativePath, IMessageLocalizer localizer) throws JDOMException, IOException
 	{
 		// Get the absolute path
 		String messagesFolderAbsolutePath = Thread.currentThread().getContextClassLoader()
@@ -67,12 +70,13 @@ public class MenuProvider implements IMenuProvider
 		return menu;
 	}
 	
-	/**
-	 * 
-	 * @param messagesFolderAbsolutePath
-	 * @return
-	 */
-	private Map<String, MainMenu> loadApplicationMenus(String messagesFolderAbsolutePath)
+	    /**
+     * @param messagesFolderAbsolutePath
+     * @return
+     * @throws IOException
+     * @throws JDOMException
+     */
+	private Map<String, MainMenu> loadApplicationMenus(String messagesFolderAbsolutePath) throws JDOMException, IOException
 	{
 		Map<String, MainMenu> unlocalizedMenus = new HashMap<String, MainMenu>();
 		final String appMessagesRegex = ".*\\.?menu\\..*\\.xml";

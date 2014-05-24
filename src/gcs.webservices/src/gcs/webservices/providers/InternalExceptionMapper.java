@@ -10,6 +10,7 @@ import gcs.webapp.utils.exceptions.UnauthorizedException;
 import gcs.webapp.utils.exceptions.ValidationException;
 import gcs.webapp.utils.exceptions.WrongCredentialsException;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -78,6 +79,6 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
         logger.error("Uncaught exception in InternalExceptionMapper: ", exception);
 
         // Return the response with the error status and the response entity
-        return builder.entity(responseEntity).build();
+        return builder.entity(responseEntity).type(MediaType.APPLICATION_JSON).build();
     }
 }

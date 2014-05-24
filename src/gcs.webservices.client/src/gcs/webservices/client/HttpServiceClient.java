@@ -3,9 +3,12 @@ package gcs.webservices.client;
 import java.util.Map;
 
 import gcs.webapp.utils.aspects.logging.Loggable;
+import gcs.webservices.client.exceptions.WebServiceClientException;
 import gcs.webservices.client.requests.Request;
 import gcs.webservices.client.responses.Response;
 
+import javax.ws.rs.ClientErrorException;
+import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
@@ -84,10 +87,21 @@ public abstract class HttpServiceClient
             }
         }
 
-        // Get the response from the web services
-        response = request != null
-                ? builder.method(route.getMethod().name().toUpperCase(), Entity.json(request), classObj)
-                : builder.method(route.getMethod().name().toUpperCase(), classObj);
+        try {
+            // Get the response from the web services
+            response = request != null
+                    ? builder.method(route.getMethod().name().toUpperCase(), Entity.json(request), classObj)
+                    : builder.method(route.getMethod().name().toUpperCase(), classObj);
+        } catch (ClientErrorException | ServerErrorException ex) {
+            // Try to get the response entity
+            javax.ws.rs.core.Response jaxResponse = ex.getResponse();
+            if (jaxResponse.hasEntity()) {
+                throw new WebServiceClientException(jaxResponse.readEntity(classObj), ex);
+            }
+
+            // No entity
+            throw new WebServiceClientException(ex);
+        } 
 
         return response;
     }

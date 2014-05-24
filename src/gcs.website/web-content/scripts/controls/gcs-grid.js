@@ -37,4 +37,19 @@ $.fn.gcsGrid = function(data) {
   $grid.jqGrid("navGrid", "#" + $pager.id(), {
     edit: false, add: false, del: false
   }).find(".ui-icon-refresh, .ui-icon-search").hide();
+  
+  // Set the on resize callback
+  $grid.resize(onResize);
 };
+
+/**
+ * Resizes the content of a grid.
+ */
+function onResize() {
+    var $this = $(this);
+    $this.setGridWidth($this.parents(".management-grid-container:first").outerWidth());
+    $this.setGridHeight($this.parents(".management-grid-container:first").innerHeight() -
+        $this.parents(".management-grid-container:first").find(".management-grid-header-container:first").outerHeight() -
+        $this.parents(".management-grid-container:first").find(".jq-grid-pager:first").outerHeight() - 
+        $this.parents(".management-grid-container:first").find(".ui-jqgrid-hdiv:first").outerHeight());
+}

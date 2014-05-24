@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:context="http://www.springframework.org/schema/context"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans 
             http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -8,15 +9,18 @@
             http://www.springframework.org/schema/context/spring-context.xsd">
 
   <!-- Data source informations -->
-  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+  <bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="bacon" />
+    <property name="password" value="postgres" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
-  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" lazy-init="false">
+  <bean id="sessionFactory"
+    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+    lazy-init="false">
     <property name="dataSource" ref="dataSource" />
     <property name="annotatedClasses">
       <list>
@@ -28,6 +32,7 @@
       <props>
         <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
         <prop key="hibernate.show_sql">true</prop>
+        <!-- TODO change when deploying -->
         <prop key="hibernate.connection.pool_size">1</prop>
       </props>
     </property>
@@ -36,20 +41,35 @@
   <!-- A json parser. -->
   <bean id="jsonParser" class="com.google.gson.Gson" scope="prototype" />
 
-  <!-- Application messages cache. This is where configured messages will be loaded. -->
-  <bean id="messageLocalizer" name="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
-    <constructor-arg name="messagesFolderRelativePath" value="./resources" />
+  <!-- Application messages cache. This is where configured messages will 
+    be loaded. -->
+  <bean id="messageLocalizer" name="messageLocalizer"
+    class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
+    <!-- <constructor-arg name="messagesFolderRelativePath" value="./resources" 
+      /> -->
+    <constructor-arg name="messageResourcePaths">
+      <list>
+        <value>gcs.webservices.messages.en.xml</value>
+        <value>gcs.webservices.messages.fr.xml</value>
+        <value>gcs.webapp.utils.messages.en.xml</value>
+        <value>gcs.webapp.utils.messages.fr.xml</value>
+        <value>gcs.webservices.client.messages.en.xml</value>
+        <value>gcs.webservices.client.messages.fr.xml</value>
+      </list>
+    </constructor-arg>
     <property name="defaultLocale" value="fr" />
   </bean>
 
   <!-- Custom security provider for the application modules -->
-  <bean id="moduleSecurityProvider" name="moduleSecurityProvider" class="gcs.webapp.utils.app.security.ModuleSecurityProvider"
-    scope="singleton">
-    <constructor-arg name="moduleSecurityFolderRelativePath" value="./resources" />
+  <bean id="moduleSecurityProvider" name="moduleSecurityProvider"
+    class="gcs.webapp.utils.app.security.ModuleSecurityProvider" scope="singleton">
+    <constructor-arg name="moduleSecurityFolderRelativePath"
+      value="./resources" />
   </bean>
 
   <!-- Authenticated sessions cache -->
-  <bean id="sessionCache" name="sessionCache" class="gcs.webservices.sessions.SessionCache" scope="singleton">
+  <bean id="sessionCache" name="sessionCache"
+    class="gcs.webservices.sessions.SessionCache" scope="singleton">
     <!-- 24 hours of validity for a cached session -->
     <constructor-arg value="86400" />
     <property name="keyProvider">
@@ -61,11 +81,13 @@
   </bean>
 
   <!-- Validator factory -->
-  <bean id="validatorFactory" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
+  <bean id="validatorFactory"
+    class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"
     scope="singleton" />
 
   <!-- LDAP authenticator for authenticating users -->
-  <bean id="ldapAuthenticator" name="ldapAuthenticator" class="gcs.webservices.ldap.authentication.ActiveDirectoryAuthenticator"
+  <bean id="ldapAuthenticator" name="ldapAuthenticator"
+    class="gcs.webservices.ldap.authentication.ActiveDirectoryAuthenticator"
     scope="singleton">
     <property name="defaultUserDomain" value="ens.ad.etsmtl.ca" />
   </bean>
@@ -81,12 +103,14 @@
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
-  <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
+  <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao"
+    scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
   <!-- LDAP searcher to find user's base information -->
-  <bean id="ldapSearcher" class="gcs.webservices.ldap.search.ActiveDirectorySearcher" scope="singleton">
+  <bean id="ldapSearcher" class="gcs.webservices.ldap.search.ActiveDirectorySearcher"
+    scope="singleton">
     <!-- TODO : do not deploy with my credentials... -->
     <constructor-arg name="username" value="aj50440" />
     <constructor-arg name="password" value="AOPbgtZXD666" />
@@ -94,33 +118,45 @@
   </bean>
 
   <!-- Inject the auditing service into the audit aspect -->
-  <bean id="auditAspect" class="gcs.webservices.aspects.AuditAspect" factory-method="aspectOf">
+  <bean id="auditAspect" class="gcs.webservices.aspects.AuditAspect"
+    factory-method="aspectOf">
     <property name="auditService" ref="auditService" />
   </bean>
 
   <!-- Inject a validator into the validation aspect -->
-  <bean id="validationAspect" class="gcs.webapp.utils.aspects.validation.ValidationAspect" factory-method="aspectOf">
+  <bean id="validationAspect" class="gcs.webapp.utils.aspects.validation.ValidationAspect"
+    factory-method="aspectOf">
     <property name="validator" ref="validatorFactory" />
   </bean>
 
-  <!-- Inject the session cache and the security provider into the authorization aspect. -->
-  <bean id="authorizationAspect" class="gcs.webservices.aspects.AuthorizationAspect" factory-method="aspectOf">
+  <!-- Inject the session cache and the security provider into the authorization 
+    aspect. -->
+  <bean id="authorizationAspect" class="gcs.webservices.aspects.AuthorizationAspect"
+    factory-method="aspectOf">
     <property name="sessionCache" ref="sessionCache" />
     <property name="moduleSecurityProvider" ref="moduleSecurityProvider" />
   </bean>
 
   <!-- Internal service instance for auditing -->
-  <bean id="auditService" class="gcs.webservices.aspects.services.AuditService" scope="singleton">
+  <bean id="auditService" class="gcs.webservices.aspects.services.AuditService"
+    scope="singleton">
     <property name="auditDao" ref="auditDao" />
     <property name="sessionCache" ref="sessionCache" />
   </bean>
 
   <!-- Jersey services bean so jersey does not log a fatal exception. -->
-  <bean id="sessionService" class="gcs.webservices.services.SessionService" scope="singleton" />
-  <bean id="membreService" class="gcs.webservices.services.MembreService" scope="singleton" />
-  <bean id="userService" class="gcs.webservices.services.UserService" scope="singleton" />
-  <bean id="utilityService" class="gcs.webservices.services.UtilityService" scope="singleton" />
-  <bean id="clubService" class="gcs.webservices.services.ClubService" scope="singleton" />
-  <bean id="commanditeService" class="gcs.webservices.services.CommanditeService" scope="singleton" />
-  <bean id="fournisseurService" class="gcs.webservices.services.FournisseurService" scope="singleton" />
+  <bean id="sessionService" class="gcs.webservices.services.SessionService"
+    scope="singleton" />
+  <bean id="membreService" class="gcs.webservices.services.MembreService"
+    scope="singleton" />
+  <bean id="userService" class="gcs.webservices.services.UserService"
+    scope="singleton" />
+  <bean id="utilityService" class="gcs.webservices.services.UtilityService"
+    scope="singleton" />
+  <bean id="clubService" class="gcs.webservices.services.ClubService"
+    scope="singleton" />
+  <bean id="commanditeService" class="gcs.webservices.services.CommanditeService"
+    scope="singleton" />
+  <bean id="fournisseurService" class="gcs.webservices.services.FournisseurService"
+    scope="singleton" />
 </beans>
