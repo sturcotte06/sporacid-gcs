@@ -37,12 +37,18 @@
  
 <style type="text/css">
   .management-grid-container {
+  	float: left;
     height: 100%;
+    width: 49%;
+  }
+  
+  .current-membre-container {
+  	height: 100%;
+  	width: 49%;
+  	margin-left: 51%;
   }
 </style>
 
 <script type="text/javascript">
   <%=gridControl.getScript()%>
-  /*$(".jqw-menu-container").jqxMenu({theme: cJqWidgetTheme});
-  $(".ui-icon-refresh, .ui-icon-search").hide();*/
 </script>

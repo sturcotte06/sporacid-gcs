@@ -19,10 +19,12 @@ import org.jdom2.input.SAXBuilder;
  */
 public final class XmlUtils
 {
-    private static final Logger logger = Logger.getLogger(XmlUtils.class);
-
+    /** An xml document reader. */
     private static final SAXBuilder documentBuilder;
 
+    /**
+     * Static constructor.
+     */
     static {
         documentBuilder = new SAXBuilder();
         documentBuilder.setFeature("http://xml.org/sax/features/validation", false);
