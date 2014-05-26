@@ -13,141 +13,153 @@
  */
 package gcs.webservices.models;
 
+import gcs.webapp.utils.hibernate.AbstractModelObject;
+
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
-//@org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="fournisseurs", schema="public")
-public class Fournisseur implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7322592090709689156L;
+@Table(name = "fournisseurs", schema = "public")
+@SequenceGenerator(name = "fournisseurs_id_seq", sequenceName = "fournisseurs_id_seq", allocationSize = 1)
+public class Fournisseur extends AbstractModelObject implements Serializable
+{
+    /** */
+    private static final long serialVersionUID = -7322592090709689156L;
 
-	public Fournisseur() {
-	}
-	
-	@Column(name="id", nullable=false, unique=true)	
-	@Id	
-	@GeneratedValue(generator="fournisseurs_id_seq")	
-	@GenericGenerator(name="fournisseurs_id_seq", strategy="sequence", parameters={ @Parameter(name="sequence", value="fournisseurs_id_seq") })	
-	private int id;
-	
-	@ManyToOne(targetEntity=Adresse.class, fetch=FetchType.EAGER)	
-	@Cascade({CascadeType.LOCK})	
-	@JoinColumns({ @JoinColumn(name="adresses_id", referencedColumnName="id", nullable=false) })	
-	private Adresse adresse;
-	
-	@Column(name="nom", nullable=false, length=255)	
-	private String nom;
-	
-	@Column(name="contact", nullable=false, length=64)	
-	private String contact;
-	
-	@Column(name="telephone", nullable=false, length=24)	
-	private String telephone;
-	
-	@Column(name="fax", nullable=true, length=24)	
-	private String fax;
-	
-	@Column(name="courriel", nullable=true, length=255)	
-	private String courriel;
-	
-	@ManyToMany(fetch=FetchType.EAGER)
-	@Cascade({CascadeType.ALL})
-	@JoinTable(name = "fournisseurs_items", 
-				joinColumns = { @JoinColumn(name = "fournisseurs_id") }, inverseJoinColumns = { @JoinColumn(name = "items_id") })
-	private Set<Item> items = new HashSet<Item>();
-	
-	public int getORMID() {
-		return getId();
-	}
-	
-	public String toString() {
-		return String.valueOf(getId());
-	}
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "fournisseurs_id_seq")
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.ALL })
+    @JoinColumn(name = "adresses_id", referencedColumnName = "id", nullable = false)
+    private Adresse adresse;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @ManyToMany(fetch = FetchType.LAZY)
+    // @Cascade({ CascadeType.ALL })
+    @JoinTable(name = "fournisseurs_items", joinColumns = { @JoinColumn(name = "fournisseurs_id") }, inverseJoinColumns = { @JoinColumn(name = "items_id") })
+    private Set<Item> items;
 
-	public String getNom() {
-		return nom;
-	}
+    @Column(name = "nom", nullable = false, length = 255)
+    private String nom;
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    @Column(name = "contact", nullable = false, length = 64)
+    private String contact;
 
-	public String getContact() {
-		return contact;
-	}
+    @Column(name = "telephone", nullable = false, length = 24)
+    private String telephone;
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    @Column(name = "fax", nullable = true, length = 24)
+    private String fax;
 
-	public String getTelephone() {
-		return telephone;
-	}
+    @Column(name = "courriel", nullable = true, length = 255)
+    private String courriel;
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
+    public int getORMID()
+    {
+        return getId();
+    }
 
-	public String getFax() {
-		return fax;
-	}
+    public String toString()
+    {
+        return String.valueOf(getId());
+    }
 
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	public String getCourriel() {
-		return courriel;
-	}
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-	public void setCourriel(String courriel) {
-		this.courriel = courriel;
-	}
+    public String getNom()
+    {
+        return nom;
+    }
 
-	public Adresse getAdresse() {
-		return adresse;
-	}
+    public void setNom(String nom)
+    {
+        this.nom = nom;
+    }
 
-	public void setAdresse(Adresse adresse) {
-		this.adresse = adresse;
-	}
+    public String getContact()
+    {
+        return contact;
+    }
 
-	public Set<Item> getItems() {
-		return items;
-	}
+    public void setContact(String contact)
+    {
+        this.contact = contact;
+    }
 
-	public void setItems(Set<Item> item) {
-		this.items = item;
-	}
-		
+    public String getTelephone()
+    {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone)
+    {
+        this.telephone = telephone;
+    }
+
+    public String getFax()
+    {
+        return fax;
+    }
+
+    public void setFax(String fax)
+    {
+        this.fax = fax;
+    }
+
+    public String getCourriel()
+    {
+        return courriel;
+    }
+
+    public void setCourriel(String courriel)
+    {
+        this.courriel = courriel;
+    }
+
+    public Adresse getAdresse()
+    {
+        return adresse;
+    }
+
+    public void setAdresse(Adresse adresse)
+    {
+        this.adresse = adresse;
+    }
+
+    public Set<Item> getItems()
+    {
+        return items;
+    }
+
+    public void setItems(Set<Item> item)
+    {
+        this.items = item;
+    }
+
 }

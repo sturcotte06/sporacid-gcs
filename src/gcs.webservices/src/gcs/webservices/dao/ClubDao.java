@@ -45,6 +45,20 @@ public class ClubDao implements IClubDao
         return null;
     }
 
+    @Override
+    public Integer addMembreToClub(int membreId, int clubId)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Integer bindRoleToMembre(int membreId, int roleId)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     /**
      * @return the sessionFactory
      */

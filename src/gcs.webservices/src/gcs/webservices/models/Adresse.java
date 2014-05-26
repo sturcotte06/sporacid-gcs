@@ -13,119 +13,139 @@
  */
 package gcs.webservices.models;
 
+import gcs.webapp.utils.hibernate.AbstractModelObject;
+
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 @Entity
-//@org.hibernate.annotations.Proxy(lazy=false)
-@Table(name="adresses", schema="public")
-public class Adresse implements Serializable {
+@Table(name = "adresses", schema = "public")
+@SequenceGenerator(name = "audits_id_seq", sequenceName = "audits_id_seq", allocationSize = 1)
+public class Adresse extends AbstractModelObject implements Serializable
+{
+    /**  */
+    private static final long serialVersionUID = -2014045198601273676L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2014045198601273676L;
+    @Id
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adresses_id_seq")
+    private int id;
 
-	public Adresse() {
-	}
-	
-	@Column(name="id", nullable=false, unique=true)	
-	@Id	
-	@GeneratedValue(generator="adresses_id_seq")	
-	@GenericGenerator(name="adresses_id_seq", strategy="sequence", parameters={ @org.hibernate.annotations.Parameter(name="sequence", value="adresses_id_seq") })	
-	private int id;
-	
-	@Column(name="no_civique", nullable=false, length=10)	
-	private int no_civique;
-	
-	@Column(name="rue", nullable=false, length=64)	
-	private String rue;
-	
-	@Column(name="appartement", nullable=true, length=10)	
-	private String appartement;
-	
-	@Column(name="ville", nullable=false, length=128)	
-	private String ville;
-	
-	@Column(name="code_postal", nullable=false, length=16)	
-	private String code_postal;
+    @Column(name = "no_civique", nullable = false, length = 10)
+    private int noCivique;
 
-	private void setId(int value) {
-		this.id = value;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public int getORMID() {
-		return id;
-	}
-	
-	public void setNo_civique(int value) {
-		this.no_civique = value;
-	}
-	
-	public int getNo_civique() {
-		return no_civique;
-	}
-	
-	public void setRue(String value) {
-		this.rue = value;
-	}
-	
-	public String getRue() {
-		return rue;
-	}
-	
-	public void setAppartement(String value) {
-		this.appartement = value;
-	}
-	
-	public String getAppartement() {
-		return appartement;
-	}
-	
-	public void setVille(String value) {
-		this.ville = value;
-	}
-	
-	public String getVille() {
-		return ville;
-	}
-	
-	public void setCode_postal(String value) {
-		this.code_postal = value;
-	}
-	
-	public String getCode_postal() {
-		return code_postal;
-	}
-	
-	/*public void setFournisseur(Set value) {
-		this.fournisseur = value;
-	}
-	
-	public java.util.Set getFournisseur() {
-		return fournisseur;
-	}*/
-	
-	
-	public String toString() {
-		return String.valueOf(getId());
-	}
-	
+    @Column(name = "rue", nullable = false, length = 64)
+    private String rue;
+
+    @Column(name = "appartement", nullable = true, length = 10)
+    private String appartement;
+
+    @Column(name = "ville", nullable = false, length = 128)
+    private String ville;
+
+    @Column(name = "code_postal", nullable = false, length = 16)
+    private String codePostal;
+
+    /**
+     * @return the id
+     */
+    public int getId()
+    {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    /**
+     * @return the noCivique
+     */
+    public int getNoCivique()
+    {
+        return noCivique;
+    }
+
+    /**
+     * @param noCivique the noCivique to set
+     */
+    public void setNoCivique(int noCivique)
+    {
+        this.noCivique = noCivique;
+    }
+
+    /**
+     * @return the rue
+     */
+    public String getRue()
+    {
+        return rue;
+    }
+
+    /**
+     * @param rue the rue to set
+     */
+    public void setRue(String rue)
+    {
+        this.rue = rue;
+    }
+
+    /**
+     * @return the appartement
+     */
+    public String getAppartement()
+    {
+        return appartement;
+    }
+
+    /**
+     * @param appartement the appartement to set
+     */
+    public void setAppartement(String appartement)
+    {
+        this.appartement = appartement;
+    }
+
+    /**
+     * @return the ville
+     */
+    public String getVille()
+    {
+        return ville;
+    }
+
+    /**
+     * @param ville the ville to set
+     */
+    public void setVille(String ville)
+    {
+        this.ville = ville;
+    }
+
+    /**
+     * @return the codePostal
+     */
+    public String getCodePostal()
+    {
+        return codePostal;
+    }
+
+    /**
+     * @param codePostal the codePostal to set
+     */
+    public void setCodePostal(String codePostal)
+    {
+        this.codePostal = codePostal;
+    }
 }
