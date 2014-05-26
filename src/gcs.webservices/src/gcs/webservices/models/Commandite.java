@@ -19,11 +19,27 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OrderBy;
 
 @Entity
 //@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "commandites", schema = "public")
+@SequenceGenerator(name = "commandites_id_seq", sequenceName = "commandites_id_seq", allocationSize = 1)
 public class Commandite extends AbstractModelObject implements Serializable {
 	/**
 	 * 
@@ -33,26 +49,23 @@ public class Commandite extends AbstractModelObject implements Serializable {
 	public Commandite() {
 	}
 
-	@Column(name = "id", nullable = false, unique = true)
-	@Id
-	@GeneratedValue(generator = "commandites_id_seq")
-	@org.hibernate.annotations.GenericGenerator(name = "commandites_id_seq", strategy = "sequence", parameters = { @org.hibernate.annotations.Parameter(name = "sequence", value = "commandites_id_seq") })
+	@Id 
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commandites_id_seq")
+	@Column(name = "id")
 	private int id;
 
-	/*@ManyToOne(targetEntity = Fournisseur.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "fournisseurid", referencedColumnName = "id", nullable = false) })
-	private Fournisseur fournisseur;*/
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "fournisseurs_id", referencedColumnName = "id", nullable = false)
+	private Fournisseur fournisseur;
 
-	/*@ManyToOne(targetEntity = Item.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "itemsid", referencedColumnName = "id", nullable = false) })
-	private Item items;*/
+	@OneToOne(fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.ALL })
+	@JoinColumn(name = "items_id", referencedColumnName = "id", nullable = true)
+	private Item item;
 
-	/*@ManyToOne(targetEntity = Club.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "clubsid", referencedColumnName = "id", nullable = false) })
-	private Club club;*/
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "clubs_id", referencedColumnName = "id", nullable = false)
+	private Club club;
 
 	@Column(name = "valeur", nullable = false, precision = 6, scale = 2)
 	private Double valeur;
@@ -60,76 +73,109 @@ public class Commandite extends AbstractModelObject implements Serializable {
 	@Column(name = "nature", nullable = false, length = 64)
 	private String nature;
 
-	/*@OneToMany(mappedBy = "commandite", targetEntity = Suivies.class)
-	@org.hibernate.annotations.Cascade({
-			org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.LOCK })
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
-	//LIST @ORDER BYTIMESTAMP
-	private Set suivies = new HashSet();*/
-
-	public void setId(int value) {
-		this.id = value;
-	}
-
-	public int getId() {
-		return id;
-	}
+	@OneToMany(mappedBy = "commandite", fetch=FetchType.EAGER)
+	@Cascade({CascadeType.ALL})
+	@OrderBy(clause = "date_suivie")
+	private Set<Suivie> suivies = new HashSet<>();
 
 	public int getORMID() {
 		return getId();
 	}
-
-	public void setValeur(double value) {
-		this.valeur = value;
+	
+	public String toString() {
+		return String.valueOf(getId());
 	}
 
-	public double getValeur() {
-		return valeur;
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
 	}
 
-	public void setNature(String value) {
-		this.nature = value;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNature() {
-		return nature;
-	}
-
-	/*public void setFournisseur(Fournisseur value) {
-		this.fournisseur = value;
-	}
-
+	/**
+	 * @return the fournisseur
+	 */
 	public Fournisseur getFournisseur() {
 		return fournisseur;
 	}
 
-	public void setItems(Item value) {
-		this.items = value;
+	/**
+	 * @param fournisseur the fournisseur to set
+	 */
+	public void setFournisseur(Fournisseur fournisseur) {
+		this.fournisseur = fournisseur;
 	}
 
-	public Item getItems() {
-		return items;
+	/**
+	 * @return the items
+	 */
+	public Item getItem() {
+		return item;
 	}
 
-	public void setClubs(Club value) {
-		this.club = value;
+	/**
+	 * @param items the items to set
+	 */
+	public void setItem(Item items) {
+		this.item = items;
 	}
 
-	public Club getClubs() {
+	/**
+	 * @return the club
+	 */
+	public Club getClub() {
 		return club;
 	}
 
-	public void setSuivies(Set value) {
-		this.suivies = value;
+	/**
+	 * @param club the club to set
+	 */
+	public void setClub(Club club) {
+		this.club = club;
 	}
 
-	public Set getSuivies() {
-		return suivies;
-	}*/
+	/**
+	 * @return the valeur
+	 */
+	public Double getValeur() {
+		return valeur;
+	}
 
-	public String toString() {
-		return String.valueOf(getId());
+	/**
+	 * @param valeur the valeur to set
+	 */
+	public void setValeur(Double valeur) {
+		this.valeur = valeur;
+	}
+
+	/**
+	 * @return the nature
+	 */
+	public String getNature() {
+		return nature;
+	}
+
+	/**
+	 * @param nature the nature to set
+	 */
+	public void setNature(String nature) {
+		this.nature = nature;
+	}
+
+	public Set<Suivie> getSuivies() {
+		return suivies;
+	}
+
+	public void setSuivies(Set<Suivie> suivies) {
+		this.suivies = suivies;
 	}
 
 }

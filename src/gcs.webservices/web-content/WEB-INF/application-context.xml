@@ -12,7 +12,7 @@
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="bacon" />
+    <property name="password" value="qazwsxedc" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -22,6 +22,14 @@
       <list>
         <value>gcs.webservices.models.Audit</value>
         <value>gcs.webservices.models.Club</value>
+        <value>gcs.webservices.models.Commandite</value>
+        <value>gcs.webservices.models.Adresse</value>
+        <value>gcs.webservices.models.Fournisseur</value>
+        <value>gcs.webservices.models.FournisseurItem</value>
+        <value>gcs.webservices.models.Item</value>
+        <value>gcs.webservices.models.Unit</value>
+        <value>gcs.webservices.models.Suivie</value>
+        <value>gcs.webservices.models.SuivieStatut</value>
       </list>
     </property>
     <property name="hibernateProperties">
