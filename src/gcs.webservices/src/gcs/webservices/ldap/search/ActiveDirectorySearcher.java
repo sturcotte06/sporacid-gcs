@@ -150,22 +150,6 @@ public class ActiveDirectorySearcher implements ILdapSearcher, Closeable
         }
 
         return ldapUser;
-
-        /* NamingEnumeration<SearchResult> results =
-         * searchUserInternal(searchValue, searchBy, null); try { if
-         * (results.hasMore()) { SearchResult result = results.next();
-         * Attributes attrs = result.getAttributes(); String username =
-         * attrs.get(returnAttributes[0]).get().toString(); String email =
-         * attrs.get(returnAttributes[1]).get().toString(); String firstName =
-         * attrs.get(returnAttributes[2]).get().toString(); String lastName =
-         * attrs.get(returnAttributes[3]).get().toString();
-         * 
-         * return new LdapUser(username, email, firstName, lastName); }
-         * 
-         * // User was not found throw new
-         * EntityNotFoundException("active directory user", searchValue); }
-         * catch (NamingException ex) { throw new
-         * InternalException("ldap_search_general_error", ex); } */
     }
 
     /**

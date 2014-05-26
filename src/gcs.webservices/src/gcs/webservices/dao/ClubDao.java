@@ -17,7 +17,7 @@ public class ClubDao implements IClubDao
     public Collection<Club> getClubs() throws InternalException
     {
         Collection<Club> clubs;
-        clubs = HibernateUtils.getEntities(sessionFactory, Club.class);
+        clubs = HibernateUtils.getEntities(Club.class, sessionFactory);
 
         if (clubs == null) {
             throw new EntityNotFoundException();
@@ -29,13 +29,20 @@ public class ClubDao implements IClubDao
     @Override
     public Club getClub(int clubId) throws InternalException
     {
-        Club club = HibernateUtils.getEntity(clubId, sessionFactory, Club.class);
+        Club club = HibernateUtils.getEntity(clubId, Club.class, sessionFactory);
 
         if (club == null) {
-            throw new InternalException("entity_is_null", "Club not found");
-        } else {
-            return club;
+            throw new EntityNotFoundException("club", clubId);
         }
+
+        return club;
+    }
+
+    @Override
+    public Integer addClub(Club club) throws InternalException
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**

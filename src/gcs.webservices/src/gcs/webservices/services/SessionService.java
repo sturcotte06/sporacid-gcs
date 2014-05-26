@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * 
  * @author Simon Turcotte-Langevin
  */
 @Component
@@ -39,10 +38,9 @@ public class SessionService extends BaseHttpService implements ISessionService
     private ILdapSearcher ldapSearcher;
 
     @POST
-    @Path("")
     public Response create(CreateRequest request)
     {
-        CreateResponse responseEntity = new CreateResponse();
+        CreateResponse response = new CreateResponse();
 
         // Try to authenticate the user
         LdapAuthenticationToken authenticationToken = ldapAuthenticator.authenticate(request.getUsername(),
@@ -61,20 +59,20 @@ public class SessionService extends BaseHttpService implements ISessionService
         // Create a new session in the application.
         PublicSessionKey sessionKey = sessionCache.createSessionFor(request.getIpv4Address(), membre,
                 authenticationToken);
-        responseEntity.setSessionKey(sessionKey.getKey());
-        responseEntity.addMessage(MessageType.Information, "session_create_success");
+        response.setSessionKey(sessionKey.getKey());
+        response.addMessage(MessageType.Information, "session_create_success");
 
         // Set the success flag in the response
-        responseEntity.setSuccess(true);
+        response.setSuccess(true);
 
-        return completeRequest(responseEntity);
+        return completeRequest(response);
     }
 
     @DELETE
     @Path("/{ipv4Address}/{sessionKey}")
     public Response invalidate(@BeanParam SessionToken sessionToken)
     {
-        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
+        gcs.webservices.client.responses.Response response = new gcs.webservices.client.responses.Response();
 
         // Remove the session from the cache; Any action taken
         // from now on with this session key will be refused.
@@ -83,10 +81,10 @@ public class SessionService extends BaseHttpService implements ISessionService
         }
 
         // Set the success flag in the response
-        responseEntity.setSuccess(true);
-        responseEntity.addMessage(MessageType.Information, "session_invalidate_success");
+        response.setSuccess(true);
+        response.addMessage(MessageType.Information, "session_invalidate_success");
 
-        return completeRequest(responseEntity);
+        return completeRequest(response);
     }
 
     /**

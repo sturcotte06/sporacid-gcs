@@ -1,8 +1,5 @@
 package gcs.webservices.aspects;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.core.MediaType;
-
 import gcs.webapp.utils.exceptions.NotAuthenticatedException;
 import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
@@ -89,35 +86,31 @@ public class AuthorizationAspect
 
         // Get the session from the session cache
         sessionCache.withSession(sessionToken, (session) -> {
-            // if (session == null) {
-            // // User is not authenticated
-            // throw new NotAuthenticatedException();
-            // }
+            
+            // Get the membre object associated with the session
+            Membre membre = session.getMembre();
 
-                // Get the membre object associated with the session
-                Membre membre = session.getMembre();
+            // TODO This must be pulled from the database
+            // Role[] roles = membre.getRoles();
+            String[] roleNames = { "capitaine" };
 
-                // TODO This must be pulled from the database
-                // Role[] roles = membre.getRoles();
-                String[] roleNames = { "membre" };
-
-                boolean hasRight = false;
-                for (String roleName : roleNames) {
-                    // Logical "or" to know if one of the user's role has rights
-                    // to this module's operation.
-                    hasRight |= moduleSecurityProvider.hasRights(secureModule.name(), roleName, crudOperator.value());
-                    if (hasRight) {
-                        // He has rights, no need to check further.
-                        break;
-                    }
+            boolean hasRight = false;
+            for (String roleName : roleNames) {
+                // Logical "or" to know if one of the user's role has rights
+                // to this module's operation.
+                hasRight |= moduleSecurityProvider.hasRights(secureModule.name(), roleName, crudOperator.value());
+                if (hasRight) {
+                    // He has rights, no need to check further.
+                    break;
                 }
+            }
 
-                if (!hasRight) {
-                    // User is not authorized
-                    // TODO put the username
-                    throw new UnauthorizedException("AJ50440");
-                }
-            });
+            if (!hasRight) {
+                // User is not authorized
+                // TODO put the username
+                throw new UnauthorizedException("AJ50440");
+            }
+        });
     }
 
     /**

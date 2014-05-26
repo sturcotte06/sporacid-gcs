@@ -71,11 +71,11 @@ public class MembreService extends SecureHttpService
         // membreDao.addMembre(membreToAdd);
 
         // Set the success flag in the response
-        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
-        responseEntity.addMessage(MessageType.Information, "members_add_member_successful");
-        responseEntity.setSuccess(true);
+        gcs.webservices.client.responses.Response response = new gcs.webservices.client.responses.Response();
+        response.addMessage(MessageType.Information, "members_add_member_successful");
+        response.setSuccess(true);
 
-        return completeRequest(responseEntity);
+        return completeRequest(response);
     }
 
     @GET

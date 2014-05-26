@@ -3,12 +3,14 @@ package gcs.webapp.utils.app.security;
 import gcs.webapp.utils.io.RegexFilenameFilter;
 import gcs.webapp.utils.xml.XmlUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
 
 /**
  * 
@@ -23,11 +25,14 @@ public class ModuleSecurityProvider implements IModuleSecurityProvider
 	 */
 	private Map<String, Map<String, Rights>> moduleRights = new HashMap<>();
 	
-	/**
-	 * Constructor
-	 * @param moduleSecurityFolderRelativePath
-	 */
-	public ModuleSecurityProvider(String moduleSecurityFolderRelativePath)
+	    /**
+     * Constructor
+     * 
+     * @param moduleSecurityFolderRelativePath
+     * @throws IOException
+     * @throws JDOMException
+     */
+	public ModuleSecurityProvider(String moduleSecurityFolderRelativePath) throws JDOMException, IOException
 	{
 		// Get the absolute path
 		String moduleSecurityFolderAbsolutePath = Thread.currentThread().getContextClassLoader()
@@ -78,11 +83,12 @@ public class ModuleSecurityProvider implements IModuleSecurityProvider
 		return rights;
 	}
 	
-	/**
-	 * 
-	 * @param moduleSecurityFolderAbsolutePath
-	 */
-	private void loadModuleSecurity(String moduleSecurityFolderAbsolutePath)
+    /**
+     * @param moduleSecurityFolderAbsolutePath
+     * @throws IOException
+     * @throws JDOMException
+     */
+	private void loadModuleSecurity(String moduleSecurityFolderAbsolutePath) throws JDOMException, IOException
 	{
 		final String appMessagesRegex = ".*\\.?security\\.xml";
 		Collection<Element> rootElements = 

@@ -7,34 +7,36 @@ import java.util.Collection;
 
 import org.hibernate.SessionFactory;
 
-public class CommanditeDao implements ICommanditeDao 
+public class CommanditeDao implements ICommanditeDao
 {
-	private SessionFactory sessionFactory;
-	
-	@Override
-	public Collection<Commandite> getAllCommandite() 
-	{
-		return HibernateUtils.getEntities(sessionFactory, Commandite.class);
-	}
+    private SessionFactory sessionFactory;
 
-	@Override
-	public Commandite getCommandite(int idCommandite) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Collection<Commandite> getAllCommandite()
+    {
+        return HibernateUtils.getEntities(Commandite.class, sessionFactory);
+    }
 
-	/**
-	 * @return the sessionFactory
-	 */
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
+    @Override
+    public Commandite getCommandite(int idCommandite)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	/**
-	 * @param sessionFactory the sessionFactory to set
-	 */
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+    /**
+     * @return the sessionFactory
+     */
+    public SessionFactory getSessionFactory()
+    {
+        return sessionFactory;
+    }
 
+    /**
+     * @param sessionFactory the sessionFactory to set
+     */
+    public void setSessionFactory(SessionFactory sessionFactory)
+    {
+        this.sessionFactory = sessionFactory;
+    }
 }

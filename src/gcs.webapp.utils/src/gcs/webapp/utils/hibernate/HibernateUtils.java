@@ -142,16 +142,18 @@ public final class HibernateUtils
      * Public utility method to get a list of entities of a specific type from
      * the database using hibernate
      * 
+     * @param classObj Class object for the generic type
      * @param sessionFactory Reference to the SessionFactory implementation of
      *            the application context bean configuration
-     * @param classObj Class object for the generic type
      * @return The list of entities
      */
-    public static <E extends AbstractModelObject> Collection<E> getEntities(SessionFactory sessionFactory, Class<E> classObj)
+    public static <E extends AbstractModelObject> Collection<E> getEntities(Class<E> classObj,
+            SessionFactory sessionFactory)
     {
         // Get all entities, without aliases or restrictions, and with no
         // pagination
-        return getEntities(sessionFactory, classObj, new ArrayList<HibernateAlias>(), new ArrayList<Criterion>(), 0, getEntityCount(sessionFactory, classObj));
+        return getEntities(classObj, new ArrayList<HibernateAlias>(), new ArrayList<Criterion>(), 0,
+                getEntityCount(classObj, sessionFactory), sessionFactory);
     }
 
     /**
@@ -161,10 +163,11 @@ public final class HibernateUtils
      * @param criterions
      * @return
      */
-    public static <E extends AbstractModelObject> Collection<E> getEntities(SessionFactory sessionFactory, Class<E> classObj, Collection<HibernateAlias> aliases, Collection<Criterion> criterions)
+    public static <E extends AbstractModelObject> Collection<E> getEntities(Class<E> classObj,
+            Collection<HibernateAlias> aliases, Collection<Criterion> criterions, SessionFactory sessionFactory)
     {
         // Get the entities with no pagination
-        return getEntities(sessionFactory, classObj, aliases, criterions, 0, getEntityCount(sessionFactory, classObj));
+        return getEntities(classObj, aliases, criterions, 0, getEntityCount(classObj, sessionFactory), sessionFactory);
     }
 
     /**
@@ -174,10 +177,12 @@ public final class HibernateUtils
      * @param take
      * @return
      */
-    public static <E extends AbstractModelObject> Collection<E> getEntities(SessionFactory sessionFactory, Class<E> classObj, int skip, int take)
+    public static <E extends AbstractModelObject> Collection<E> getEntities(Class<E> classObj, int skip, int take,
+            SessionFactory sessionFactory)
     {
         // Get entities, with aliases and restrictions, but with no pagination
-        return getEntities(sessionFactory, classObj, new ArrayList<HibernateAlias>(), new ArrayList<Criterion>(), 0, getEntityCount(sessionFactory, classObj));
+        return getEntities(classObj, new ArrayList<HibernateAlias>(), new ArrayList<Criterion>(), 0,
+                getEntityCount(classObj, sessionFactory), sessionFactory);
     }
 
     /**
@@ -192,8 +197,9 @@ public final class HibernateUtils
      * @return The list of entities
      */
     @SuppressWarnings("unchecked")
-    public static <E extends AbstractModelObject> Collection<E> getEntities(SessionFactory sessionFactory, Class<E> classObj, Collection<HibernateAlias> aliases, Collection<Criterion> criterions,
-            int skip, int take)
+    public static <E extends AbstractModelObject> Collection<E> getEntities(Class<E> classObj,
+            Collection<HibernateAlias> aliases, Collection<Criterion> criterions, int skip, int take,
+            SessionFactory sessionFactory)
     {
         Collection<E> entitiesList = null;
 
@@ -232,6 +238,53 @@ public final class HibernateUtils
     }
 
     /**
+     * Public utility method to get the first entity of a specific type that
+     * matches a certain number of criterion using hibernate.
+     * 
+     * @param sessionFactory Reference to the SessionFactory implementation of
+     *            the application context bean configuration
+     * @param classObj Class object for the generic type
+     * @param aliases A collection of entity properties aliases
+     * @param criterions A collection of all filtering criterions
+     * @return The first of entities
+     */
+    @SuppressWarnings("unchecked")
+    public static <E extends AbstractModelObject> E getFirstEntity(Class<E> classObj,
+            Collection<HibernateAlias> aliases, Collection<Criterion> criterions, SessionFactory sessionFactory)
+    {
+        E entity = null;
+
+        // Get a session from the session factory
+        Session session = sessionFactory.openSession();
+
+        try {
+            Criteria criteria = session.createCriteria(classObj);
+
+            // Add each aliases to the criteria
+            for (HibernateAlias alias : aliases) {
+                criteria.createAlias(alias.getPropertyPath(), alias.getAlias());
+            }
+
+            // Add each criterion to the criteria
+            for (Criterion criterion : criterions) {
+                criteria.add(criterion);
+            }
+
+            // Set dictinct root entity to remove duplicates of joins
+            criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+            // Resolve the first entity
+            entity = (E) criteria.uniqueResult();
+        } finally {
+            // Always close the session
+            session.close();
+        }
+
+        // Return the list of entities
+        return entity;
+    }
+
+    /**
      * Public utility method to get an entity of a specific type and id from the
      * database using hibernate
      * 
@@ -242,7 +295,8 @@ public final class HibernateUtils
      * @return The entity with the specified id
      */
     @SuppressWarnings("unchecked")
-    public static <E extends AbstractModelObject> E getEntity(int entityId, SessionFactory sessionFactory, Class<E> classObj)
+    public static <E extends AbstractModelObject> E getEntity(int entityId, Class<E> classObj,
+            SessionFactory sessionFactory)
     {
         E entity = null;
 
@@ -269,9 +323,9 @@ public final class HibernateUtils
      * @param classObj
      * @return
      */
-    public static <E extends AbstractModelObject> int getEntityCount(SessionFactory sessionFactory, Class<E> classObj)
+    public static <E extends AbstractModelObject> int getEntityCount(Class<E> classObj, SessionFactory sessionFactory)
     {
-        return getEntityCount(sessionFactory, classObj, new ArrayList<HibernateAlias>(), new ArrayList<Criterion>());
+        return getEntityCount(classObj, new ArrayList<HibernateAlias>(), new ArrayList<Criterion>(), sessionFactory);
     }
 
     /**
@@ -281,7 +335,8 @@ public final class HibernateUtils
      * @param criterions
      * @return
      */
-    public static <E extends AbstractModelObject> int getEntityCount(SessionFactory sessionFactory, Class<E> classObj, Collection<HibernateAlias> aliases, Collection<Criterion> criterions)
+    public static <E extends AbstractModelObject> int getEntityCount(Class<E> classObj,
+            Collection<HibernateAlias> aliases, Collection<Criterion> criterions, SessionFactory sessionFactory)
     {
         int entityCount = 0;
 
