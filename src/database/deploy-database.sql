@@ -14,7 +14,7 @@ CREATE TABLE Formations (id  SERIAL NOT NULL, titre varchar(50), description var
 CREATE TABLE Units (id  SERIAL NOT NULL, unit_code varchar(8) NOT NULL, systeme varchar(12) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Commandites (id  SERIAL NOT NULL, Fournisseurs_id int4 NOT NULL, Items_id int4 NOT NULL, Clubs_id int4 NOT NULL, valeur numeric(6, 2) NOT NULL, nature varchar(64) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Items (id  SERIAL NOT NULL, Units_id int4 NOT NULL, description varchar(255) NOT NULL, code_club varchar(32), qte_courante numeric(6, 3) NOT NULL, qty_min numeric(6, 3), qty_max numeric(6, 3), PRIMARY KEY (id));
-CREATE TABLE Fournisseurs_Items (Fournisseurs_id int4 NOT NULL UNIQUE, Items_id int4 NOT NULL UNIQUE, code_fournisseur int4 NOT NULL, PRIMARY KEY (Fournisseurs_id, Items_id));
+CREATE TABLE Fournisseurs_Items (Fournisseurs_id int4 NOT NULL UNIQUE, Items_id int4 NOT NULL UNIQUE, code_fournisseur varchar(50) NOT NULL, PRIMARY KEY (Fournisseurs_id, Items_id));
 CREATE TABLE Fournisseurs (id  SERIAL NOT NULL, Adresses_id int4 NOT NULL, nom varchar(255) NOT NULL, contact varchar(64) NOT NULL, telephone varchar(24) NOT NULL, fax varchar(24), courriel varchar(255), PRIMARY KEY (id));
 CREATE TABLE Suivie_Statuts (id  SERIAL NOT NULL, code varchar(50) NOT NULL, description varchar(150) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Concentrations (id  SERIAL NOT NULL, acronyme varchar(10) NOT NULL, description varchar(150), PRIMARY KEY (id));
