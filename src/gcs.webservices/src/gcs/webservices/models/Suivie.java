@@ -29,6 +29,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "suivies", schema = "public")
@@ -43,12 +48,10 @@ public class Suivie extends AbstractModelObject implements Serializable
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suivies_id_seq")
     private int id;
 
-    // @PrimaryKeyJoinColumn
-    // @ManyToOne(targetEntity=Membre.class, fetch=FetchType.LAZY)
-    // @Cascade({CascadeType.LOCK})
-    // @JoinColumns({ @JoinColumn(name="membresid", referencedColumnName="id",
-    // nullable=false) })
-    // private Membre membres;
+    @OneToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "membre_id", referencedColumnName = "id", nullable = false)
+    private Membre membre;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commandites_id", referencedColumnName = "id", nullable = false)
@@ -59,6 +62,7 @@ public class Suivie extends AbstractModelObject implements Serializable
     private SuivieStatut suivieStatut;
 
     @Column(name = "date_suivie", nullable = false, length = 6)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateSuivie;
 
     @Column(name = "commentaire", nullable = false, length = 255)

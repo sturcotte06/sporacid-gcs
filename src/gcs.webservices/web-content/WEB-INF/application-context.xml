@@ -30,9 +30,9 @@
         <value>gcs.webservices.models.Membre</value>
         <value>gcs.webservices.models.MembreClub</value>
         <value>gcs.webservices.models.Role</value>
-        <value>gcs.webservices.models.Unit</value>
         <value>gcs.webservices.models.Suivie</value>
         <value>gcs.webservices.models.SuivieStatut</value>
+        <value>gcs.webservices.models.Unit</value>
       </list>
     </property>
     <property name="hibernateProperties">
@@ -47,12 +47,23 @@
   <!-- A json parser. -->
   <bean id="jsonParser" class="com.google.gson.Gson" scope="prototype" />
 
-  <!-- Application messages cache. This is where configured messages will be loaded. -->
-  <bean id="messageLocalizer" name="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
-    <constructor-arg name="messagesFolderRelativePath" value="./resources" />
+  <!-- Application messages cache. This is where configured messages will 
+    be loaded. -->
+  <bean id="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer"
+    scope="singleton">
+    <constructor-arg name="messageResourcePaths">
+      <list>
+        <value>gcs.webservices.messages.en.xml</value>
+        <value>gcs.webservices.messages.fr.xml</value>
+        <value>gcs.webapp.utils.messages.en.xml</value>
+        <value>gcs.webapp.utils.messages.fr.xml</value>
+        <value>gcs.webservices.client.messages.en.xml</value>
+        <value>gcs.webservices.client.messages.fr.xml</value>
+      </list>
+    </constructor-arg>
     <property name="defaultLocale" value="fr" />
   </bean>
-
+  
   <!-- Custom security provider for the application modules -->
   <bean id="moduleSecurityProvider" name="moduleSecurityProvider" class="gcs.webapp.utils.app.security.ModuleSecurityProvider"
     scope="singleton">

@@ -1,4 +1,4 @@
-CREATE TABLE Evenements (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, nom varchar(50) NOT NULL, description varchar(255) NOT NULL, date_debut date NOT NULL, date_fin date, PRIMARY KEY (id));
+CREATE TABLE Evenements (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, nom varchar(50) NOT NULL, description varchar(255) NOT NULL, date_debut TIMESTAMP WITH TIMEZONE NOT NULL, date_fin TIMESTAMP WITH TIMEZONE, PRIMARY KEY (id));
 CREATE TABLE Contacts_Urgence_Membres (Contacts_Urgence_id int4 NOT NULL UNIQUE, Membres_id int4 NOT NULL UNIQUE, PRIMARY KEY (Contacts_Urgence_id, Membres_id));
 CREATE TABLE Membres_Clubs_Roles (Roles_id int4 NOT NULL UNIQUE, Membres_Clubs_id int4 NOT NULL UNIQUE, PRIMARY KEY (Roles_id, Membres_Clubs_id));
 CREATE TABLE Audits (id  SERIAL NOT NULL, username varchar(50) NOT NULL, message varchar(255), timestamp timestamp NOT NULL, PRIMARY KEY (id));
@@ -8,8 +8,8 @@ CREATE TABLE Allergies (id  SERIAL NOT NULL, description varchar(128) NOT NULL, 
 CREATE TABLE Membres_Allergies (Membres_id int4 NOT NULL UNIQUE, Allergies_id int4 NOT NULL UNIQUE, PRIMARY KEY (Membres_id, Allergies_id));
 CREATE TABLE Liens_Parente (id  SERIAL NOT NULL, description varchar(50) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Contacts_Urgence (id  SERIAL NOT NULL, liens_parente_id int4 NOT NULL, nom varchar(50) NOT NULL, prenom varchar(50) NOT NULL, telephone varchar(16) NOT NULL, PRIMARY KEY (id));
-CREATE TABLE Membres_Formations (Membres_id int4 NOT NULL, Formations_id int4 NOT NULL, date_suivie date NOT NULL, date_echeance date, PRIMARY KEY (Membres_id, Formations_id));
-CREATE TABLE Suivies (id  SERIAL NOT NULL, Commandites_id int4 NOT NULL, Membres_id int4 NOT NULL, Suivie_Statuts_id int4 NOT NULL, date_suivie date NOT NULL, commentaire varchar(255) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE Membres_Formations (Membres_id int4 NOT NULL, Formations_id int4 NOT NULL, date_suivie TIMESTAMP WITH TIMEZONE NOT NULL, date_echeance TIMESTAMP WITH TIMEZONE, PRIMARY KEY (Membres_id, Formations_id));
+CREATE TABLE Suivies (id  SERIAL NOT NULL, Commandites_id int4 NOT NULL, Membres_id int4 NOT NULL, Suivie_Statuts_id int4 NOT NULL, date_suivie TIMESTAMP WITH TIMEZONE NOT NULL, commentaire varchar(255) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Formations (id  SERIAL NOT NULL, titre varchar(50), description varchar(150), PRIMARY KEY (id));
 CREATE TABLE Units (id  SERIAL NOT NULL, unit_code varchar(8) NOT NULL, systeme varchar(12) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Commandites (id  SERIAL NOT NULL, Fournisseurs_id int4 NOT NULL, Items_id int4 NOT NULL, Clubs_id int4 NOT NULL, valeur numeric(6, 2) NOT NULL, nature varchar(64) NOT NULL, PRIMARY KEY (id));
@@ -19,7 +19,7 @@ CREATE TABLE Fournisseurs (id  SERIAL NOT NULL, Adresses_id int4 NOT NULL, nom v
 CREATE TABLE Suivie_Statuts (id  SERIAL NOT NULL, code varchar(50) NOT NULL, description varchar(150) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Concentrations (id  SERIAL NOT NULL, acronyme varchar(10) NOT NULL, description varchar(150), PRIMARY KEY (id));
 CREATE TABLE Membres (id  SERIAL NOT NULL, Concentrations_id int4 NOT NULL, nom varchar(64) NOT NULL, prenom varchar(64) NOT NULL, courriel varchar(255) NOT NULL, code_permanent varchar(15) NOT NULL, code_universel varchar(10) NOT NULL, actif bool NOT NULL, telephone varchar(16), PRIMARY KEY (id));
-CREATE TABLE Membres_Clubs (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, Membres_id int4 NOT NULL, date_debut date NOT NULL, date_fin date, PRIMARY KEY (id));
+CREATE TABLE Membres_Clubs (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, Membres_id int4 NOT NULL, date_debut TIMESTAMP WITH TIMEZONE NOT NULL, date_fin TIMESTAMP WITH TIMEZONE, PRIMARY KEY (id));
 CREATE TABLE Adresses (id  SERIAL NOT NULL, no_civique int4 NOT NULL, rue varchar(64) NOT NULL, appartement varchar(10), ville varchar(128) NOT NULL, code_postal varchar(16) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Clubs (id  SERIAL NOT NULL, nom varchar(50) NOT NULL, description varchar(255), PRIMARY KEY (id));
 ALTER TABLE Membres_Preferences ADD CONSTRAINT FKMembres_Pr229875 FOREIGN KEY (membres_id) REFERENCES Membres (id);
