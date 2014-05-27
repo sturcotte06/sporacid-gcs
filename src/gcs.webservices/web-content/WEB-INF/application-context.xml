@@ -12,7 +12,7 @@
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="qazwsxedc" />
+    <property name="password" value="postgres" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -47,10 +47,8 @@
   <!-- A json parser. -->
   <bean id="jsonParser" class="com.google.gson.Gson" scope="prototype" />
 
-  <!-- Application messages cache. This is where configured messages will 
-    be loaded. -->
-  <bean id="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer"
-    scope="singleton">
+  <!-- Application messages cache. This is where configured messages will be loaded. -->
+  <bean id="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
     <constructor-arg name="messageResourcePaths">
       <list>
         <value>gcs.webservices.messages.en.xml</value>
@@ -63,7 +61,7 @@
     </constructor-arg>
     <property name="defaultLocale" value="fr" />
   </bean>
-  
+
   <!-- Custom security provider for the application modules -->
   <bean id="moduleSecurityProvider" name="moduleSecurityProvider" class="gcs.webapp.utils.app.security.ModuleSecurityProvider"
     scope="singleton">
@@ -92,17 +90,22 @@
     <property name="defaultUserDomain" value="ens.ad.etsmtl.ca" />
   </bean>
 
-  <!-- Define all data access objects below -->
-  <bean id="membreDao" class="gcs.webservices.dao.MembreDao" scope="singleton" />
+  <!-- IMembreDao implementation -->
+  <bean id="membreDao" class="gcs.webservices.dao.MembreDao" scope="singleton">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
 
+  <!-- IAuditDao implementation -->
   <bean id="auditDao" class="gcs.webservices.dao.AuditDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
+  <!-- IClubDao implementation -->
   <bean id="clubDao" class="gcs.webservices.dao.ClubDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
+  <!-- ICommanditeDao implementation -->
   <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>

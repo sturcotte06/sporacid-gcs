@@ -62,7 +62,7 @@ public class Suivie extends AbstractModelObject implements Serializable
     private SuivieStatut suivieStatut;
 
     @Column(name = "date_suivie", nullable = false, length = 6)
-    @Temporal(TemporalType.TIMESTAMP)
+    // @Temporal(TemporalType.TIMESTAMP)
     private Date dateSuivie;
 
     @Column(name = "commentaire", nullable = false, length = 255)

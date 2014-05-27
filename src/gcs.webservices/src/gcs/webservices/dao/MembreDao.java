@@ -60,7 +60,7 @@ public class MembreDao implements IMembreDao
         Collection<Criterion> criterions = new ArrayList<>();
 
         // Create a criterion on username
-        criterions.add(Restrictions.eq("codePermanent", username));
+        criterions.add(Restrictions.eq("codeUniversel", username).ignoreCase());
 
         try {
             // Get the member
@@ -142,5 +142,21 @@ public class MembreDao implements IMembreDao
             // Couldn't edit the membre
             throw new InternalException("membersdao_editmember_exception", ex);
         }
+    }
+
+    /**
+     * @return the sessionFactory
+     */
+    public SessionFactory getSessionFactory()
+    {
+        return sessionFactory;
+    }
+
+    /**
+     * @param sessionFactory the sessionFactory to set
+     */
+    public void setSessionFactory(SessionFactory sessionFactory)
+    {
+        this.sessionFactory = sessionFactory;
     }
 }

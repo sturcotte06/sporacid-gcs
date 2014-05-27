@@ -33,6 +33,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OrderBy;
 
 @Entity
@@ -69,6 +71,7 @@ public class Commandite extends AbstractModelObject implements Serializable
 
     @OneToMany(mappedBy = "commandite", fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
     @OrderBy(clause = "date_suivie")
     private Set<Suivie> suivies = new HashSet<>();
 
