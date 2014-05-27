@@ -6,12 +6,6 @@ Insert into clubs values (nextval('clubs_id_seq'), 'Baja','Véhicule amphibie to
 INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Membre', 'Un membre.');
 INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Capitaine', 'Un capitaine.');
 
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (1,1,'Patrick','Olsen','nibh.Aliquam@tristiquesenectus.co.uk','XUYJ98427084','HS00689',true,'3716562099');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (2,2,'Moses','Melendez','Donec.consectetuer.mauris@mattisvelit.edu','SXGD95781049','KF32898',true,'1881189845');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (3,3,'Giacomo','Cote','velit.Cras.lorem@duiSuspendisseac.ca','IJKG71845113','XU92060',true,'6534742324');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (4,4,'Jade','Ford','sem.ut.dolor@nonbibendum.co.uk','GXLM93228319','EZ35441',true,'8522879201');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (5,5,'Chandler','Mccarty','in.dolor@atpretiumaliquet.org','ACGN79164633','HJ85616',true,'3055537869');
-
 Insert into concentrations values (nextval('concentrations_id_seq'), 'CTN','Génie de la construction');
 Insert into concentrations values (nextval('concentrations_id_seq'), 'ELE','Génie électrique');
 Insert into concentrations values (nextval('concentrations_id_seq'), 'GOL','Génie des opérations et de la logistique');
@@ -19,6 +13,12 @@ Insert into concentrations values (nextval('concentrations_id_seq'), 'GPA','Gén
 Insert into concentrations values (nextval('concentrations_id_seq'), 'LOG','Génie logiciel');
 Insert into concentrations values (nextval('concentrations_id_seq'), 'MEC','Génie mécanique');
 Insert into concentrations values (nextval('concentrations_id_seq'), 'TI','Génie des technologies de l`information');
+
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (1,1,'Patrick','Olsen','nibh.Aliquam@tristiquesenectus.co.uk','XUYJ98427084','AJ00689',true,'3716562099');
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (2,2,'Moses','Melendez','Donec.consectetuer.mauris@mattisvelit.edu','SXGD95781049','AJ32898',true,'1881189845');
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (3,3,'Giacomo','Cote','velit.Cras.lorem@duiSuspendisseac.ca','IJKG71845113','AZ92060',true,'6534742324');
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (4,4,'Jade','Ford','sem.ut.dolor@nonbibendum.co.uk','GXLM93228319','AZ35441',true,'8522879201');
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (5,5,'Chandler','Mccarty','in.dolor@atpretiumaliquet.org','ACGN79164633','AX85616',true,'3055537869');
 
 INSERT INTO units (id,unit_code,systeme) VALUES (0,'UNIT0','SYSTEME1');
 INSERT INTO units (id,unit_code,systeme) VALUES (1,'UNIT1','SYSTEME2');
