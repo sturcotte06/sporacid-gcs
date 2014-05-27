@@ -27,7 +27,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "adresses", schema = "public")
-@SequenceGenerator(name = "audits_id_seq", sequenceName = "audits_id_seq", allocationSize = 1)
+@SequenceGenerator(name = "adresses_id_seq", sequenceName = "adresses_id_seq", allocationSize = 1)
 public class Adresse extends AbstractModelObject implements Serializable
 {
     /**  */
@@ -59,14 +59,6 @@ public class Adresse extends AbstractModelObject implements Serializable
     public int getId()
     {
         return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id)
-    {
-        this.id = id;
     }
 
     /**

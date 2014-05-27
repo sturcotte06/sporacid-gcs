@@ -33,6 +33,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "fournisseurs", schema = "public")
@@ -53,6 +55,7 @@ public class Fournisseur extends AbstractModelObject implements Serializable
     private Adresse adresse;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "fournisseurs_items", joinColumns = { @JoinColumn(name = "fournisseurs_id") }, inverseJoinColumns = { @JoinColumn(name = "items_id") })
     private Set<Item> items;
 
