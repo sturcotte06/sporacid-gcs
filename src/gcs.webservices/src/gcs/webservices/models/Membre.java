@@ -4,6 +4,7 @@ import gcs.webapp.utils.hibernate.AbstractModelObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,13 +22,12 @@ import org.hibernate.annotations.FetchMode;
 public class Membre extends AbstractModelObject
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membres_id_seq")
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membres_id_seq")
     private int id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
-    // @Cascade({CascadeType., org.hibernate.annotations.CascadeType.LOCK})
     @JoinColumn(name = "concentrations_id", referencedColumnName = "id", nullable = false)
     private Concentration concentration;
 

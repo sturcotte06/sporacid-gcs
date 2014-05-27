@@ -3,6 +3,9 @@ Insert into clubs values (nextval('clubs_id_seq'), 'LiETS','Ligue d`Improvisatio
 Insert into clubs values (nextval('clubs_id_seq'), 'Evolution','Véhicule à faible consommation');
 Insert into clubs values (nextval('clubs_id_seq'), 'Baja','Véhicule amphibie tout terrain');
 
+INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Membre', 'Un membre.');
+INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Capitaine', 'Un capitaine.');
+
 INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (1,1,'Patrick','Olsen','nibh.Aliquam@tristiquesenectus.co.uk','XUYJ98427084','HS00689',true,'3716562099');
 INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (2,2,'Moses','Melendez','Donec.consectetuer.mauris@mattisvelit.edu','SXGD95781049','KF32898',true,'1881189845');
 INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (3,3,'Giacomo','Cote','velit.Cras.lorem@duiSuspendisseac.ca','IJKG71845113','XU92060',true,'6534742324');

@@ -20,13 +20,16 @@
     <property name="dataSource" ref="dataSource" />
     <property name="annotatedClasses">
       <list>
+        <value>gcs.webservices.models.Adresse</value>
         <value>gcs.webservices.models.Audit</value>
         <value>gcs.webservices.models.Club</value>
         <value>gcs.webservices.models.Commandite</value>
-        <value>gcs.webservices.models.Adresse</value>
+        <value>gcs.webservices.models.Concentration</value>
         <value>gcs.webservices.models.Fournisseur</value>
-        <value>gcs.webservices.models.FournisseurItem</value>
         <value>gcs.webservices.models.Item</value>
+        <value>gcs.webservices.models.Membre</value>
+        <value>gcs.webservices.models.MembreClub</value>
+        <value>gcs.webservices.models.Role</value>
         <value>gcs.webservices.models.Unit</value>
         <value>gcs.webservices.models.Suivie</value>
         <value>gcs.webservices.models.SuivieStatut</value>

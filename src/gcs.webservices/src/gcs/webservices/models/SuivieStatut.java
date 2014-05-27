@@ -32,7 +32,7 @@ public class SuivieStatut implements Serializable
     private static final long serialVersionUID = 2318828983764637833L;
 
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suivie_statuts_id_seq")
     private int id;
 

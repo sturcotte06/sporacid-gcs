@@ -68,7 +68,7 @@ public class Commandite extends AbstractModelObject implements Serializable
     private String nature;
 
     @OneToMany(mappedBy = "commandite", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL })
+    @Cascade(CascadeType.ALL)
     @OrderBy(clause = "date_suivie")
     private Set<Suivie> suivies = new HashSet<>();
 

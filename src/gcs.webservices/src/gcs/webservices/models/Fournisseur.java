@@ -48,12 +48,11 @@ public class Fournisseur extends AbstractModelObject implements Serializable
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL })
+    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "adresses_id", referencedColumnName = "id", nullable = false)
     private Adresse adresse;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    // @Cascade({ CascadeType.ALL })
     @JoinTable(name = "fournisseurs_items", joinColumns = { @JoinColumn(name = "fournisseurs_id") }, inverseJoinColumns = { @JoinColumn(name = "items_id") })
     private Set<Item> items;
 
