@@ -1,5 +1,7 @@
 package gcs.webservices.models;
 
+import java.util.Set;
+
 import gcs.webapp.utils.hibernate.AbstractModelObject;
 
 import javax.persistence.Column;
@@ -9,10 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -31,6 +36,11 @@ public class Membre extends AbstractModelObject
     @JoinColumn(name = "concentrations_id", referencedColumnName = "id", nullable = false)
     private Concentration concentration;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "membre")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private Set<MembreClub> clubs;
+    
     @Column(name = "nom")
     private String nom;
 
@@ -194,5 +204,21 @@ public class Membre extends AbstractModelObject
     public void setCodeUniversel(String codeUniversel)
     {
         this.codeUniversel = codeUniversel;
+    }
+
+    /**
+     * @return the clubs
+     */
+    public Set<MembreClub> getClubs()
+    {
+        return clubs;
+    }
+
+    /**
+     * @param clubs the clubs to set
+     */
+    public void setClubs(Set<MembreClub> clubs)
+    {
+        this.clubs = clubs;
     }
 }

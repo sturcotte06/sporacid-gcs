@@ -1,15 +1,14 @@
 package gcs.webapp.utils.app.messages;
 
 import gcs.webapp.utils.aspects.logging.Loggable;
+import gcs.webapp.utils.collections.CaseInsensitiveMap;
 import gcs.webapp.utils.xml.XmlUtils;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
@@ -21,20 +20,11 @@ import org.jdom2.JDOMException;
  */
 public class MessageLocalizer implements IMessageLocalizer
 {
-    /** Log4j logger. */
-    private final static Logger logger = Logger.getLogger(MessageLocalizer.class);
-
-    /**
-     * Initial capacity for hash maps We want O(1) most of the times, so set
-     * this to a relatively high number because we'll have lots of messages
-     */
-    private final int cHashMapInitialCapacity = 256;
-
     /**
      * The hash map for all application's messages. The first map sorts them by
      * locale; The second map sorts them by message keys.
      */
-    private final Map<String, Map<String, String>> applicationMessages = new HashMap<String, Map<String, String>>();
+    private final Map<String, Map<String, String>> applicationMessages = new CaseInsensitiveMap<>();
 
     /**
      * The default locale if we try to get a message without locale.
@@ -167,7 +157,7 @@ public class MessageLocalizer implements IMessageLocalizer
                 messagesMap = applicationMessages.get(language);
             } else {
                 // Locale doesn't exists; create a new map
-                messagesMap = new HashMap<>(cHashMapInitialCapacity);
+                messagesMap = new CaseInsensitiveMap<>();
                 applicationMessages.put(language, messagesMap);
             }
 

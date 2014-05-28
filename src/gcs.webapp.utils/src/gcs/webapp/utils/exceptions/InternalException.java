@@ -1,5 +1,7 @@
 package gcs.webapp.utils.exceptions;
 
+import gcs.webapp.utils.Message;
+import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.ILocalizable;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 
@@ -17,7 +19,7 @@ public class InternalException extends RuntimeException implements ILocalizable
     private String messageKey;
     /** Format object for the message. */
     private Object[] format;
-    
+
     /**
      * Constructor
      * 
@@ -28,7 +30,7 @@ public class InternalException extends RuntimeException implements ILocalizable
     {
         this(messageKey, null, format);
     }
- 
+
     /**
      * Constructor
      * 
@@ -39,11 +41,12 @@ public class InternalException extends RuntimeException implements ILocalizable
     public InternalException(String messageKey, Throwable innerException, Object... format)
     {
         super((String) null, innerException);
-        
+
         this.message = messageKey;
         this.messageKey = messageKey;
         this.format = format;
     }
+
     @Override
     public void localize(IMessageLocalizer localizer)
     {
@@ -72,5 +75,14 @@ public class InternalException extends RuntimeException implements ILocalizable
     public String getMessageKey()
     {
         return messageKey;
+    }
+
+    /**
+     * Convert the exception in an error message.
+     * @return An error message.
+     */
+    public Message toMessage()
+    {
+        return new Message(MessageType.Error, messageKey, format);
     }
 }

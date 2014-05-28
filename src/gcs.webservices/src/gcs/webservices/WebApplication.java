@@ -13,7 +13,7 @@ public class WebApplication extends ResourceConfig
     public WebApplication()
     {
         // Scan everything in those packages
-        packages("gcs.webservices.services"/* , "gcs.webservices.providers" */);
+        packages("gcs.webservices.services");
 
         // Register exception mappers.
         // Most general mapper should always be the last.

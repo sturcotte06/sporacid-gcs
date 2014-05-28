@@ -2,8 +2,6 @@ package gcs.webservices.aspects.services;
 
 import java.util.Date;
 
-import org.springframework.scheduling.annotation.Async;
-
 import gcs.webservices.dao.IAuditDao;
 import gcs.webservices.models.Audit;
 import gcs.webservices.sessions.SessionCache;
@@ -13,24 +11,28 @@ import gcs.webservices.sessions.SessionCache;
  */
 public class AuditService implements IAuditService
 {
+    /** */
     private IAuditDao auditDao;
+
+    /** */
     private SessionCache sessionCache;
 
     @Override
-    public void audit(String ipAddress, String sessionKey, String message)
+    public void audit(String ipv4Address, String sessionKey, String message)
     {
         Audit audit = new Audit();
-        audit.setTimestamp(new Date());
 
-        if (!sessionCache.sessionExists(ipAddress, sessionKey)) {
-            message = String.format("Session for ip %s and key %s does not exist.", ipAddress, sessionKey);
-            audit.setMessage(String.format("Session for ip %s and key %s does not exist.", ipAddress, sessionKey));
+        if (!sessionCache.sessionExists(ipv4Address, sessionKey)) {
+            message = String.format("Session for ip %s and key %s does not exist.", ipv4Address, sessionKey);
+            audit.setUsername("anonymous");
         } else {
-            sessionCache.withSession(ipAddress, sessionKey, session -> {
+            sessionCache.withSession(ipv4Address, sessionKey, session -> {
                 audit.setUsername(session.getAuthenticationToken().getEmittedFor());
             });
         }
 
+        audit.setTimestamp(new Date());
+        audit.setMessage(message);
         auditDao.addAudit(audit);
     }
 

@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -31,15 +31,15 @@ public class MembreClub extends AbstractModelObject
     @Column(name = "id")
     private int id;
 
-    @OneToMany
+    @OneToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "clubs_id", referencedColumnName = "id", nullable = false)
-    private Set<Club> clubs;
+    private Club club;
 
-    @OneToMany
+    @OneToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "membres_id", referencedColumnName = "id", nullable = false)
-    private Set<Membre> membres;
+    private Membre membre;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "membres_clubs_roles", joinColumns = { @JoinColumn(name = "membres_clubs_id") }, inverseJoinColumns = { @JoinColumn(name = "roles_id") })
@@ -68,35 +68,51 @@ public class MembreClub extends AbstractModelObject
     }
 
     /**
-     * @return the clubs
+     * @return the club
      */
-    public Set<Club> getClubs()
+    public Club getClub()
     {
-        return clubs;
+        return club;
     }
 
     /**
-     * @param clubs the clubs to set
+     * @param club the club to set
      */
-    public void setClubs(Set<Club> clubs)
+    public void setClub(Club club)
     {
-        this.clubs = clubs;
+        this.club = club;
     }
 
     /**
-     * @return the membres
+     * @return the membre
      */
-    public Set<Membre> getMembres()
+    public Membre getMembre()
     {
-        return membres;
+        return membre;
     }
 
     /**
-     * @param membres the membres to set
+     * @param membre the membre to set
      */
-    public void setMembres(Set<Membre> membres)
+    public void setMembre(Membre membre)
     {
-        this.membres = membres;
+        this.membre = membre;
+    }
+
+    /**
+     * @return the roles
+     */
+    public Set<Role> getRoles()
+    {
+        return roles;
+    }
+
+    /**
+     * @param roles the roles to set
+     */
+    public void setRoles(Set<Role> roles)
+    {
+        this.roles = roles;
     }
 
     /**

@@ -1,7 +1,6 @@
 package gcs.webservices.providers;
 
 import gcs.webapp.utils.Message;
-import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.exceptions.InternalException;
@@ -45,7 +44,7 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
         ResponseBuilder builder = null;
 
         // Add the localized message to the response's messages.
-        responseEntity.addMessage(MessageType.Error, exception.getMessageKey());
+        responseEntity.addMessage(exception.toMessage());
 
         // Assign the response's status according to the type of exception
         // generated.
