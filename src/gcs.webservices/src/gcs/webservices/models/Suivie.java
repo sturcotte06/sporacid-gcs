@@ -48,12 +48,15 @@ public class Suivie extends AbstractModelObject implements Serializable
 
     @OneToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "membre_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "membres_id", referencedColumnName = "id", nullable = false)
     private Membre membre;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    /*@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commandites_id", referencedColumnName = "id", nullable = false)
-    private Commandite commandite;
+    private Commandite commandite;*/
+    
+    @Column(name = "commandites_id", nullable = false)
+    private int commanditeId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "suivie_statuts_id", referencedColumnName = "id", nullable = false)
@@ -85,18 +88,18 @@ public class Suivie extends AbstractModelObject implements Serializable
     /**
      * @return the commandite
      */
-    public Commandite getCommandite()
+    /*public Commandite getCommandite()
     {
         return commandite;
-    }
+    }*/
 
     /**
      * @param commandite the commandite to set
      */
-    public void setCommandite(Commandite commandite)
+   /* public void setCommandite(Commandite commandite)
     {
         this.commandite = commandite;
-    }
+    }*/
 
     /**
      * @return the suivieStatut

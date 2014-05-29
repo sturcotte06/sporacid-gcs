@@ -69,7 +69,7 @@ public class Commandite extends AbstractModelObject implements Serializable
     @Column(name = "nature", nullable = false, length = 64)
     private String nature;
 
-    @OneToMany(mappedBy = "commandite", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "commanditeId", fetch = FetchType.EAGER)
     @Cascade(CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     @OrderBy(clause = "date_suivie")
