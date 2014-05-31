@@ -32,7 +32,7 @@ public class Audit extends AbstractModelObject implements Serializable
     @Column(name = "username")
     private String username;
 
-    @Column(name = "timestamp")
+    @Column(name = "date_audits")
     private Date timestamp;
 
     @Column(name = "message")

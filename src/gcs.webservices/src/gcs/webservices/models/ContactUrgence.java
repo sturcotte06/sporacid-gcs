@@ -39,6 +39,9 @@ public class ContactUrgence extends AbstractModelObject
 		nullable = false)
 	private LienParente lienParente;
 	
+	@Column(name="membres_id")
+	private int membreId;
+	
 	@Column(name = "nom")
 	private String nom;
 	

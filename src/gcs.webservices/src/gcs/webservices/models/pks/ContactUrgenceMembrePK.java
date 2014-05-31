@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class ContactUrgenceMembrePK implements Serializable 
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1652528820486131536L;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="membres_id", referencedColumnName = "id", nullable = false)
