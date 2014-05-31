@@ -66,15 +66,15 @@ INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_se
 INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Père');
 INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Enfant');
 
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),1,'Hoover','Zephania','1-772-913-2130');
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),2,'Gibson','Wynne','1-727-710-9565');
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),3,'Ryan','Athena','1-462-616-1288');
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),1,'Harper','Nissim','1-702-829-5337');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),1,1,'Hoover','Zephania','1-772-913-2130');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),2,2,'Gibson','Wynne','1-727-710-9565');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),3, 3,'Ryan','Athena','1-462-616-1288');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),4, 1,'Harper','Nissim','1-702-829-5337');
 
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (1,1);
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (2,2);
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (3,3);
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (4,4);
+-- INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (1,1);
+--INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (2,2);
+--INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (3,3);
+--INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (4,4);
 
 INSERT INTO evenements (id,clubs_id,nom,description,date_debut,date_fin) VALUES (nextval('evenements_id_seq'),1,'Événement1','mauris, aliquam eu, accumsan sed,','2012-05-05','2013-09-17');
 INSERT INTO evenements (id,clubs_id,nom,description,date_debut,date_fin) VALUES (nextval('evenements_id_seq'),2,'Événement2','In lorem. Donec elementum, lorem','2014-02-24','2014-09-25');

@@ -8,12 +8,12 @@ CREATE TABLE Membres_Allergies (Membres_id int4 NOT NULL UNIQUE, Allergies_id in
 CREATE TABLE Liens_Parente (id  SERIAL NOT NULL, description varchar(50) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Contacts_Urgence (id  SERIAL NOT NULL, membres_id int4 NOT NULL, liens_parente_id int4 NOT NULL, nom varchar(50) NOT NULL, prenom varchar(50) NOT NULL, telephone varchar(16) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Membres_Formations (Membres_id int4 NOT NULL, Formations_id int4 NOT NULL, date_suivie timestamptz NOT NULL, date_echeance timestamptz, PRIMARY KEY (Membres_id, Formations_id));
-CREATE TABLE Suivies (Commandites_id int4 NOT NULL UNIQUE, Membres_id int4 NOT NULL UNIQUE, Suivie_Statuts_id int4 NOT NULL, date_suivie timestamptz NOT NULL, commentaire varchar(255) NOT NULL, PRIMARY KEY (Commandites_id, Membres_id));
+CREATE TABLE Suivies (id  SERIAL NOT NULL, Commandites_id int4 NOT NULL, Membres_id int4 NOT NULL, Suivie_Statuts_id int4 NOT NULL, date_suivie timestamptz NOT NULL, commentaire varchar(255) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Formations (id  SERIAL NOT NULL, titre varchar(50), description varchar(150), PRIMARY KEY (id));
 CREATE TABLE Units (id  SERIAL NOT NULL, unit_code varchar(8) NOT NULL, systeme varchar(12) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Commandites (id  SERIAL NOT NULL, Fournisseurs_id int4, Items_id int4 NOT NULL, Clubs_id int4 NOT NULL, valeur numeric(6, 2) NOT NULL, nature varchar(64) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Items (id  SERIAL NOT NULL, Units_id int4 NOT NULL, description varchar(255) NOT NULL, code_club varchar(32), qte_courante numeric(6, 3) NOT NULL, qty_min numeric(6, 3), qty_max numeric(6, 3), PRIMARY KEY (id));
-CREATE TABLE Fournisseurs_Items (Fournisseurs_id int4 NOT NULL UNIQUE, Items_id int4 NOT NULL UNIQUE, code_fournisseur int4 NOT NULL, PRIMARY KEY (Fournisseurs_id, Items_id));
+CREATE TABLE Fournisseurs_Items (Fournisseurs_id int4 NOT NULL UNIQUE, Items_id int4 NOT NULL UNIQUE, code_fournisseur varchar(25) NOT NULL, PRIMARY KEY (Fournisseurs_id, Items_id));
 CREATE TABLE Fournisseurs (id  SERIAL NOT NULL, Adresses_id int4 NOT NULL, nom varchar(255) NOT NULL, contact varchar(64) NOT NULL, telephone varchar(24) NOT NULL, fax varchar(24), courriel varchar(255), PRIMARY KEY (id));
 CREATE TABLE Suivie_Statuts (id  SERIAL NOT NULL, code varchar(50) NOT NULL, description varchar(150) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Concentrations (id  SERIAL NOT NULL, acronyme varchar(10) NOT NULL, description varchar(150), PRIMARY KEY (id));
