@@ -17,56 +17,62 @@ import javax.xml.bind.annotation.XmlRootElement;
 @SequenceGenerator(name = "concentrations_id_seq", sequenceName = "concentrations_id_seq", allocationSize = 1)
 public class Concentration extends AbstractModelObject
 {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "concentrations_id_seq")
     @Column(name = "id")
-	private int id;
-	
-	@Column(name="acronyme")
-	private String acronyme;
-	
-	@Column(name="description")
-	private String description;
+    private int id;
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    @Column(name = "acronyme")
+    private String acronyme;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "description")
+    private String description;
 
-	/**
-	 * @return the acronyme
-	 */
-	public String getAcronyme() {
-		return acronyme;
-	}
+    /**
+     * @return the id
+     */
+    public int getId()
+    {
+        return id;
+    }
 
-	/**
-	 * @param acronyme the acronyme to set
-	 */
-	public void setAcronyme(String acronyme) {
-		this.acronyme = acronyme;
-	}
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * @return the acronyme
+     */
+    public String getAcronyme()
+    {
+        return acronyme;
+    }
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    /**
+     * @param acronyme the acronyme to set
+     */
+    public void setAcronyme(String acronyme)
+    {
+        this.acronyme = acronyme;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 }

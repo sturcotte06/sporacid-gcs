@@ -12,20 +12,18 @@ import gcs.webapp.utils.app.messages.IMessageLocalizer;
  */
 public class Message implements ILocalizable
 {
+    @JsonIgnore
+    private Object[] format;
     private MessageType type;
     private String key;
     private String content;
 
-    @JsonIgnore
-    private Object[] format;
-
     public Message()
-    {
-    }
+    {}
 
     public Message(MessageType messageType, String messageKey, Object... format)
     {
-        this.setType(messageType);
+        this.type = messageType;
         this.key = messageKey;
         this.content = messageKey;
         this.format = format;

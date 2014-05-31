@@ -2,6 +2,7 @@ package gcs.webservices.models;
 
 import gcs.webapp.utils.hibernate.AbstractModelObject;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,11 +13,17 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+
 @Entity
 @Table(name = "audits")
+@BatchSize(size = 100)
 @SequenceGenerator(name = "audits_id_seq", sequenceName = "audits_id_seq", allocationSize = 1)
-public class Audit extends AbstractModelObject
+public class Audit extends AbstractModelObject implements Serializable
 {
+    /** */
+    private static final long serialVersionUID = 1678770584374182550L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "audits_id_seq")
     @Column(name = "id")

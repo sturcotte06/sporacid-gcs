@@ -8,31 +8,31 @@ public class Context
 {
     @NotEmpty(message = "beans_context_contextname_notempty")
     @PathParam("contextName")
-    private String contextName;
+    private String name;
 
     public Context()
     {
         super();
     }
-    
-    public Context(String contextName)
+
+    public Context(String name)
     {
-        this.contextName = contextName;
+        this.name = name;
     }
 
     /**
      * @return the contextName
      */
-    public String getContextName()
+    public String getName()
     {
-        return contextName;
+        return name;
     }
 
     /**
      * @param contextName the contextName to set
      */
-    public void setContextName(String contextName)
+    public void setName(String name)
     {
-        this.contextName = contextName;
+        this.name = name;
     }
 }

@@ -12,7 +12,7 @@
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="bacon" />
+    <property name="password" value="postgres" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -20,8 +20,19 @@
     <property name="dataSource" ref="dataSource" />
     <property name="annotatedClasses">
       <list>
+        <value>gcs.webservices.models.Adresse</value>
         <value>gcs.webservices.models.Audit</value>
         <value>gcs.webservices.models.Club</value>
+        <value>gcs.webservices.models.Commandite</value>
+        <value>gcs.webservices.models.Concentration</value>
+        <value>gcs.webservices.models.Fournisseur</value>
+        <value>gcs.webservices.models.Item</value>
+        <value>gcs.webservices.models.Membre</value>
+        <value>gcs.webservices.models.MembreClub</value>
+        <value>gcs.webservices.models.Role</value>
+        <value>gcs.webservices.models.Suivie</value>
+        <value>gcs.webservices.models.SuivieStatut</value>
+        <value>gcs.webservices.models.Unit</value>
       </list>
     </property>
     <property name="hibernateProperties">
@@ -37,8 +48,17 @@
   <bean id="jsonParser" class="com.google.gson.Gson" scope="prototype" />
 
   <!-- Application messages cache. This is where configured messages will be loaded. -->
-  <bean id="messageLocalizer" name="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
-    <constructor-arg name="messagesFolderRelativePath" value="./resources" />
+  <bean id="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
+    <constructor-arg name="messageResourcePaths">
+      <list>
+        <value>gcs.webservices.messages.en.xml</value>
+        <value>gcs.webservices.messages.fr.xml</value>
+        <value>gcs.webapp.utils.messages.en.xml</value>
+        <value>gcs.webapp.utils.messages.fr.xml</value>
+        <value>gcs.webservices.client.messages.en.xml</value>
+        <value>gcs.webservices.client.messages.fr.xml</value>
+      </list>
+    </constructor-arg>
     <property name="defaultLocale" value="fr" />
   </bean>
 
@@ -70,17 +90,22 @@
     <property name="defaultUserDomain" value="ens.ad.etsmtl.ca" />
   </bean>
 
-  <!-- Define all data access objects below -->
-  <bean id="membreDao" class="gcs.webservices.dao.MembreDao" scope="singleton" />
+  <!-- IMembreDao implementation -->
+  <bean id="membreDao" class="gcs.webservices.dao.MembreDao" scope="singleton">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
 
+  <!-- IAuditDao implementation -->
   <bean id="auditDao" class="gcs.webservices.dao.AuditDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
+  <!-- IClubDao implementation -->
   <bean id="clubDao" class="gcs.webservices.dao.ClubDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
+  <!-- ICommanditeDao implementation -->
   <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>

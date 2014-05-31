@@ -12,7 +12,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 /**
- * 
  * @author Simon Turcotte-Langevin
  */
 @Aspect
@@ -55,33 +54,34 @@ public class AuditAspect
      */
     private void auditThenProceed(JoinPoint joinPoint, SessionToken sessionToken)
     {
-        // Get the class name so we can log class we were in
-        String className = joinPoint.getSignature().getDeclaringTypeName();
-
-        // Get the method name so we can log method we were in
-        String methodName = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
-
-        String secureModuleString = "";
-        Class<?> classObj = null;
         try {
+            // Get the class name so we can log class we were in
+            String className = joinPoint.getSignature().getDeclaringTypeName();
+
+            // Get the method name so we can log method we were in
+            String methodName = ((MethodSignature) joinPoint.getSignature()).getMethod().getName();
+
             // Try to get the class by name
-            classObj = Class.forName(className);
-        } catch (ClassNotFoundException ex) {
-            logger.info("Error in audit aspect. Couldn't get class by name.");
-        }
+            Class<?> classObj = Class.forName(className);
 
-        if (classObj != null) {
-            SecureModule secureModule = classObj.getAnnotation(SecureModule.class);
-            if (secureModule != null) {
-                // Secure module annotation was found.
-                // We can specify a message suffix for the module we're in.
-                secureModuleString = " in module " + secureModule.name();
+            String secureModuleString = "";
+            if (classObj != null) {
+                SecureModule secureModule = classObj.getAnnotation(SecureModule.class);
+                if (secureModule != null) {
+                    // Secure module annotation was found.
+                    // We can specify a message suffix for the module we're in.
+                    secureModuleString = " in module " + secureModule.name();
+                }
             }
-        }
 
-        // Do the actual audit with all informations harvested.
-        auditService.audit(sessionToken.getIpv4Address(), sessionToken.getSessionKey(),
-                String.format("Accessing [%s.%s]%s.", className, methodName, secureModuleString));
+            // Do the actual audit with all informations harvested.
+            auditService.audit(sessionToken.getIpv4Address(), sessionToken.getSessionKey(),
+                    String.format("Accessing [%s.%s]%s.", className, methodName, secureModuleString));
+        } catch (Throwable t) {
+            // Auditing is not important enough to throw back to the user.
+            // Just log the exception as a warning.
+            logger.warn("Auditing generated an exception. Audit was aborted.", t);
+        }
     }
 
     /**

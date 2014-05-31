@@ -8,9 +8,9 @@ REM ----------------------------------------------------
 @ECHO OFF
 SET host="127.0.0.1"
 SET username="postgres"
-SET password="Tabarnak!"
+SET password="qazwsxedc"
 SET port=5432
-SET pgShell="C:\Program Files (x86)\PostgreSQL\9.0\bin\psql.exe"
+SET pgShell="E:\Program Files (x86)\PostGre\bin\psql.exe"
 
 :DisplayMenu
 REM  // Clear screen, print menu and read user input

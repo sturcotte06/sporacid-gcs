@@ -19,117 +19,181 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OrderBy;
 
 @Entity
-//@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "commandites", schema = "public")
-public class Commandite extends AbstractModelObject implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6205999501552864331L;
+@SequenceGenerator(name = "commandites_id_seq", sequenceName = "commandites_id_seq", allocationSize = 1)
+public class Commandite extends AbstractModelObject implements Serializable
+{
+    /** */
+    private static final long serialVersionUID = 6205999501552864331L;
 
-	public Commandite() {
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commandites_id_seq")
+    @Column(name = "id")
+    private int id;
 
-	@Column(name = "id", nullable = false, unique = true)
-	@Id
-	@GeneratedValue(generator = "commandites_id_seq")
-	@org.hibernate.annotations.GenericGenerator(name = "commandites_id_seq", strategy = "sequence", parameters = { @org.hibernate.annotations.Parameter(name = "sequence", value = "commandites_id_seq") })
-	private int id;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fournisseurs_id", referencedColumnName = "id", nullable = true)
+    private Fournisseur fournisseur;
 
-	/*@ManyToOne(targetEntity = Fournisseur.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "fournisseurid", referencedColumnName = "id", nullable = false) })
-	private Fournisseur fournisseur;*/
+    @OneToOne(fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.ALL })
+    @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = true)
+    private Item item;
 
-	/*@ManyToOne(targetEntity = Item.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "itemsid", referencedColumnName = "id", nullable = false) })
-	private Item items;*/
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clubs_id", referencedColumnName = "id", nullable = false)
+    private Club club;
 
-	/*@ManyToOne(targetEntity = Club.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "clubsid", referencedColumnName = "id", nullable = false) })
-	private Club club;*/
+    @Column(name = "valeur", nullable = false, precision = 6, scale = 2)
+    private Double valeur;
 
-	@Column(name = "valeur", nullable = false, precision = 6, scale = 2)
-	private Double valeur;
+    @Column(name = "nature", nullable = false, length = 64)
+    private String nature;
 
-	@Column(name = "nature", nullable = false, length = 64)
-	private String nature;
+    @OneToMany(mappedBy = "commanditeId", fetch = FetchType.EAGER)
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    @OrderBy(clause = "date_suivie")
+    private Set<Suivie> suivies = new HashSet<>();
 
-	/*@OneToMany(mappedBy = "commandite", targetEntity = Suivies.class)
-	@org.hibernate.annotations.Cascade({
-			org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.LOCK })
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
-	//LIST @ORDER BYTIMESTAMP
-	private Set suivies = new HashSet();*/
+    public int getORMID()
+    {
+        return getId();
+    }
 
-	public void setId(int value) {
-		this.id = value;
-	}
+    public String toString()
+    {
+        return String.valueOf(getId());
+    }
 
-	public int getId() {
-		return id;
-	}
+    /**
+     * @return the id
+     */
+    public int getId()
+    {
+        return id;
+    }
 
-	public int getORMID() {
-		return getId();
-	}
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-	public void setValeur(double value) {
-		this.valeur = value;
-	}
+    /**
+     * @return the fournisseur
+     */
+    public Fournisseur getFournisseur()
+    {
+        return fournisseur;
+    }
 
-	public double getValeur() {
-		return valeur;
-	}
+    /**
+     * @param fournisseur the fournisseur to set
+     */
+    public void setFournisseur(Fournisseur fournisseur)
+    {
+        this.fournisseur = fournisseur;
+    }
 
-	public void setNature(String value) {
-		this.nature = value;
-	}
+    /**
+     * @return the items
+     */
+    public Item getItem()
+    {
+        return item;
+    }
 
-	public String getNature() {
-		return nature;
-	}
+    /**
+     * @param items the items to set
+     */
+    public void setItem(Item items)
+    {
+        this.item = items;
+    }
 
-	/*public void setFournisseur(Fournisseur value) {
-		this.fournisseur = value;
-	}
+    /**
+     * @return the club
+     */
+    public Club getClub()
+    {
+        return club;
+    }
 
-	public Fournisseur getFournisseur() {
-		return fournisseur;
-	}
+    /**
+     * @param club the club to set
+     */
+    public void setClub(Club club)
+    {
+        this.club = club;
+    }
 
-	public void setItems(Item value) {
-		this.items = value;
-	}
+    /**
+     * @return the valeur
+     */
+    public Double getValeur()
+    {
+        return valeur;
+    }
 
-	public Item getItems() {
-		return items;
-	}
+    /**
+     * @param valeur the valeur to set
+     */
+    public void setValeur(Double valeur)
+    {
+        this.valeur = valeur;
+    }
 
-	public void setClubs(Club value) {
-		this.club = value;
-	}
+    /**
+     * @return the nature
+     */
+    public String getNature()
+    {
+        return nature;
+    }
 
-	public Club getClubs() {
-		return club;
-	}
+    /**
+     * @param nature the nature to set
+     */
+    public void setNature(String nature)
+    {
+        this.nature = nature;
+    }
 
-	public void setSuivies(Set value) {
-		this.suivies = value;
-	}
+    /**
+     * @return the suivies
+     */
+    public Set<Suivie> getSuivies()
+    {
+        return suivies;
+    }
 
-	public Set getSuivies() {
-		return suivies;
-	}*/
-
-	public String toString() {
-		return String.valueOf(getId());
-	}
-
+    /**
+     * @param suivies the suivies to set
+     */
+    public void setSuivies(Set<Suivie> suivies)
+    {
+        this.suivies = suivies;
+    }
 }

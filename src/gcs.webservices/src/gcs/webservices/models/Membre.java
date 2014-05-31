@@ -1,11 +1,17 @@
 package gcs.webservices.models;
 
+import java.util.Set;
+
+import gcs.webapp.utils.hibernate.AbstractModelObject;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -18,165 +24,201 @@ import org.hibernate.annotations.FetchMode;
 @Entity
 @Table(name = "Membres")
 @SequenceGenerator(name = "membres_id_seq", sequenceName = "membres_id_seq", allocationSize = 1)
-public class Membre 
+public class Membre extends AbstractModelObject
 {
-	@Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membres_id_seq")
+    @Id
     @Column(name = "id")
-	private int id;
-	
-	@OneToOne
-	@Fetch(FetchMode.JOIN)
-	//@Cascade({CascadeType., org.hibernate.annotations.CascadeType.LOCK})	
-	@JoinColumn(name = "concentrations_id", 
-		referencedColumnName = "id",
-		nullable = false)
-	private Concentration concentration;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membres_id_seq")
+    private int id;
 
-	@Column(name="nom")
-	private String nom;
-	
-	@Column(name="prenom")
-	private String prenom;
-	
-	@Column(name="courriel")
-	private String courriel;
-	
-	@Column(name="code_permanent")
-	private String codePermanent;
-	
-	@Column(name="code_universel")
-	private String codeUniversel;
-	
-	@Column(name="actif")
-	private boolean actif;
-	
-	@Column(name="telephone")
-	private boolean telephone;
+    @OneToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "concentrations_id", referencedColumnName = "id", nullable = false)
+    private Concentration concentration;
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "membre")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private Set<MembreClub> clubs;
+    
+    @Column(name = "nom")
+    private String nom;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(name = "prenom")
+    private String prenom;
 
-	/**
-	 * @return the concentration
-	 */
-	public Concentration getConcentration() {
-		return concentration;
-	}
+    @Column(name = "courriel")
+    private String courriel;
 
-	/**
-	 * @param concentration the concentration to set
-	 */
-	public void setConcentration(Concentration concentration) {
-		this.concentration = concentration;
-	}
+    @Column(name = "code_permanent")
+    private String codePermanent;
 
-	/**
-	 * @return the nom
-	 */
-	public String getNom() {
-		return nom;
-	}
+    @Column(name = "code_universel")
+    private String codeUniversel;
 
-	/**
-	 * @param nom the nom to set
-	 */
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    @Column(name = "actif")
+    private boolean actif;
 
-	/**
-	 * @return the prenom
-	 */
-	public String getPrenom() {
-		return prenom;
-	}
+    @Column(name = "telephone")
+    private boolean telephone;
 
-	/**
-	 * @param prenom the prenom to set
-	 */
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
+    /**
+     * @return the id
+     */
+    public int getId()
+    {
+        return id;
+    }
 
-	/**
-	 * @return the courriel
-	 */
-	public String getCourriel() {
-		return courriel;
-	}
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-	/**
-	 * @param courriel the courriel to set
-	 */
-	public void setCourriel(String courriel) {
-		this.courriel = courriel;
-	}
+    /**
+     * @return the concentration
+     */
+    public Concentration getConcentration()
+    {
+        return concentration;
+    }
 
-	/**
-	 * @return the codePermanent
-	 */
-	public String getCodePermanent() {
-		return codePermanent;
-	}
+    /**
+     * @param concentration the concentration to set
+     */
+    public void setConcentration(Concentration concentration)
+    {
+        this.concentration = concentration;
+    }
 
-	/**
-	 * @param codePermanent the codePermanent to set
-	 */
-	public void setCodePermanent(String codePermanent) {
-		this.codePermanent = codePermanent;
-	}
+    /**
+     * @return the nom
+     */
+    public String getNom()
+    {
+        return nom;
+    }
 
-	/**
-	 * @return the actif
-	 */
-	public boolean isActif() {
-		return actif;
-	}
+    /**
+     * @param nom the nom to set
+     */
+    public void setNom(String nom)
+    {
+        this.nom = nom;
+    }
 
-	/**
-	 * @param actif the actif to set
-	 */
-	public void setActif(boolean actif) {
-		this.actif = actif;
-	}
+    /**
+     * @return the prenom
+     */
+    public String getPrenom()
+    {
+        return prenom;
+    }
 
-	/**
-	 * @return the telephone
-	 */
-	public boolean isTelephone() {
-		return telephone;
-	}
+    /**
+     * @param prenom the prenom to set
+     */
+    public void setPrenom(String prenom)
+    {
+        this.prenom = prenom;
+    }
 
-	/**
-	 * @param telephone the telephone to set
-	 */
-	public void setTelephone(boolean telephone) {
-		this.telephone = telephone;
-	}
+    /**
+     * @return the courriel
+     */
+    public String getCourriel()
+    {
+        return courriel;
+    }
 
-	/**
-	 * @return the codeUniversel
-	 */
-	public String getCodeUniversel() {
-		return codeUniversel;
-	}
+    /**
+     * @param courriel the courriel to set
+     */
+    public void setCourriel(String courriel)
+    {
+        this.courriel = courriel;
+    }
 
-	/**
-	 * @param codeUniversel the codeUniversel to set
-	 */
-	public void setCodeUniversel(String codeUniversel) {
-		this.codeUniversel = codeUniversel;
-	}
+    /**
+     * @return the codePermanent
+     */
+    public String getCodePermanent()
+    {
+        return codePermanent;
+    }
+
+    /**
+     * @param codePermanent the codePermanent to set
+     */
+    public void setCodePermanent(String codePermanent)
+    {
+        this.codePermanent = codePermanent;
+    }
+
+    /**
+     * @return the actif
+     */
+    public boolean isActif()
+    {
+        return actif;
+    }
+
+    /**
+     * @param actif the actif to set
+     */
+    public void setActif(boolean actif)
+    {
+        this.actif = actif;
+    }
+
+    /**
+     * @return the telephone
+     */
+    public boolean isTelephone()
+    {
+        return telephone;
+    }
+
+    /**
+     * @param telephone the telephone to set
+     */
+    public void setTelephone(boolean telephone)
+    {
+        this.telephone = telephone;
+    }
+
+    /**
+     * @return the codeUniversel
+     */
+    public String getCodeUniversel()
+    {
+        return codeUniversel;
+    }
+
+    /**
+     * @param codeUniversel the codeUniversel to set
+     */
+    public void setCodeUniversel(String codeUniversel)
+    {
+        this.codeUniversel = codeUniversel;
+    }
+
+    /**
+     * @return the clubs
+     */
+    public Set<MembreClub> getClubs()
+    {
+        return clubs;
+    }
+
+    /**
+     * @param clubs the clubs to set
+     */
+    public void setClubs(Set<MembreClub> clubs)
+    {
+        this.clubs = clubs;
+    }
 }

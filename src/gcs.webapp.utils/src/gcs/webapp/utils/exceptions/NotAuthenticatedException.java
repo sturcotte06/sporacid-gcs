@@ -13,7 +13,7 @@ public class NotAuthenticatedException extends InternalException
 
     public NotAuthenticatedException()
     {
-        this("[void]");
+        this("<unspecified>");
     }
     
     /**

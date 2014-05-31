@@ -5,6 +5,7 @@ import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.menus.IMenuProvider;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import gcs.webservices.client.ISessionServiceClient;
+import gcs.webservices.client.exceptions.WebServiceClientException;
 import gcs.webservices.client.responses.Response;
 import gcs.webservices.client.responses.sessions.CreateResponse;
 import gcs.website.utils.SessionUtils;
@@ -65,53 +66,61 @@ public class AuthenticationController extends BaseController
      * @return
      */
     @RequestMapping(value = "/connexion", method = RequestMethod.POST)
-    public String login(@ModelAttribute @Valid AuthenticationForm form, BindingResult result,
-            HttpServletRequest request, @RequestHeader(value = "referer", required = true) final String referer)
+    public String login(@ModelAttribute @Valid AuthenticationForm form, BindingResult result, HttpServletRequest request)
     {
-        String direction = "redirect:/";
         HttpSession session = request.getSession();
 
         if (result.hasErrors()) {
             // Form had errors; tell the user why
-            for (ObjectError error : result.getAllErrors()) {
-                String localizedMsg = messageLocalizer.localizeString(error.getDefaultMessage());
-                SessionUtils.addMessage(MessageType.Error, localizedMsg, session);
-            }
+            addValidationErrorsToSessionMessages(session, result);
+
             // Reset the password
             form.setPassword(null);
-            // Return the authentication page
-            request.setAttribute("authenticationForm", form);
-            direction = "login";
-        } else {
-            // Try to authenticate the user through the web services
-            String ipAddress = request.getHeader("X-FORWARDED-FOR");
-            if (ipAddress == null) {
-                ipAddress = request.getRemoteAddr();
-            }
 
-            CreateResponse response = sessionServiceClient.create(form.getUsername(), ipAddress, form.getPassword());
-            if (response.isSuccess()) {
+            // Redirect to the login page so the user can retry
+            request.setAttribute("authenticationForm", form);
+            return "login";
+        }
+
+        // We need the ipv4 address of the user for authentication
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+
+        try {
+            // Try to create the session in the web services
+            CreateResponse createResponse = sessionServiceClient.create(form.getUsername(), ipAddress,
+                    form.getPassword());
+
+            if (createResponse.isSuccess()) {
                 // Success; create a new web services session
                 WsSession wsSession = new WsSession();
-                wsSession.setSessionKey(response.getSessionKey());
+                wsSession.setSessionKey(createResponse.getSessionKey());
                 wsSession.setUsername(form.getUsername());
-                SessionUtils.setWsSession(request.getSession(), wsSession);
+                SessionUtils.setWsSession(session, wsSession);
 
                 // TODO change forRole param
                 SessionUtils.setApplicationMenu(session,
                         menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));
-            } else {
-                // Failure; tell the user why
-                for (Message message : response.getMessages()) {
-                    SessionUtils.addMessage(message.getType(), message.getContent(), session);
-                }
 
-                request.setAttribute("authenticationForm", form);
-                direction = "login";
+                // Redirect to the default page
+                return "redirect:/";
             }
-        }
 
-        return direction;
+            // Failure, fork to the catch
+            throw new WebServiceClientException(createResponse);
+
+        } catch (WebServiceClientException ex) {
+            if (ex.hasResponseEntity()) {
+                // Failure; tell the user why
+                SessionUtils.addMessages(ex.getResponseEntity().getMessages(), session);
+            }
+
+            // Redirect to the login page so the user can retry
+            request.setAttribute("authenticationForm", form);
+            return "login";
+        }
     }
 
     /**
@@ -121,78 +130,44 @@ public class AuthenticationController extends BaseController
     @RequestMapping(value = "/deconnexion", method = RequestMethod.GET)
     public String logout(HttpServletRequest request)
     {
-        String direction = "redirect:/";
         HttpSession session = request.getSession();
         WsSession wsSession = SessionUtils.getWsSession(session);
 
-        if (wsSession != null) {
-            String ipAddress = request.getHeader("X-FORWARDED-FOR");
-            if (ipAddress == null) {
-                ipAddress = request.getRemoteAddr();
-            }
-
-            // Remove the session
-            Response response = sessionServiceClient.invalidate(ipAddress, wsSession.getSessionKey());
-
-            if (!response.isSuccess()) {
-                // Failure; tell the user why
-                for (Message message : response.getMessages()) {
-                    SessionUtils.addMessage(message.getType(), message.getContent(), session);
-                }
-            }
-
-            // Sets the web services session; No more action can be taken
-            // with that token anyway
-            SessionUtils.setWsSession(request.getSession(), null);
+        if (wsSession == null) {
+            return "redirect:/";
         }
 
-        return direction;
-    }
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
 
-    /**
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/reinitialiser-mot-de-passe", method = RequestMethod.GET)
-    public String passwordRetrieval(HttpServletRequest request)
-    {
-        String direction = "redirect:/";
-        // HttpSession session = request.getSession();
+        // Remove the session
+        try {
+            Response response = sessionServiceClient.invalidate(ipAddress, wsSession.getSessionKey());
 
-        return direction;
-    }
+            if (response.isSuccess()) {
 
-    /**
-     * @param form
-     * @param result
-     * @param request
-     * @param referer
-     * @return
-     */
-    @RequestMapping(value = "/reinitialiser-mot-de-passe", method = RequestMethod.POST)
-    public String passwordRetrieval(@ModelAttribute @Valid AuthenticationForm form, BindingResult result,
-            HttpServletRequest request, @RequestHeader(value = "referer", required = true) final String referer)
-    {
-        String direction = "redirect:/";
-        // HttpSession session = request.getSession();
+                // Resets the web services session; No more action can be taken
+                // with that token anyway
+                SessionUtils.setWsSession(request.getSession(), null);
 
-        return direction;
-    }
+                // Redirect to the default page
+                return "redirect:/";
+            }
 
-    /**
-     * @return the messageLocalizer
-     */
-    public IMessageLocalizer getMessageLocalizer()
-    {
-        return messageLocalizer;
-    }
+            // Failure, fork to the catch
+            throw new WebServiceClientException(response);
 
-    /**
-     * @param messageLocalizer the messageLocalizer to set
-     */
-    public void setMessageLocalizer(IMessageLocalizer messageLocalizer)
-    {
-        this.messageLocalizer = messageLocalizer;
+        } catch (WebServiceClientException ex) {
+            if (ex.hasResponseEntity()) {
+                // Failure; tell the user why
+                SessionUtils.addMessages(ex.getResponseEntity().getMessages(), session);
+            }
+
+            // Redirect to the default page
+            return "redirect:/";
+        }
     }
 
     /**
@@ -226,17 +201,4 @@ public class AuthenticationController extends BaseController
     {
         this.sessionServiceClient = sessionServiceClient;
     }
-
-    /**
-     * ApplicationContextAware implementation Get specific instances from the
-     * application context
-     * 
-     * @param context The application context
-     */
-    /* @Override public void setApplicationContext(ApplicationContext context)
-     * throws BeansException { authenticationService =
-     * context.getBean("authenticationService", IAuthenticationService.class);
-     * messageLocalizer = context.getBean("messageLocalizer",
-     * IMessageLocalizer.class); menuProvider = context.getBean("menuProvider",
-     * IMenuProvider.class); } */
 }

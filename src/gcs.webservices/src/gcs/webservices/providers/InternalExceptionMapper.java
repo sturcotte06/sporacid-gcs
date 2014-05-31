@@ -1,7 +1,6 @@
 package gcs.webservices.providers;
 
 import gcs.webapp.utils.Message;
-import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.exceptions.InternalException;
@@ -10,6 +9,7 @@ import gcs.webapp.utils.exceptions.UnauthorizedException;
 import gcs.webapp.utils.exceptions.ValidationException;
 import gcs.webapp.utils.exceptions.WrongCredentialsException;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -44,7 +44,7 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
         ResponseBuilder builder = null;
 
         // Add the localized message to the response's messages.
-        responseEntity.addMessage(MessageType.Error, exception.getMessageKey());
+        responseEntity.addMessage(exception.toMessage());
 
         // Assign the response's status according to the type of exception
         // generated.
@@ -78,6 +78,6 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
         logger.error("Uncaught exception in InternalExceptionMapper: ", exception);
 
         // Return the response with the error status and the response entity
-        return builder.entity(responseEntity).build();
+        return builder.entity(responseEntity).type(MediaType.APPLICATION_JSON).build();
     }
 }

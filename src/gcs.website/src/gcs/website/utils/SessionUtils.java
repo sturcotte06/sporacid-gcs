@@ -6,6 +6,7 @@ import gcs.webapp.utils.app.menus.MainMenu;
 import gcs.website.views.beans.WsSession;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -31,7 +32,7 @@ public final class SessionUtils
     private static final String cSessionApplicationMenu = "applicationMenu";
 
     /**
-     * Public static method to add a message to the messages list of a request
+     * Public static method to add a message to the messages list of a session
      * object.
      * 
      * @param message A message to log
@@ -45,7 +46,37 @@ public final class SessionUtils
     }
 
     /**
-     * Public static method to obtain the message list from a request object.
+     * Public static method to add an array of messages to the messages list of
+     * a session object.
+     * 
+     * @param message A message to log
+     * @param request An http session object
+     */
+    public static void addMessages(Message[] messages, HttpSession session)
+    {
+        List<Message> messagesList = getMessages(session);
+        for (Message message : messages) {
+            messagesList.add(message);
+        }
+    }
+    
+    /**
+     * Public static method to add an array of messages to the messages list of
+     * a session object.
+     * 
+     * @param message A message to log
+     * @param request An http session object
+     */
+    public static void addMessages(Collection<Message> messages, HttpSession session)
+    {
+        List<Message> messagesList = getMessages(session);
+        for (Message message : messages) {
+            messagesList.add(message);
+        }
+    }
+
+    /**
+     * Public static method to obtain the message list from a session object.
      * 
      * @param request An http session object
      * @return The list of messages for the request object

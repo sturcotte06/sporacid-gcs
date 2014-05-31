@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class ApplicationMessageLocalizerTests 
 {
-	private final MessageLocalizer localizer = new MessageLocalizer("./resources");
+	private final MessageLocalizer localizer = null;//new MessageLocalizer("./resources");
 	
 	@Test
 	public void test() 

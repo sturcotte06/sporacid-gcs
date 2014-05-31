@@ -12,7 +12,7 @@ public class Rights
     public boolean hasRight(CrudOperation operation)
     {
         for (CrudOperation right : rights) {
-            if (operation == right) {
+            if (operation.equals(right)) {
                 return true;
             }
         }

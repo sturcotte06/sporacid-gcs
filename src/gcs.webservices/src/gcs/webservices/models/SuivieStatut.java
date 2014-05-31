@@ -1,8 +1,19 @@
+/**
+ * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
+ * 
+ * This is an automatic generated file. It will be regenerated every time 
+ * you generate persistence class.
+ * 
+ * Modifying its content may cause the program not work, or your work may lost.
+ */
+
+/**
+ * Licensee: 
+ * License Type: Evaluation
+ */
 package gcs.webservices.models;
 
 import java.io.Serializable;
-
-import gcs.webapp.utils.hibernate.AbstractModelObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,20 +24,20 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles", schema = "public")
-@SequenceGenerator(name = "roles_id_seq", sequenceName = "roles_id_seq", allocationSize = 1)
-public class Role extends AbstractModelObject implements Serializable
+@Table(name = "suivie_statuts", schema = "public")
+@SequenceGenerator(name = "suivie_statuts_id_seq", sequenceName = "suivie_statuts_id_seq", allocationSize = 1)
+public class SuivieStatut implements Serializable
 {
     /** */
-    private static final long serialVersionUID = 6723270847970781630L;
+    private static final long serialVersionUID = 2318828983764637833L;
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_id_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suivie_statuts_id_seq")
     private int id;
 
-    @Column(name = "nom", nullable = false, length = 32)
-    private String nom;
+    @Column(name = "code", nullable = false, length = 32)
+    private String code;
 
     @Column(name = "description", nullable = false, length = 128)
     private String description;
@@ -40,19 +51,19 @@ public class Role extends AbstractModelObject implements Serializable
     }
 
     /**
-     * @return the nom
+     * @return the code
      */
-    public String getNom()
+    public String getCode()
     {
-        return nom;
+        return code;
     }
 
     /**
-     * @param nom the nom to set
+     * @param code the code to set
      */
-    public void setNom(String nom)
+    public void setCode(String code)
     {
-        this.nom = nom;
+        this.code = code;
     }
 
     /**
