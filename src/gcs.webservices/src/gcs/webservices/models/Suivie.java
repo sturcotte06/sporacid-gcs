@@ -46,11 +46,14 @@ public class Suivie extends AbstractModelObject implements Serializable
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suivies_id_seq")
     private int id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    /*@OneToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
     @JoinColumn(name = "membres_id", referencedColumnName = "id", nullable = false)
-    private Membre membre;
-
+    private Membre membre;*/
+    
+    @Column(name = "membres_id", nullable = false)
+    private int membreId;
+    
     /*@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "commandites_id", referencedColumnName = "id", nullable = false)
     private Commandite commandite;*/
@@ -148,4 +151,28 @@ public class Suivie extends AbstractModelObject implements Serializable
     {
         this.commentaire = commentaire;
     }
+
+	public Integer getMembreId() {
+		return membreId;
+	}
+
+	public void setMembreId(Integer membreId) {
+		this.membreId = membreId;
+	}
+
+	public int getCommanditeId() {
+		return commanditeId;
+	}
+
+	public void setCommanditeId(int commanditeId) {
+		this.commanditeId = commanditeId;
+	}
+
+	/*public Membre getMembre() {
+		return membre;
+	}
+
+	public void setMembre(Membre membre) {
+		this.membre = membre;
+	}*/
 }
