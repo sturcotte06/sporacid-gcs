@@ -1,11 +1,10 @@
 package gcs.webservices.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import gcs.webapp.utils.exceptions.ArgumentNullException;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.hibernate.AbstractModelObject;
+
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -47,6 +48,16 @@ public class Membre extends AbstractModelObject
     @Cascade(CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<MembreClub> clubs;
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "membreId")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.JOIN)
+    private Set<ContactUrgence> contactsUrgence;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "membres_allergies", joinColumns = { @JoinColumn(name = "membres_id") }, inverseJoinColumns = { @JoinColumn(name = "allergies_id") })
+    private Set<Allergie> allergies;
     
     @Column(name = "nom")
     private String nom;
@@ -254,4 +265,32 @@ public class Membre extends AbstractModelObject
     {
         this.clubs = clubs;
     }
+
+	/**
+	 * @return the contactsUrgence
+	 */
+	public Set<ContactUrgence> getContactsUrgence() {
+		return contactsUrgence;
+	}
+
+	/**
+	 * @param contactsUrgence the contactsUrgence to set
+	 */
+	public void setContactsUrgence(Set<ContactUrgence> contactsUrgence) {
+		this.contactsUrgence = contactsUrgence;
+	}
+
+	/**
+	 * @return the allergies
+	 */
+	public Set<Allergie> getAllergies() {
+		return allergies;
+	}
+
+	/**
+	 * @param allergies the allergies to set
+	 */
+	public void setAllergies(Set<Allergie> allergies) {
+		this.allergies = allergies;
+	}
 }
