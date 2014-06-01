@@ -2,25 +2,30 @@
 <!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
 
 <application-messages language="en">
-  <!-- Exception messages -->
-  <message key="exception_wsclient" message="The web services could not perform the request." />
-  <!-- Validation messages -->
-  <!-- gcs.webservices.client.beans -->
-  <message key="beans_contextname_notempty" message="The current context name cannot be empty." />
-  <message key="beans_ipv4address_notempty" message="Your ipv4 address cannot be empty." />
-  <message key="beans_ipv4address_unrecognized_pattern" message="Your ipv4 address must be in the format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />
-  <message key="beans_sessionkey_notempty" message="The session key cannot be empty." />
-  <!-- gcs.webservices.client.requests.authentication -->
-  <message key="authentication_username_notempty" message="The name of the authenticating user cannot be empty." />
-  <message key="authentication_username_unrecognized_pattern" message="The name of the authenticating user must be in the format A[A-Z]xxxxx." />
-  <message key="authentication_ipv4address_notempty" message="The ipv4 address of the authenticating user cannot be empty." />
-  <message key="authentication_ipv4address_unrecognized_pattern" message="The ipv4 address of the authenticating user must be in the format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />  
-  <message key="authentication_password_notempty" message="The password of the authenticating user cannot be empty." />
-  <!-- gcs.webservices.client.requests.membres -->
-  <message key="membres_adsearchstring_notempty" message="The active directory search string cannot be empty." />
-  <message key="membres_membreid_notnull" message="The id of the member cannot be null." />
-  <message key="membres_membreid_positive" message="The id of the member must be a positive integer." />
-  <message key="membres_rolename_notempty" message="The role name cannot be empty." />
-  <!-- gcs.webservices.client.requests.usagers -->
-  <message key="usagers_preferences_notnull" message="The preferences of the user cannot be null." />
+	<!-- Exception messages -->
+	<message key="exception_wsclient" message="The web services could not perform the request." />
+	<!-- Validation messages -->
+	<!-- gcs.webservices.client.beans -->
+	<message key="beans_contextname_notempty" message="The current context name cannot be empty." />
+	<message key="beans_ipv4address_notempty" message="Your ipv4 address cannot be empty." />
+	<message key="beans_ipv4address_unrecognized_pattern" message="Your ipv4 address must be in the format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />
+	<message key="beans_sessionkey_notempty" message="The session key cannot be empty." />
+	<!-- gcs.webservices.client.requests.authentication -->
+	<message key="authentication_username_notempty" message="The name of the authenticating user cannot be empty." />
+	<message key="authentication_username_unrecognized_pattern" message="The name of the authenticating user must be in the format A[A-Z]xxxxx." />
+	<message key="authentication_ipv4address_notempty" message="The ipv4 address of the authenticating user cannot be empty." />
+	<message key="authentication_ipv4address_unrecognized_pattern" message="The ipv4 address of the authenticating user must be in the format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />  
+	<message key="authentication_password_notempty" message="The password of the authenticating user cannot be empty." />
+	<!-- gcs.webservices.client.requests.membres -->
+	<message key="membres_adsearchstring_notempty" message="The active directory search string cannot be empty." />
+	<message key="membres_membreid_notnull" message="The id of the member cannot be null." />
+	<message key="membres_membreid_positive" message="The id of the member must be a positive integer." />
+	<message key="membres_rolename_notempty" message="The role name cannot be empty." />
+	<!-- gcs.webservices.client.requests.usagers -->
+	<message key="usagers_preferences_notnull" message="The preferences of the user cannot be null." />
+	<!-- gcs.webservices.client.requests.commandites -->
+	<message key="commandites_idClub_notempty" message="The club cannot be null." />
+	<message key="commandites_idItem_notempty" message="The item cannot be null." />
+	<message key="commandites_valeur_notempty" message="The value cannot be null." />
+	<message key="commandites_nature_notempty" message="The nature cannot be null." />
 </application-messages>

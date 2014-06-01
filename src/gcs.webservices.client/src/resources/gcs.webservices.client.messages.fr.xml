@@ -2,25 +2,30 @@
 <!DOCTYPE application-messages SYSTEM "xml-schemas\gcs.messages.schema.dtd">
 
 <application-messages language="fr">
-  <!-- Exception messages -->
-  <message key="exception_wsclient" message="Les services web n'ont pas réussi à exécuter la requête." />
-  <!-- Validation messages -->
-  <!-- gcs.webservices.client.beans -->
-  <message key="beans_contextname_notempty" message="Le nom de contexte ne peut être vide." />
-  <message key="beans_ipv4address_notempty" message="Votre adresse ipv4 ne peut être vide." />
-  <message key="beans_ipv4address_unrecognized_pattern" message="Votre adresse ipv4 doit être dans le format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />
-  <message key="beans_sessionkey_notempty" message="Le clé de session ne peut être vide." />
-  <!-- gcs.webservices.client.requests.authentication -->
-  <message key="authentication_username_notempty" message="Le nom de l'usager ne peut être vide." />
-  <message key="authentication_username_unrecognized_pattern" message="Le nom de l'usager doit être dans le format A[A-Z]xxxxx." />
-  <message key="authentication_ipv4address_notempty" message="L'adresse ipv4 de l'usager ne peut être vide." />
-  <message key="authentication_ipv4address_unrecognized_pattern" message="L'adresse ipv4 de l'usager doit être dans le format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />  
-  <message key="authentication_password_notempty" message="Le mot de passe ne peut être vide." />
-  <!-- gcs.webservices.client.requests.membres -->
-  <message key="membres_adsearchstring_notempty" message="La chaîne de recherche ne peut être vide." />
-  <message key="membres_membreid_notnull" message="L'id du membre ne peut être vide." />
-  <message key="membres_membreid_positive" message="L'id du membre doit être un entier positif." />
-  <message key="membres_rolename_notempty" message="Le nom du rôle ne peut être vide." />
-  <!-- gcs.webservices.client.requests.usagers -->
-  <message key="usagers_preferences_notnull" message="Les préférences de l'usager ne peuvent être vide." />
+	<!-- Exception messages -->
+	<message key="exception_wsclient" message="Les services web n'ont pas réussi à exécuter la requête." />
+	<!-- Validation messages -->
+	<!-- gcs.webservices.client.beans -->
+	<message key="beans_contextname_notempty" message="Le nom de contexte ne peut être vide." />
+	<message key="beans_ipv4address_notempty" message="Votre adresse ipv4 ne peut être vide." />
+	<message key="beans_ipv4address_unrecognized_pattern" message="Votre adresse ipv4 doit être dans le format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />
+	<message key="beans_sessionkey_notempty" message="Le clé de session ne peut être vide." />
+	<!-- gcs.webservices.client.requests.authentication -->
+	<message key="authentication_username_notempty" message="Le nom de l'usager ne peut être vide." />
+	<message key="authentication_username_unrecognized_pattern" message="Le nom de l'usager doit être dans le format A[A-Z]xxxxx." />
+	<message key="authentication_ipv4address_notempty" message="L'adresse ipv4 de l'usager ne peut être vide." />
+	<message key="authentication_ipv4address_unrecognized_pattern" message="L'adresse ipv4 de l'usager doit être dans le format &quot;x(xx).x(xx).x(xx).x(xx)&quot;." />  
+	<message key="authentication_password_notempty" message="Le mot de passe ne peut être vide." />
+	<!-- gcs.webservices.client.requests.membres -->
+	<message key="membres_adsearchstring_notempty" message="La chaîne de recherche ne peut être vide." />
+	<message key="membres_membreid_notnull" message="L'id du membre ne peut être vide." />
+	<message key="membres_membreid_positive" message="L'id du membre doit être un entier positif." />
+	<message key="membres_rolename_notempty" message="Le nom du rôle ne peut être vide." />
+	<!-- gcs.webservices.client.requests.usagers -->
+	<message key="usagers_preferences_notnull" message="Les préférences de l'usager ne peuvent être vide." />
+  	<!-- gcs.webservices.client.requests.commandites-->
+	<message key="commandites_idClub_notempty" message="Le club ne peut pas être vide." />
+	<message key="commandites_idItem_notempty" message="L'item ne peut pas être vide." />
+	<message key="commandites_valeur_notempty" message="La valeur ne peut pas être vide." />
+	<message key="commandites_nature_notempty" message="La nature ne peut pas être vide." />
 </application-messages>

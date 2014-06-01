@@ -21,12 +21,15 @@
     <property name="annotatedClasses">
       <list>
         <value>gcs.webservices.models.Adresse</value>
+        <value>gcs.webservices.models.Allergie</value>
         <value>gcs.webservices.models.Audit</value>
         <value>gcs.webservices.models.Club</value>
         <value>gcs.webservices.models.Commandite</value>
         <value>gcs.webservices.models.Concentration</value>
+        <value>gcs.webservices.models.ContactUrgence</value>
         <value>gcs.webservices.models.Fournisseur</value>
         <value>gcs.webservices.models.Item</value>
+        <value>gcs.webservices.models.LienParente</value>
         <value>gcs.webservices.models.Membre</value>
         <value>gcs.webservices.models.MembreClub</value>
         <value>gcs.webservices.models.Role</value>
