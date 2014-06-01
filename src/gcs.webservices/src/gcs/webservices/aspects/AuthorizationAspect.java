@@ -1,24 +1,27 @@
 package gcs.webservices.aspects;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import gcs.webapp.utils.exceptions.NotAuthenticatedException;
 import gcs.webapp.utils.app.security.CrudOperator;
-import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webapp.utils.app.security.IModuleSecurityProvider;
+import gcs.webapp.utils.app.security.SecureModule;
+import gcs.webapp.utils.exceptions.NotAuthenticatedException;
 import gcs.webapp.utils.exceptions.UnauthorizedException;
 import gcs.webservices.client.beans.ContextualSessionToken;
+import gcs.webservices.models.Club;
 import gcs.webservices.models.Membre;
 import gcs.webservices.models.MembreClub;
 import gcs.webservices.models.Role;
 import gcs.webservices.sessions.SessionCache;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+
 
 /**
  * @author Simon Turcotte-Langevin
@@ -101,12 +104,21 @@ public class AuthorizationAspect
             // Get all roles for the member
             Collection<Role> roles = new ArrayList<>();
             for (MembreClub membreClub : membre.getClubs()) {
-                String clubName = membreClub.getClub().getNom();
-                if (clubName.equalsIgnoreCase(contextName)) {
-                    // Found the club requested by the client
-                    roles = membreClub.getRoles();
-                    break;
+            	Club club = membreClub.getClub();
+            	//TODO Possiblement à remplacer 
+            	if(club != null)
+            	{
+	                String clubName = club.getNom();
+	                if (contextName.equalsIgnoreCase(clubName)) {
+	                    // Found the club requested by the client
+	                    roles = membreClub.getRoles();
+	                    break;
+	                }
                 }
+            	else
+            	{
+            		 logger.warn(String.format("Couldn't get club for the membreClub %s. ", membreClub.getId()));
+            	}
             }
 
             if (roles == null) {
