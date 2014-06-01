@@ -1,7 +1,10 @@
 package gcs.webservices.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import gcs.webapp.utils.exceptions.ArgumentNullException;
+import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.hibernate.AbstractModelObject;
 
 import javax.persistence.Column;
@@ -16,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
@@ -26,6 +30,9 @@ import org.hibernate.annotations.FetchMode;
 @SequenceGenerator(name = "membres_id_seq", sequenceName = "membres_id_seq", allocationSize = 1)
 public class Membre extends AbstractModelObject
 {
+    /** Log4j logger. */
+    private static final Logger logger = Logger.getLogger(Membre.class);
+    
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membres_id_seq")
@@ -36,7 +43,7 @@ public class Membre extends AbstractModelObject
     @JoinColumn(name = "concentrations_id", referencedColumnName = "id", nullable = false)
     private Concentration concentration;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "membre")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "membre")
     @Cascade(CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<MembreClub> clubs;
@@ -62,6 +69,32 @@ public class Membre extends AbstractModelObject
     @Column(name = "telephone")
     private boolean telephone;
 
+    public Club getClubByName(String name)
+    {
+    	if(name == null) {
+    		throw new ArgumentNullException("name");
+    	}
+    	
+    	for (MembreClub membreClub : clubs) {
+        	Club club = membreClub.getClub();
+        	
+        	//TODO Possiblement à remplacer 
+        	if(club != null)
+        	{
+                String clubName = club.getNom();
+                if (name.equalsIgnoreCase(clubName)) {
+                    // Found the club requested by the client
+                    return membreClub.getClub();
+                }
+            }
+        	else
+        	{
+        		 logger.warn(String.format("Couldn't get club for the membre %s. ", id));
+        	}
+        }
+    	
+    	throw new EntityNotFoundException("club", name);
+    }
     /**
      * @return the id
      */
