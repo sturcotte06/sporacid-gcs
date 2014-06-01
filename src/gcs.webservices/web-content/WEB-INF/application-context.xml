@@ -12,7 +12,7 @@
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="postgres" />
+    <property name="password" value="qazwsxedc" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -107,6 +107,16 @@
 
   <!-- ICommanditeDao implementation -->
   <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  <!-- IItemDao implementation -->
+  <bean id="itemDao" class="gcs.webservices.dao.ItemDao" scope="singleton">
+    <property name="sessionFactory" ref="sessionFactory" />
+  </bean>
+  
+  <!-- IFournisseurDao implementation -->
+  <bean id="fournisseurDao" class="gcs.webservices.dao.FournisseurDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
 
