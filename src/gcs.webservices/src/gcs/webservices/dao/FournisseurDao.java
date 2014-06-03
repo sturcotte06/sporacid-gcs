@@ -23,8 +23,7 @@ public class FournisseurDao implements IFournisseurDao
 
 	@Override
 	public Fournisseur getFournisseurById(int idFournisseur) {
-		// TODO Auto-generated method stub
-		return null;
+		return HibernateUtils.getEntity(idFournisseur, Fournisseur.class, sessionFactory);
 	}
 
 	public SessionFactory getSessionFactory() {

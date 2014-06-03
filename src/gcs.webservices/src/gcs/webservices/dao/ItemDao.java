@@ -24,8 +24,7 @@ public class ItemDao implements IItemDao
 
 	@Override
 	public Item getItemById(int idItem) {
-		// TODO Auto-generated method stub
-		return null;
+		return HibernateUtils.getEntity(idItem, Item.class, sessionFactory);
 	}
 
 	public SessionFactory getSessionFactory() {

@@ -13,6 +13,8 @@
  */
 package gcs.webservices.models;
 
+import gcs.webapp.utils.hibernate.AbstractModelObject;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -26,7 +28,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "suivie_statuts", schema = "public")
 @SequenceGenerator(name = "suivie_statuts_id_seq", sequenceName = "suivie_statuts_id_seq", allocationSize = 1)
-public class SuivieStatut implements Serializable
+public class SuivieStatut extends AbstractModelObject implements Serializable
 {
     /** */
     private static final long serialVersionUID = 2318828983764637833L;

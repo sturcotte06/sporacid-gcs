@@ -1,8 +1,5 @@
 package gcs.webservices.services;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.CrudOperator;
@@ -19,6 +16,9 @@ import gcs.webservices.models.Commandite;
 import gcs.webservices.models.Membre;
 import gcs.webservices.models.Suivie;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,12 +34,11 @@ import org.springframework.stereotype.Component;
 @Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}/commandite")
 public class CommanditeService extends SecureHttpService
 {
+    
     @Autowired
     private ICommanditeDao commanditeDao;
-    
     @Autowired
     private IFournisseurDao fournisseurDao;
-    
     @Autowired
     private IItemDao itemDao;
     
@@ -61,12 +60,9 @@ public class CommanditeService extends SecureHttpService
     public Response add(@BeanParam ContextualSessionToken sessionToken, AddRequest request)
     {
         DummyResponse dummyResponse = new DummyResponse();
+        Integer commanditeId = -1;
         Commandite commandite = new Commandite();
-        
-        //dummyResponse.setObject();
-        dummyResponse.setSuccess(true);
-        dummyResponse.addMessage(MessageType.Information, "Success");
-        
+                
         commandite.setFournisseur(fournisseurDao.getFournisseurById(request.getIdFournisseur()));
         commandite.setItem(itemDao.getItemById(request.getIdItem()));
         commandite.setNature(request.getNature());
@@ -76,7 +72,7 @@ public class CommanditeService extends SecureHttpService
         Suivie suivie = new Suivie();
         suivie.setCommentaire("Création initiale");
         suivie.setDateSuivie(new Date());
-        //suivie.setSuivieStatut();
+        suivie.setSuivieStatut(commanditeDao.getSuivieStatutsById(1));
         
         super.sessionCache.withSession(sessionToken, session->{
         	Membre membre = session.getMembre();
@@ -85,6 +81,15 @@ public class CommanditeService extends SecureHttpService
         	commandite.setClub(club);
         	suivie.setMembreId(membre.getId());
         });
+        
+        commanditeId = commanditeDao.addCommandite(commandite);
+        suivie.setCommanditeId(commanditeId);
+        
+        commanditeDao.addSuivie(suivie);
+        
+      //dummyResponse.setObject();
+      dummyResponse.setSuccess(true);
+      dummyResponse.addMessage(MessageType.Information, "Success");
         
         return completeRequest(dummyResponse);
     }

@@ -196,4 +196,6 @@ public class Commandite extends AbstractModelObject implements Serializable
     {
         this.suivies = suivies;
     }
+    
+    
 }
