@@ -2,6 +2,7 @@ package gcs.webservices.dao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -12,6 +13,8 @@ import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webapp.utils.hibernate.HibernateAlias;
 import gcs.webapp.utils.hibernate.HibernateUtils;
+import gcs.webservices.models.Club;
+import gcs.webservices.models.Concentration;
 import gcs.webservices.models.Membre;
 
 /**
@@ -43,7 +46,43 @@ public class MembreDao implements IMembreDao
 
         return membres;
     }
+    
+    /**
+     * Gets all members by club name from the system.
+     * 
+     * @param clubName Name of the club.
+     * @return A collection of members.
+     * @throws InternalException
+     */
+    @Override
+    public Collection<Membre> getMembresByClubName(String clubName) throws InternalException
+    {
+        Club club = null;
 
+        Collection<HibernateAlias> aliases = new ArrayList<>();
+        Collection<Criterion> criterions = new ArrayList<>();
+        
+        // Create a criterion on username
+        criterions.add(Restrictions.eq("nom", clubName).ignoreCase());
+
+        try {
+            // Get the member
+            club = HibernateUtils.getFirstEntity(Club.class, aliases, criterions, sessionFactory);
+
+            if (club == null) {
+                throw new EntityNotFoundException("club", clubName);
+            }
+        } catch (HibernateException ex) {
+            // Couldn't get the membre
+            throw new InternalException("membersdao_getmember_exception", ex);
+        }
+
+        return club.getMembres()
+                .stream()
+                .map(membreClub -> membreClub.getMembre())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+    
     /**
      * Gets a member from the system.
      * 
@@ -142,6 +181,61 @@ public class MembreDao implements IMembreDao
             // Couldn't edit the membre
             throw new InternalException("membersdao_editmember_exception", ex);
         }
+    }
+
+    /**
+     * Get a concentration by name from the system.
+     * 
+     * @param acronyme Acronym of the concentration.
+     * @return The concentration.
+     * @throws EntityNotFoundException
+     */
+    @Override
+    public Concentration getConcentrationByAcronyme(String acronyme) throws EntityNotFoundException
+    {
+        Concentration concentration = null;
+
+        Collection<HibernateAlias> aliases = new ArrayList<>();
+        Collection<Criterion> criterions = new ArrayList<>();
+
+        // Create a criterion on the acronym
+        criterions.add(Restrictions.eq("acronyme", acronyme).ignoreCase());
+
+        try {
+            // Get the member
+            concentration = HibernateUtils.getFirstEntity(Concentration.class, aliases, criterions, sessionFactory);
+
+            if (concentration == null) {
+                throw new EntityNotFoundException("concentration", acronyme);
+            }
+        } catch (HibernateException ex) {
+            // Couldn't get the membre
+            throw new InternalException("membersdao_getconcentration_byname_exception", ex);
+        }
+
+        return concentration;
+    }
+
+    /**
+     * Get all concentrations from the system.
+     * 
+     * @return A collection of concentrations.
+     * @throws InternalException
+     */
+    @Override
+    public Collection<Concentration> getConcentrations() throws InternalException
+    {
+        Collection<Concentration> concentrations = null;
+
+        try {
+            // Get all members
+            concentrations = HibernateUtils.getEntities(Concentration.class, sessionFactory);
+        } catch (HibernateException ex) {
+            // Couldn't get the members
+            throw new InternalException("membersdao_getconcentrations_exception", ex);
+        }
+
+        return concentrations;
     }
 
     /**

@@ -3,12 +3,12 @@ package gcs.webservices.services;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webservices.client.beans.SessionToken;
+import gcs.webservices.client.requests.membres.AddRequest;
 import gcs.webservices.client.requests.sessions.*;
 import gcs.webservices.client.responses.sessions.CreateResponse;
 import gcs.webservices.dao.IMembreDao;
 import gcs.webservices.ldap.authentication.ILdapAuthenticator;
 import gcs.webservices.ldap.authentication.LdapAuthenticationToken;
-import gcs.webservices.ldap.search.ILdapSearcher;
 import gcs.webservices.models.Membre;
 import gcs.webservices.sessions.PublicSessionKey;
 
@@ -18,7 +18,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,14 +27,17 @@ import org.springframework.stereotype.Component;
 @Path("/session")
 public class SessionService extends BaseHttpService implements ISessionService
 {
-    @Autowired
+    /**
+     * ILdapAuthenticator instance to authenticate creadentials against an ldap
+     * system.
+     */
     private ILdapAuthenticator ldapAuthenticator;
 
-    @Autowired
+    /** IMembreDao instance to access membre data. */
     private IMembreDao membreDao;
 
-    @Autowired
-    private ILdapSearcher ldapSearcher;
+    /** IMembreService instance for dealing with membre stuff. */
+    private IMembreService membreService;
 
     @POST
     public Response create(CreateRequest request)
@@ -52,7 +54,8 @@ public class SessionService extends BaseHttpService implements ISessionService
             membre = membreDao.getMembre(request.getUsername());
         } catch (EntityNotFoundException ex) {
             // User does not exist, create it.
-            // TODO User does not exist, create it.
+            AddRequest addMembreRequest = new AddRequest(request.getUsername());
+            membreService.addBasic(addMembreRequest);
         }
 
         // The Ldap verified and approved the credentials.
@@ -120,18 +123,18 @@ public class SessionService extends BaseHttpService implements ISessionService
     }
 
     /**
-     * @return the ldapSearcher
+     * @return the membreService
      */
-    public ILdapSearcher getLdapSearcher()
+    public IMembreService getMembreService()
     {
-        return ldapSearcher;
+        return membreService;
     }
 
     /**
-     * @param ldapSearcher the ldapSearcher to set
+     * @param membreService the membreService to set
      */
-    public void setLdapSearcher(ILdapSearcher ldapSearcher)
+    public void setMembreService(IMembreService membreService)
     {
-        this.ldapSearcher = ldapSearcher;
+        this.membreService = membreService;
     }
 }

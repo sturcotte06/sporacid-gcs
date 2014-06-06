@@ -13,17 +13,14 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 
+/**
+ * @author Simon Turcotte-Langevin
+ */
 public final class ControlHelpers
 {
-    /**
-     * log4j logger.
-     */
-    private static final Logger logger = Logger.getLogger(ControlHelpers.class);
-
     /**
      * Json serializer for javascript conversion.
      */
@@ -43,13 +40,9 @@ public final class ControlHelpers
         StringBuffer out = new StringBuffer();
 
         Map<String, Object> objProperties = null;
-        try {
-            // Get the object properties through reflection
-            objProperties = ReflectionUtils.getObjectProperties(object, classObj);
 
-        } catch (IllegalAccessException ex) {
-            logger.error(String.format("Cannot reflect the class %s: ", classObj), ex);
-        }
+        // Get the object properties through reflection
+        objProperties = ReflectionUtils.getObjectProperties(object, classObj);
 
         // For each object properties
         for (Map.Entry<String, Object> entry : objProperties.entrySet()) {
@@ -77,7 +70,8 @@ public final class ControlHelpers
         StringBuilder menuOut = new StringBuilder();
         menuOut.append("[");
         for (MenuItem item : menu.getItems()) {
-            menuOut.append(String.format("{label: \"%s\", imageUrl: \"%s\", href: \"%s\"},", item.getLabel(), item.getImageUrl(), item.getHref()));
+            menuOut.append(String.format("{label: \"%s\", imageUrl: \"%s\", href: \"%s\"},", item.getLabel(),
+                    item.getImageUrl(), item.getHref()));
         }
 
         // Strip the last char
@@ -100,7 +94,9 @@ public final class ControlHelpers
             }
 
             Display display = field.getAnnotation(Display.class);
-            columnsDisplayOut.append(String.format("\"%s\",", display != null ? display.value() : field.getName()));
+            columnsDisplayOut.append(String.format("\"%s\",", display != null
+                    ? display.value()
+                    : field.getName()));
 
             GridColumnModel column = new GridColumnModel();
             column.setName(field.getName());
@@ -137,7 +133,8 @@ public final class ControlHelpers
         String columnsJson = jsonSerializer.toJson(columns);
 
         StringBuilder jsOut = new StringBuilder();
-        jsOut.append(String.format("var initData = {menu: %s, rows: %s, columns: %s, colNames: %s};", menuOut.toString(), rowsJson, columnsJson, columnsDisplayOut.toString()));
+        jsOut.append(String.format("var initData = {menu: %s, rows: %s, columns: %s, colNames: %s};",
+                menuOut.toString(), rowsJson, columnsJson, columnsDisplayOut.toString()));
         jsOut.append(String.format("$(\"#%s\").gcsGrid(initData);", gridId));
 
         return new HtmlAndJavaScript(htmlOut.toString(), jsOut.toString());

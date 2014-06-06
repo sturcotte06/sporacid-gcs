@@ -5,13 +5,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import gcs.webapp.utils.app.messages.IMessageLocalizer;
 import gcs.webapp.utils.aspects.logging.Loggable;
 import gcs.webapp.utils.aspects.validation.Validatable;
-import gcs.webservices.sessions.SessionCache;
+import gcs.webservices.sessions.ISessionCache;
 
 /**
  * Base class for all services. This class is :
@@ -32,10 +31,10 @@ import gcs.webservices.sessions.SessionCache;
 @Consumes({ MediaType.APPLICATION_JSON })
 public abstract class BaseHttpService
 {
-    @Autowired
-    protected SessionCache sessionCache;
-
-    @Autowired
+    /** Session cache which contains authorized sessions and their associated member. */
+    protected ISessionCache sessionCache;
+    
+    /** IMessageLocalizer instance to localize objects. */
     protected IMessageLocalizer messageLocalizer;
 
     /**
@@ -56,7 +55,7 @@ public abstract class BaseHttpService
     /**
      * @return the sessionCache
      */
-    public SessionCache getSessionCache()
+    public ISessionCache getSessionCache()
     {
         return sessionCache;
     }
@@ -64,7 +63,7 @@ public abstract class BaseHttpService
     /**
      * @param sessionCache the sessionCache to set
      */
-    public void setSessionCache(SessionCache sessionCache)
+    public void setSessionCache(ISessionCache sessionCache)
     {
         this.sessionCache = sessionCache;
     }

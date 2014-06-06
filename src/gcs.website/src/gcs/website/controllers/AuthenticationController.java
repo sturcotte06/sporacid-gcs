@@ -1,12 +1,9 @@
 package gcs.website.controllers;
 
-import gcs.webapp.utils.Message;
-import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.menus.IMenuProvider;
-import gcs.webapp.utils.app.messages.IMessageLocalizer;
+import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webservices.client.ISessionServiceClient;
 import gcs.webservices.client.exceptions.WebServiceClientException;
-import gcs.webservices.client.responses.Response;
 import gcs.webservices.client.responses.sessions.CreateResponse;
 import gcs.website.utils.SessionUtils;
 import gcs.website.views.beans.AuthenticationForm;
@@ -19,9 +16,7 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -83,33 +78,31 @@ public class AuthenticationController extends BaseController
         }
 
         // We need the ipv4 address of the user for authentication
-        String ipAddress = request.getHeader("X-FORWARDED-FOR");
-        if (ipAddress == null) {
-            ipAddress = request.getRemoteAddr();
+        String ipv4Address = request.getHeader("X-FORWARDED-FOR");
+        if (ipv4Address == null) {
+            ipv4Address = request.getRemoteAddr();
+            if (ipv4Address == null) {
+                throw new InternalException("authenticationcontroller_ipv4address_cannotberesolved");
+            }
         }
 
         try {
             // Try to create the session in the web services
-            CreateResponse createResponse = sessionServiceClient.create(form.getUsername(), ipAddress,
+            CreateResponse createResponse = sessionServiceClient.create(form.getUsername(), ipv4Address,
                     form.getPassword());
 
-            if (createResponse.isSuccess()) {
-                // Success; create a new web services session
-                WsSession wsSession = new WsSession();
-                wsSession.setSessionKey(createResponse.getSessionKey());
-                wsSession.setUsername(form.getUsername());
-                SessionUtils.setWsSession(session, wsSession);
+            // Success; create a new web services session
+            WsSession wsSession = new WsSession();
+            wsSession.setSessionKey(createResponse.getSessionKey());
+            wsSession.setUsername(form.getUsername());
+            SessionUtils.setWsSession(session, wsSession);
 
-                // TODO change forRole param
-                SessionUtils.setApplicationMenu(session,
-                        menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));
+            // TODO change for Role param
+            SessionUtils.setApplicationMenu(session,
+                    menuProvider.provideMenu(messageLocalizer.getDefaultLocale(), "capitaine"));
 
-                // Redirect to the default page
-                return "redirect:/";
-            }
-
-            // Failure, fork to the catch
-            throw new WebServiceClientException(createResponse);
+            // Redirect to the default page
+            return "redirect:/";
 
         } catch (WebServiceClientException ex) {
             if (ex.hasResponseEntity()) {
@@ -137,28 +130,24 @@ public class AuthenticationController extends BaseController
             return "redirect:/";
         }
 
-        String ipAddress = request.getHeader("X-FORWARDED-FOR");
-        if (ipAddress == null) {
-            ipAddress = request.getRemoteAddr();
+        String ipv4Address = request.getHeader("X-FORWARDED-FOR");
+        if (ipv4Address == null) {
+            ipv4Address = request.getRemoteAddr();
+            if (ipv4Address == null) {
+                throw new InternalException("authenticationcontroller_ipv4address_cannotberesolved");
+            }
         }
 
         // Remove the session
         try {
-            Response response = sessionServiceClient.invalidate(ipAddress, wsSession.getSessionKey());
+            sessionServiceClient.invalidate(ipv4Address, wsSession.getSessionKey());
 
-            if (response.isSuccess()) {
+            // Resets the web services session; No more action can be taken
+            // with that token anyway
+            SessionUtils.setWsSession(request.getSession(), null);
 
-                // Resets the web services session; No more action can be taken
-                // with that token anyway
-                SessionUtils.setWsSession(request.getSession(), null);
-
-                // Redirect to the default page
-                return "redirect:/";
-            }
-
-            // Failure, fork to the catch
-            throw new WebServiceClientException(response);
-
+            // Redirect to the default page
+            return "redirect:/";
         } catch (WebServiceClientException ex) {
             if (ex.hasResponseEntity()) {
                 // Failure; tell the user why

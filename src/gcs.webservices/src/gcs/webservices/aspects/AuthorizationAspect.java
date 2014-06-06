@@ -14,14 +14,12 @@ import gcs.webservices.sessions.SessionCache;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-
 
 /**
  * @author Simon Turcotte-Langevin
@@ -104,21 +102,17 @@ public class AuthorizationAspect
             // Get all roles for the member
             Collection<Role> roles = new ArrayList<>();
             for (MembreClub membreClub : membre.getClubs()) {
-            	Club club = membreClub.getClub();
-            	//TODO Possiblement à remplacer 
-            	if(club != null)
-            	{
-	                String clubName = club.getNom();
-	                if (contextName.equalsIgnoreCase(clubName)) {
-	                    // Found the club requested by the client
-	                    roles = membreClub.getRoles();
-	                    break;
-	                }
+                Club club = membreClub.getClub();
+                if (club != null) {
+                    String clubName = club.getNom();
+                    if (contextName.equalsIgnoreCase(clubName)) {
+                        // Found the club requested by the client
+                        roles = membreClub.getRoles();
+                        break;
+                    }
+                } else {
+                    logger.warn(String.format("Couldn't get club for the membreClub %s. ", membreClub.getId()));
                 }
-            	else
-            	{
-            		 logger.warn(String.format("Couldn't get club for the membreClub %s. ", membreClub.getId()));
-            	}
             }
 
             if (roles == null) {

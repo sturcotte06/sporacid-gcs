@@ -27,17 +27,17 @@
       <a class="ets-link" href="http://www.etsmtl.ca/">Accueil du site web de l'ÉTS</a>
     </div>
 
-    <div class="header-container">
-      <div class="logo-container">
+    <div class="header-container row">
+      <div class="logo-container col-lg-3">
         <table><tr><td>
           <div class="logo"></div>
         </td></tr></table>
         <div class="header1">Gestionnaire de club scientifique</div>
       </div>
           
-      <div class="gcs-description">
+      <div class="gcs-description col-lg-8 col-md-offset-1">
         <div class="header2">GCS, Outil de gestion des clubs scientifiques</div>
-        Veuillez vous identifier
+        Veuillez vous identifier.
         <div class="header3"></div>
         <div class="header3">Avis aux étudiants</div>
         <ul>
@@ -47,52 +47,47 @@
       </div>
     </div>
     
-    <div class="login-content-container">
-      <div class="login-main-content">
-        
-        <div class="login-form-container">
-          <div class="login-form-header">Authentification</div>
-          
-          <%-- Include the menu in the page --%>
-          <jsp:include page="partial-views/layout/messages.jsp"></jsp:include>
-          
-          <form id="login_form" class="form" method="post" action="<%=context%>/public/connexion">
-            <table><tr><td>
-              <div class="form-line">
-                <label class="form-label" for="username">Code Universel</label>
-                <input type="text" class="form-input form-textbox" name="username" 
-                  value="<%=(form.getUsername() != null ? form.getUsername() : "")%>" />
-              </div>
-              <div class="form-line">
-                <label class="form-label" for="password">Mot de Passe</label>
-                <input type="password" class="form-input form-textbox" name="password" />
-              </div>
-              <div class="form-line">
-                <div class="form-submit unselectable">
-                  S'authentifier
-                </div>
-              </div>
-            </td></tr></table>
-          </form>
-        </div>
-        
-        <div class="gcs-description">
-          <div class="header2">Mot de passe oublié?</div>
-            Vous pouvez réinitialiser votre mot de passe sur 
-            <a href="<%=context%>/reinitialiser-mot-de-passe">cette page</a>
-            , si vous avez défini une question secrète dans votre profil GCS. 
-            Ou sinon, contactez le Bureau du registraire:
-            <ul>
-              <li>En personne, local A-1130</li>
-              <li>Par courriel : <a href="mailto:registraire@etsmtl.ca">registraire@etsmtl.ca</a></li>
-              <li>Au téléphone : 514-396-8888</li>
-            </ul>
-        </div>
+    <div class="login-content-container row">
+      <div class="login-form-container col-lg-5">
+         <div class="login-form-header">Authentification</div>
+         
+         <%-- Include the menu in the page --%>
+         <jsp:include page="partial-views/layout/messages.jsp"></jsp:include>
+         
+         <form id="login_form" class="form form-horizontal" method="post" action="<%=context%>/public/connexion">
+           <table><tr><td>
+             <div class="form-group">
+               <label class="col-sm-offset-1 col-sm-4 control-label unselectable" for="username">Code Universel</label>
+               <div class="col-sm-6">
+	             <input type="text" class="form-control" name="username" value="<%=(form.getUsername() != null ? form.getUsername() : "")%>" />
+               </div>
+             </div>
+             <div class="form-group">
+               <label class="col-sm-offset-1 col-sm-4 control-label unselectable" for="password">Mot de Passe</label>
+               <div class="col-sm-6">
+                 <input type="password" class="form-control" name="password" />
+               </div>
+             </div>
+             <div class="form-group">
+              <div class="form-submit unselectable">S'authentifier</div>
+             </div>
+           </td></tr></table>
+         </form>
+      </div>
+      <div class="gcs-description col-lg-6 col-lg-offset-1">
+        <div class="header2">Mot de passe oublié?</div>
+          Vous pouvez réinitialiser votre mot de passe sur 
+          <a href="<%=context%>/reinitialiser-mot-de-passe">cette page</a>
+          , si vous avez défini une question secrète dans votre profil GCS. 
+          Ou sinon, contactez le Bureau du registraire:
+          <ul>
+            <li>En personne, local A-1130</li>
+            <li>Par courriel : <a href="mailto:registraire@etsmtl.ca">registraire@etsmtl.ca</a></li>
+            <li>Au téléphone : 514-396-8888</li>
+          </ul>
       </div>
     </div>
-<!--     #293134 -->
-<!--     #465358 -->
-<!--     #788589 -->
+    
     <%-- Include the right column in the page --%>
     <jsp:include page="partial-views/layout/footer.jsp"></jsp:include>
     

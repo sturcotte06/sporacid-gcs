@@ -33,7 +33,7 @@ public class Membre extends AbstractModelObject
 {
     /** Log4j logger. */
     private static final Logger logger = Logger.getLogger(Membre.class);
-    
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "membres_id_seq")
@@ -48,17 +48,17 @@ public class Membre extends AbstractModelObject
     @Cascade(CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<MembreClub> clubs;
-    
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "membreId")
     @Cascade(CascadeType.ALL)
     @Fetch(FetchMode.JOIN)
     private Set<ContactUrgence> contactsUrgence;
-    
+
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "membres_allergies", joinColumns = { @JoinColumn(name = "membres_id") }, inverseJoinColumns = { @JoinColumn(name = "allergies_id") })
     private Set<Allergie> allergies;
-    
+
     @Column(name = "nom")
     private String nom;
 
@@ -78,34 +78,32 @@ public class Membre extends AbstractModelObject
     private boolean actif;
 
     @Column(name = "telephone")
-    private boolean telephone;
+    private String telephone;
 
     public Club getClubByName(String name)
     {
-    	if(name == null) {
-    		throw new ArgumentNullException("name");
-    	}
-    	
-    	for (MembreClub membreClub : clubs) {
-        	Club club = membreClub.getClub();
-        	
-        	//TODO Possiblement à remplacer 
-        	if(club != null)
-        	{
+        if (name == null) {
+            throw new ArgumentNullException("name");
+        }
+
+        for (MembreClub membreClub : clubs) {
+            Club club = membreClub.getClub();
+
+            // TODO Possiblement à remplacer
+            if (club != null) {
                 String clubName = club.getNom();
                 if (name.equalsIgnoreCase(clubName)) {
                     // Found the club requested by the client
                     return membreClub.getClub();
                 }
+            } else {
+                logger.warn(String.format("Couldn't get club for the membre %s. ", id));
             }
-        	else
-        	{
-        		 logger.warn(String.format("Couldn't get club for the membre %s. ", id));
-        	}
         }
-    	
-    	throw new EntityNotFoundException("club", name);
+
+        throw new EntityNotFoundException("club", name);
     }
+
     /**
      * @return the id
      */
@@ -221,7 +219,7 @@ public class Membre extends AbstractModelObject
     /**
      * @return the telephone
      */
-    public boolean isTelephone()
+    public String isTelephone()
     {
         return telephone;
     }
@@ -229,7 +227,7 @@ public class Membre extends AbstractModelObject
     /**
      * @param telephone the telephone to set
      */
-    public void setTelephone(boolean telephone)
+    public void setTelephone(String telephone)
     {
         this.telephone = telephone;
     }
@@ -266,31 +264,35 @@ public class Membre extends AbstractModelObject
         this.clubs = clubs;
     }
 
-	/**
-	 * @return the contactsUrgence
-	 */
-	public Set<ContactUrgence> getContactsUrgence() {
-		return contactsUrgence;
-	}
+    /**
+     * @return the contactsUrgence
+     */
+    public Set<ContactUrgence> getContactsUrgence()
+    {
+        return contactsUrgence;
+    }
 
-	/**
-	 * @param contactsUrgence the contactsUrgence to set
-	 */
-	public void setContactsUrgence(Set<ContactUrgence> contactsUrgence) {
-		this.contactsUrgence = contactsUrgence;
-	}
+    /**
+     * @param contactsUrgence the contactsUrgence to set
+     */
+    public void setContactsUrgence(Set<ContactUrgence> contactsUrgence)
+    {
+        this.contactsUrgence = contactsUrgence;
+    }
 
-	/**
-	 * @return the allergies
-	 */
-	public Set<Allergie> getAllergies() {
-		return allergies;
-	}
+    /**
+     * @return the allergies
+     */
+    public Set<Allergie> getAllergies()
+    {
+        return allergies;
+    }
 
-	/**
-	 * @param allergies the allergies to set
-	 */
-	public void setAllergies(Set<Allergie> allergies) {
-		this.allergies = allergies;
-	}
+    /**
+     * @param allergies the allergies to set
+     */
+    public void setAllergies(Set<Allergie> allergies)
+    {
+        this.allergies = allergies;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.exceptions.InternalException;
+import gcs.webservices.models.Concentration;
 import gcs.webservices.models.Membre;
 
 /**
@@ -20,6 +21,15 @@ public interface IMembreDao
      * @throws InternalException
      */
     public Collection<Membre> getMembres() throws InternalException;
+
+    /**
+     * Gets all members by club name from the system.
+     * 
+     * @param clubName Name of the club.
+     * @return A collection of members.
+     * @throws InternalException
+     */
+    public Collection<Membre> getMembresByClubName(String clubName) throws InternalException;
 
     /**
      * Gets a member from the system.
@@ -55,4 +65,21 @@ public interface IMembreDao
      * @throws InternalException
      */
     public void editMembre(Membre membre) throws InternalException;
+
+    /**
+     * Get a concentration by name from the system.
+     * 
+     * @param acronyme Acronym of the concentration.
+     * @return The concentration.
+     * @throws EntityNotFoundException
+     */
+    public Concentration getConcentrationByAcronyme(String acronyme) throws EntityNotFoundException;
+
+    /**
+     * Get all concentrations from the system.
+     * 
+     * @return A collection of concentrations.
+     * @throws InternalException
+     */
+    public Collection<Concentration> getConcentrations() throws InternalException;
 }

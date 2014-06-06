@@ -4,11 +4,13 @@
 <application-messages language="fr">
   <!-- Hashing message -->
   <message key="hashing_no_algorithm_found" message="Aucun algorithme de hachage trouvé pour la valeur &quot;%s&quot;." />
-           
+  <!-- Caching messages -->
+  <message key="caching_keyprovider_serialization_failure" message="Impossible de sérialiser la valeur dans un clé de cache." />
   <!-- Exception messages -->
   <message key="exception_entitynotfound_withid_message" message="L'entité %s qui a pour identifiant %s n'existe pas." />
-  <message key="exception_entitynotfound_message" message="L'entité (ou les entités) n'existe(nt) pas." />  
+  <message key="exception_entitynotfound_message" message="L'entité (ou les entités) n'existe(nt) pas." />
   <message key="exception_unauthorized_message" message="L'usager %s n'est pas authorisé à accéder à cette partie de l'application." />
   <message key="exception_validation_message" message="Certains arguments sont invalides." />
   <message key="exception_notauthenticated_message" message="L'usager %s n'est pas authentifié et doit l'être pour accéder à cette partie de l'application." />
+  <message key="exception_reflection_message" message="Une exception a été soulevé lors de la réflexion de l'application." />
 </application-messages>

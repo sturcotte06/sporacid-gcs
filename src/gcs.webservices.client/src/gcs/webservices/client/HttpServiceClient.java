@@ -102,6 +102,10 @@ public abstract class HttpServiceClient
             // No entity
             throw new WebServiceClientException(ex);
         } 
+        
+        if (!response.isSuccess()) {
+            throw new WebServiceClientException(response);
+        }
 
         return response;
     }

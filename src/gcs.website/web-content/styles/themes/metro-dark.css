@@ -49,8 +49,8 @@ body,
     background-size: 100% 100%;
 }
 
-.login-main-content .form-button,
-.login-main-content .form-submit,  
+.login-content-container .form-button,
+.login-content-container .form-submit,  
 .main-content .form-button, 
 .main-content .form-submit {
     background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
@@ -58,7 +58,14 @@ body,
     color: white;
 }
 
-.form-label {
+.login-content-container .form-button:hover,
+.login-content-container .form-submit:hover,  
+.main-content .form-button:hover, 
+.main-content .form-submit:hover {
+	background-color: #2E2E32;
+}
+
+.form .control-label {
     background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
     background-size: 100% 100%;
     color: white;

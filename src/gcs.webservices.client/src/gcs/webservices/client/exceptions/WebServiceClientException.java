@@ -25,6 +25,7 @@ public class WebServiceClientException extends InternalException
     public WebServiceClientException(Response responseEntity, Throwable innerException)
     {
         super("exception_wsclient", innerException);
+        this.responseEntity = responseEntity;
     }
     
     /**
@@ -34,6 +35,7 @@ public class WebServiceClientException extends InternalException
     public WebServiceClientException(Response responseEntity)
     {
         super("exception_wsclient");
+        this.responseEntity = responseEntity;
     }
     
     /**

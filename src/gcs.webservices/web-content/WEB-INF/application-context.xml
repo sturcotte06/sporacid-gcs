@@ -12,7 +12,7 @@
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="qazwsxedc" />
+    <property name="password" value="postgres" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -112,12 +112,12 @@
   <bean id="commanditeDao" class="gcs.webservices.dao.CommanditeDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
-  
+
   <!-- IItemDao implementation -->
   <bean id="itemDao" class="gcs.webservices.dao.ItemDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
   </bean>
-  
+
   <!-- IFournisseurDao implementation -->
   <bean id="fournisseurDao" class="gcs.webservices.dao.FournisseurDao" scope="singleton">
     <property name="sessionFactory" ref="sessionFactory" />
@@ -154,8 +154,22 @@
   </bean>
 
   <!-- Jersey services bean so jersey does not log a fatal exception. -->
-  <bean id="sessionService" class="gcs.webservices.services.SessionService" scope="singleton" />
-  <bean id="membreService" class="gcs.webservices.services.MembreService" scope="singleton" />
+  <bean id="sessionService" class="gcs.webservices.services.SessionService" scope="singleton">
+    <property name="sessionCache" ref="sessionCache" />
+    <property name="messageLocalizer" ref="messageLocalizer" />
+    <property name="ldapAuthenticator" ref="ldapAuthenticator" />
+    <property name="membreDao" ref="membreDao" />
+    <property name="membreService" ref="membreService" />
+  </bean>
+
+  <!--  -->
+  <bean id="membreService" class="gcs.webservices.services.MembreService" scope="singleton">
+    <property name="sessionCache" ref="sessionCache" />
+    <property name="messageLocalizer" ref="messageLocalizer" />
+    <property name="ldapSearcher" ref="ldapSearcher" />
+    <property name="membreDao" ref="membreDao" />
+  </bean>
+  
   <bean id="userService" class="gcs.webservices.services.UserService" scope="singleton" />
   <bean id="utilityService" class="gcs.webservices.services.UtilityService" scope="singleton" />
   <bean id="clubService" class="gcs.webservices.services.ClubService" scope="singleton" />

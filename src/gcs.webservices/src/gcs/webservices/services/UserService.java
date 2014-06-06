@@ -2,8 +2,10 @@ package gcs.webservices.services;
 
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.CrudOperator;
+import gcs.webservices.client.beans.SessionToken;
 import gcs.webservices.client.requests.usagers.*;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
@@ -30,7 +32,7 @@ public class UserService extends BaseHttpService
     @PUT
     @Path("/{membreId}/preferences")
     @CrudOperator(CrudOperation.Update)
-    public Response editPreferences(EditPreferenceRequest request)
+    public Response mergePreferences(@BeanParam SessionToken sessionToken, EditPreferenceRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         return completeRequest(responseEntity);
@@ -39,7 +41,7 @@ public class UserService extends BaseHttpService
     @PUT
     @Path("/{membreId}")
     @CrudOperator(CrudOperation.Update)
-    public Response edit(EditRequest request)
+    public Response edit(@BeanParam SessionToken sessionToken, EditRequest request)
     {
         gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         return completeRequest(responseEntity);

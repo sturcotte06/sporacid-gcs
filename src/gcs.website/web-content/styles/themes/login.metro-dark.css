@@ -5,17 +5,15 @@
 }
 
 .ets-bar:hover {
-   background: #1C97EA;
-    box-shadow: 0px 5px 15px #1C97EA;
+	background: #1C97EA;
+	box-shadow: 0px 5px 15px #1C97EA;
 }
 
-.ets-bar .ets-link,
-.gcs-description a {
+.ets-bar .ets-link,.gcs-description a {
 	color: white;
 }
 
-.ets-bar .ets-link:hover,
-.gcs-description a:hover {
+.ets-bar .ets-link:hover,.gcs-description a:hover {
 	color: #3E3E42;
 }
 
@@ -41,7 +39,7 @@
 	background-color: #3E3E42;
 }
 
-.login-main-content .login-form-container {
+.login-form-container {
 	box-shadow: 5px 5px 15px #EF9C00;
 	background-color: white;
 	/*border-top-color: #EF9C00;/*#813DDE;*/
@@ -53,9 +51,10 @@
 .header-container .logo-container {
 	/*border-bottom-color: #E8641B;/*#009F3C;*/
 	/*border-right-color: #E8641B;*/
+	
 }
 
-.login-main-content .login-form-container .login-form-header {
+.login-form-container .login-form-header {
 	background: #3E3E42 url(../../images/black_glass_back.png) no-repeat top left;
 	background-size: 100% 100%;
 	color: white;
