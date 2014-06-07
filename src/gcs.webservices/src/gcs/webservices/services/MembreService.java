@@ -12,7 +12,7 @@ import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webservices.client.beans.ContextualSessionToken;
 import gcs.webservices.client.models.MembreBean;
 import gcs.webservices.client.requests.membres.*;
-import gcs.webservices.client.responses.DummyResponse;
+import gcs.webservices.client.responses.ResponseWithEntity;
 import gcs.webservices.dao.IMembreDao;
 import gcs.webservices.ldap.search.ILdapSearcher;
 import gcs.webservices.ldap.search.LdapUser;
@@ -113,8 +113,8 @@ public class MembreService extends SecureHttpService implements IMembreService
             membreBeans.add(ReflectionUtils.generateBean(membre, Membre.class, MembreBean.class));
         }
 
-        DummyResponse responseEntity = new DummyResponse();
-        responseEntity.setObject(membreBeans);
+        ResponseWithEntity<Collection<MembreBean>> responseEntity = new ResponseWithEntity<>();
+        responseEntity.setEntity(membreBeans);
         responseEntity.addMessage(MessageType.Information, "members_getall_member_successful");
         responseEntity.setSuccess(true);
 

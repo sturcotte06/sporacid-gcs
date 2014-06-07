@@ -6,8 +6,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import gcs.webapp.utils.Display;
 
-public class ConcentrationBean
+public class ConcentrationBean  extends AbstractBean
 {
+    /** */
+    private static final long serialVersionUID = -2102816735215371938L;
+
     private int id;
 
     @Size(min = 1, max = 10, message = "webservices_clientmodels_concentration_acronyme_size")

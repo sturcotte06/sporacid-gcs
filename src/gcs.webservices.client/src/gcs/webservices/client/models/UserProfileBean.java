@@ -2,8 +2,11 @@ package gcs.webservices.client.models;
 
 import java.util.Set;
 
-public class UserProfileBean
+public class UserProfileBean extends AbstractBean
 {
+    /** */
+    private static final long serialVersionUID = 1295833085694098639L;
+
     private int id;
     private ConcentrationBean concentration;
     private Set<MembreClubBean> clubs;

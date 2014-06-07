@@ -32,11 +32,13 @@
   <div id="management_grid_membres" class="main-content-1" style="height: 100%;">
     <%=gridControl.getHtmlString()%>
   </div>
-  <div id="current_membre" class="main-content-2 text-center" style="height: 100%;"></div>
+  <div id="current_membre" class="main-content-2" style="height: 100%;"></div>
 </div>
 
 <style type="text/css">
 #current_membre {
+    padding-left: 30px;
+    padding-right: 30px;
 	background-color: #3E3E42;
 	border-color: #35353A;
 	color: #ddd;
@@ -49,7 +51,7 @@
 	 */
 	$(document).ready(function() {
 		$("#list_membres_main_content").gcsMainContent({
-			orientation : "horizontal"
+			orientation : "vertical"
 		});
 	});
 	
@@ -67,7 +69,7 @@
 				var firstName = $(this).jqGrid('getCell', rowId, 'prenom');
 				var lastName = $(this).jqGrid('getCell', rowId, 'nom');
 				$("#current_membre").html(
-						"<h1>Membre <small class=\"current-membre-code-universel\">" + firstName + " "
+						"<h1>Membre - <small class=\"current-membre-code-universel\">" + firstName + " "
 								+ lastName + "</small></h1>");
 			}
 		});

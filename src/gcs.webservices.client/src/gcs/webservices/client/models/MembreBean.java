@@ -7,8 +7,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import gcs.webapp.utils.Display;
 
-public class MembreBean
+public class MembreBean extends AbstractBean
 {
+    /** */
+    private static final long serialVersionUID = 4140884890312466382L;
+
     private int id;
 
     @NotNull(message = "webservices_clientmodels_membre_id_notnull")

@@ -7,7 +7,7 @@ import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webservices.client.beans.ContextualSessionToken;
 import gcs.webservices.client.requests.commandites.AddRequest;
 import gcs.webservices.client.requests.commandites.DeleteRequest;
-import gcs.webservices.client.responses.DummyResponse;
+import gcs.webservices.client.responses.ResponseWithEntity;
 import gcs.webservices.dao.ICommanditeDao;
 import gcs.webservices.dao.IFournisseurDao;
 import gcs.webservices.dao.IItemDao;
@@ -17,6 +17,7 @@ import gcs.webservices.models.Membre;
 import gcs.webservices.models.Suivie;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.ws.rs.BeanParam;
@@ -46,20 +47,20 @@ public class CommanditeService extends SecureHttpService
     @CrudOperator(CrudOperation.Read)
     public Response getAll(@BeanParam ContextualSessionToken sessionToken)
     {
-        DummyResponse dummyResponse = new DummyResponse();
+        ResponseWithEntity<Collection<Commandite>> responseEntity = new ResponseWithEntity<>();
 
-        dummyResponse.setObject(commanditeDao.getAllCommandite());
-        dummyResponse.setSuccess(true);
-        dummyResponse.addMessage(MessageType.Information, "Success");
+        responseEntity.setEntity(commanditeDao.getAllCommandite());
+        responseEntity.setSuccess(true);
+        responseEntity.addMessage(MessageType.Information, "Success");
 
-        return completeRequest(dummyResponse);
+        return completeRequest(responseEntity);
     }
 
     @POST
     @CrudOperator(CrudOperation.Create)
     public Response add(@BeanParam ContextualSessionToken sessionToken, AddRequest request)
     {
-        DummyResponse dummyResponse = new DummyResponse();
+        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         Integer commanditeId = -1;
         Commandite commandite = new Commandite();
 
@@ -88,17 +89,17 @@ public class CommanditeService extends SecureHttpService
         commanditeDao.addSuivie(suivie);
 
         // dummyResponse.setObject();
-        dummyResponse.setSuccess(true);
-        dummyResponse.addMessage(MessageType.Information, "Success");
+        responseEntity.setSuccess(true);
+        responseEntity.addMessage(MessageType.Information, "Success");
 
-        return completeRequest(dummyResponse);
+        return completeRequest(responseEntity);
     }
 
     @DELETE
     @CrudOperator(CrudOperation.Delete)
     public Response delete(@BeanParam ContextualSessionToken sessionToken, DeleteRequest request)
     {
-        DummyResponse dummyResponse = new DummyResponse();
+        gcs.webservices.client.responses.Response responseEntity = new gcs.webservices.client.responses.Response();
         ArrayList<Commandite> commandites = (ArrayList<Commandite>) commanditeDao.getAllCommandite();
 
         for (Commandite commandite : commandites) {
@@ -110,10 +111,10 @@ public class CommanditeService extends SecureHttpService
         // TODO
 
         // dummyResponse.setObject();
-        dummyResponse.setSuccess(true);
-        dummyResponse.addMessage(MessageType.Information, "Success");
+        responseEntity.setSuccess(true);
+        responseEntity.addMessage(MessageType.Information, "Success");
 
-        return completeRequest(dummyResponse);
+        return completeRequest(responseEntity);
     }
 
     /**

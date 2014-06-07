@@ -1,8 +1,6 @@
 package gcs.webservices.client.models;
 
-import java.io.Serializable;
-
-public class CommanditeBean implements Serializable
+public class CommanditeBean extends AbstractBean
 {
     /** */
     private static final long serialVersionUID = 6205999501552864331L;
