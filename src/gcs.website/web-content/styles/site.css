@@ -9,7 +9,7 @@ body {
 
 .gcs-menu-container .jqx-item,
 .status-bar .jqx-item {
-    height:  24px;
+    height:  36px;
     padding-left: 56px;
     padding-right: 20px;
     padding-top: 6px;
@@ -251,6 +251,18 @@ body {
 
 .management-grid-container .ui-jqgrid {
     border-radius: 0px;
+}
+
+.management-grid-container .ui-jqgrid-pager {
+	font-size: inherit;
+}
+
+.management-grid-container .ui-jqgrid-pager input {
+	color: black;
+	padding: 0px 5px;
+	height: auto;
+	margin: 0px 5px;
+	text-align: right;
 }
 
 /** Utility classes **/

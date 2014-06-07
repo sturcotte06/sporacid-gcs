@@ -1,13 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
 <%@page import="java.util.Collection"%>
 <%@page import="gcs.website.views.helpers.ControlHelpers"%>
 <%@page import="gcs.website.views.helpers.models.Menu"%>
 <%@page import="gcs.website.views.helpers.models.MenuItem"%>
 <%@page import="gcs.website.models.Membre"%>
 <%@page import="gcs.website.views.helpers.HtmlAndJavaScript;"%>
-    
+
 <%
   String context = (String) request.getContextPath();
   
@@ -28,27 +27,49 @@
   
   HtmlAndJavaScript gridControl = ControlHelpers.getGridForObjects(membres, Membre.class, menu);
 %>
-<div class="management-grid-container">
-  <%=gridControl.getHtmlString()%>
+
+<div id="list_membres_main_content">
+  <div id="management_grid_membres" class="main-content-1" style="height: 100%;">
+    <%=gridControl.getHtmlString()%>
+  </div>
+  <div id="current_membre" class="main-content-2 text-center" style="height: 100%;"></div>
 </div>
-<div class="current-membre-container">
-  
-</div>
- 
+
 <style type="text/css">
-  .management-grid-container {
-  	float: left;
-    height: 100%;
-    width: 49%;
-  }
-  
-  .current-membre-container {
-  	height: 100%;
-  	width: 49%;
-  	margin-left: 51%;
-  }
+#current_membre {
+	background-color: #3E3E42;
+	border-color: #35353A;
+	color: #ddd;
+}
 </style>
 
 <script type="text/javascript">
-  <%=gridControl.getScript()%>
+	/**
+	 * Create the main content container.
+	 */
+	$(document).ready(function() {
+		$("#list_membres_main_content").gcsMainContent({
+			orientation : "horizontal"
+		});
+	});
+	
+	/**
+	 * Import the grid's javascript.
+	 */
+    <%=gridControl.getScript()%>
+    
+	/**
+	 * Import the grid's javascript.
+	 */
+	$(document).ready(function() {
+		$("#management_grid_membres").find(".gcs-grid").jqGrid('setGridParam', {
+			onSelectRow : function(rowId) {
+				var firstName = $(this).jqGrid('getCell', rowId, 'prenom');
+				var lastName = $(this).jqGrid('getCell', rowId, 'nom');
+				$("#current_membre").html(
+						"<h1>Membre <small class=\"current-membre-code-universel\">" + firstName + " "
+								+ lastName + "</small></h1>");
+			}
+		});
+	});
 </script>

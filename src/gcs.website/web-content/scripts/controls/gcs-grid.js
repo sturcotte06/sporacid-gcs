@@ -1,8 +1,11 @@
 $.fn.gcsGrid = function(data) {
+	$.jgrid.no_legacy_api = true;
+	
 	// Assume that data and jQuery selector are ok
 	// because there's too much assertion to do
 	var random = generateRandomString(10);
 
+	this.id("gcs_grid_container_" + random);
 	this.addClass("gcs-grid-container jq-grid-container");
 
 	// Add the header
@@ -25,17 +28,19 @@ $.fn.gcsGrid = function(data) {
 		colNames : data.colNames,
 		colModel : data.columns,
 		pager : $pager.id(),
-		autowidth : true,
+		autowidth : true
 	});
 
 	$grid.jqGrid("navGrid", "#" + $pager.id(), {
 		edit : false,
 		add : false,
 		del : false
-	}).find(".ui-icon-refresh, .ui-icon-search").hide();
+	});
+	
+	this.find(".ui-icon-refresh, .ui-icon-search").hide();
 
 	// Set the on resize callback
-	this.resize(onResize);
+	this.on("resize", onResize);
 };
 
 /**
@@ -43,9 +48,17 @@ $.fn.gcsGrid = function(data) {
  */
 function onResize() {
 	var $this = $(this);
-	$this.setGridWidth($this.parents(".gcs-grid-container:first").outerWidth());
-	$this.setGridHeight($this.parents(".gcs-grid-container:first").innerHeight()
-			- $this.parents(".gcs-grid-container:first").find(".gcs-grid-menu:first").outerHeight()
-			- $this.parents(".gcs-grid-container:first").find(".gcs-grid-pager:first").outerHeight()
-			- $this.parents(".gcs-grid-container:first").find(".ui-jqgrid-hdiv:first").outerHeight());
+	var $grid = $this.find(".gcs-grid");
+	var $parent = $this.parent();
+
+	var width = $parent.width();
+	var height = $parent.height()
+				- $this.find(".gcs-grid-menu:first").outerHeight()
+				- $this.find(".gcs-grid-pager:first").outerHeight()
+				- $this.find(".ui-jqgrid-hdiv:first").outerHeight();
+	
+	$grid.jqGrid("setGridWidth", width);
+	$grid.jqGrid("setGridHeight", height);
+	
+	return false;
 }

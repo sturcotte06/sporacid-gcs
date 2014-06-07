@@ -12,6 +12,7 @@
 <script type="text/javascript" src="<%=context%>/scripts/libraries/jquery-ui/js/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/libraries/bootstrap-3.1.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/constants.js"></script>
+<script type="text/javascript" src="<%=context%>/scripts/controls/gcs-main-content.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/controls/gcs-grid.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/controls/gcs-menu.js"></script>
 <script type="text/javascript" src="<%=context%>/scripts/form.js"></script>
@@ -23,6 +24,7 @@
 <%-- <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/bootstrap-3.1.1/css/bootstrap-theme.min.css" /> --%>
 <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/jquery-ui/css/metrodark/jquery-ui-1.10.4.custom.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/jqgrid/css/ui.jqgrid.css" />
+<%-- <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/jqgrid/css/bootstrap.jqgrid.css" /> --%>
 <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/jqwidgets/styles/jqx.base.css" />
 <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/jqwidgets/styles/jqx.shinyblack.css" />
 <link rel="stylesheet" type="text/css" href="<%=context%>/scripts/libraries/jqwidgets/styles/jqx.metrodark.css" />

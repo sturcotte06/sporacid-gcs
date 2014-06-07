@@ -60,13 +60,7 @@ public final class ControlHelpers
     {
         String gridId = "gcs_grid_container_" + RandomStringUtils.random(10, true, true);
 
-        StringBuilder htmlOut = new StringBuilder();
-        htmlOut.append(String.format("<div id=\"%s\">", gridId));
-        // htmlOut.append(String.format("<div></div>"));
-        // htmlOut.append(String.format("<table></table>"));
-        // htmlOut.append(String.format("<div></div>"));
-        htmlOut.append(String.format("<div>"));
-
+        StringBuilder htmlOut = new StringBuilder(String.format("<div id=\"%s\"></div>", gridId));
         StringBuilder menuOut = new StringBuilder();
         menuOut.append("[");
         for (MenuItem item : menu.getItems()) {

@@ -55,7 +55,7 @@
          <jsp:include page="partial-views/layout/messages.jsp"></jsp:include>
          
          <form id="login_form" class="form form-horizontal" method="post" action="<%=context%>/public/connexion">
-           <table><tr><td>
+<!--            <table><tr><td> -->
              <div class="form-group">
                <label class="col-sm-offset-1 col-sm-4 control-label unselectable" for="username">Code Universel</label>
                <div class="col-sm-6">
@@ -69,9 +69,9 @@
                </div>
              </div>
              <div class="form-group">
-              <div class="form-submit unselectable">S'authentifier</div>
+              <div class="form-submit col-sm-offset-3 col-sm-6 unselectable">S'authentifier</div>
              </div>
-           </td></tr></table>
+<!--            </td></tr></table> -->
          </form>
       </div>
       <div class="gcs-description col-lg-6 col-lg-offset-1">
