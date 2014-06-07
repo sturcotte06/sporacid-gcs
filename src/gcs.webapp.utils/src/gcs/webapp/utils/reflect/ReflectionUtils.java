@@ -23,9 +23,19 @@ import com.google.gson.Gson;
  * 
  * @author Simon Turcotte-Langevin
  */
-// @Loggable
 public final class ReflectionUtils
 {
+    /**
+     * Constant array of all primitive types.
+     */
+    private static final Class<?>[] cPrimitiveTypes = { boolean.class, char.class, byte.class, short.class, int.class,
+            long.class, float.class, double.class };
+    /**
+     * Constant array of all primitive wrapper types.
+     */
+    private static final Class<?>[] cPrimitiveWrapperTypes = { Boolean.class, Character.class, Byte.class, Short.class,
+            Integer.class, Long.class, Float.class, Double.class };
+
     /**
      * Returns whether the object is a wrapper for a primitive type or not.
      * 
@@ -53,12 +63,9 @@ public final class ReflectionUtils
             throw new ArgumentNullException("classObj");
         }
 
-        final Class<?>[] wrapperTypes = { Boolean.class, Character.class, Byte.class, Short.class, Integer.class,
-                Long.class, Float.class, Double.class, Void.class };
-
         boolean isPrimitive = false;
-        for (int iWrapperType = 0; iWrapperType < wrapperTypes.length; iWrapperType++) {
-            if (wrapperTypes[iWrapperType].equals(classObj)) {
+        for (int iType = 0; iType < cPrimitiveTypes.length; iType++) {
+            if (cPrimitiveTypes[iType].equals(classObj) || cPrimitiveWrapperTypes[iType].equals(classObj)) {
                 isPrimitive = true;
                 break;
             }
