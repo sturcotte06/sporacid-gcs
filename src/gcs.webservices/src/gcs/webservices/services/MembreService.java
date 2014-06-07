@@ -88,7 +88,6 @@ public class MembreService extends SecureHttpService implements IMembreService
 
         // Create a new membre from the information of the ldap user
         Membre membreToAdd = new Membre();
-        membreToAdd.setCodePermanent(ldapUser.getUsername()); // TODO remove
         membreToAdd.setCodeUniversel(ldapUser.getUsername());
         membreToAdd.setCourriel(ldapUser.getEmail());
         membreToAdd.setPrenom(ldapUser.getFirstName());
