@@ -41,7 +41,7 @@ public class Membre extends AbstractModelObject
 
     @OneToOne(fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "concentrations_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "concentrations_id", referencedColumnName = "id", nullable = true)
     private Concentration concentration;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "membre")
@@ -67,9 +67,6 @@ public class Membre extends AbstractModelObject
 
     @Column(name = "courriel")
     private String courriel;
-
-    @Column(name = "code_permanent")
-    private String codePermanent;
 
     @Column(name = "code_universel")
     private String codeUniversel;
@@ -182,22 +179,6 @@ public class Membre extends AbstractModelObject
     public void setCourriel(String courriel)
     {
         this.courriel = courriel;
-    }
-
-    /**
-     * @return the codePermanent
-     */
-    public String getCodePermanent()
-    {
-        return codePermanent;
-    }
-
-    /**
-     * @param codePermanent the codePermanent to set
-     */
-    public void setCodePermanent(String codePermanent)
-    {
-        this.codePermanent = codePermanent;
     }
 
     /**
