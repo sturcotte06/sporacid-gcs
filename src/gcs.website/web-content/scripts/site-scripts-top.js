@@ -50,19 +50,6 @@ function resizeContent() {
 
 	// Resize grids
 	$(".gcs-grid-container").resize();
-	
-	
-  
-  // Resize grids
-  /*$(".jq-grid").resize();
-  $(".jq-grid").each(function() {
-    var $this = $(this);
-    $this.setGridWidth($this.parents(".management-grid-container:first").outerWidth());
-    $this.setGridHeight($this.parents(".management-grid-container:first").innerHeight() -
-        $this.parents(".management-grid-container:first").find(".management-grid-header-container:first").outerHeight() -
-        $this.parents(".management-grid-container:first").find(".jq-grid-pager:first").outerHeight() - 
-        $this.parents(".management-grid-container:first").find(".ui-jqgrid-hdiv:first").outerHeight());
-  });*/
 }
 
 /**

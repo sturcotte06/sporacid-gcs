@@ -162,14 +162,21 @@
     <property name="membreService" ref="membreService" />
   </bean>
 
-  <!--  -->
+  <!-- -->
   <bean id="membreService" class="gcs.webservices.services.MembreService" scope="singleton">
     <property name="sessionCache" ref="sessionCache" />
     <property name="messageLocalizer" ref="messageLocalizer" />
     <property name="ldapSearcher" ref="ldapSearcher" />
     <property name="membreDao" ref="membreDao" />
   </bean>
-  
+
+  <!-- -->
+  <bean id="enumService" class="gcs.webservices.services.EnumService" scope="singleton">
+    <property name="sessionCache" ref="sessionCache" />
+    <property name="messageLocalizer" ref="messageLocalizer" />
+    <property name="membreDao" ref="membreDao" />
+  </bean>
+
   <bean id="userService" class="gcs.webservices.services.UserService" scope="singleton" />
   <bean id="utilityService" class="gcs.webservices.services.UtilityService" scope="singleton" />
   <bean id="clubService" class="gcs.webservices.services.ClubService" scope="singleton" />

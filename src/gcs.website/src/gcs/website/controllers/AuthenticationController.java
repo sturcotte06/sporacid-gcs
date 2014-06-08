@@ -82,7 +82,7 @@ public class AuthenticationController extends BaseController
         if (ipv4Address == null) {
             ipv4Address = request.getRemoteAddr();
             if (ipv4Address == null) {
-                throw new InternalException("authenticationcontroller_ipv4address_cannotberesolved");
+                throw new InternalException("controllers_ipv4address_cannotberesolved");
             }
         }
 
@@ -134,7 +134,7 @@ public class AuthenticationController extends BaseController
         if (ipv4Address == null) {
             ipv4Address = request.getRemoteAddr();
             if (ipv4Address == null) {
-                throw new InternalException("authenticationcontroller_ipv4address_cannotberesolved");
+                throw new InternalException("controllers_ipv4address_cannotberesolved");
             }
         }
 

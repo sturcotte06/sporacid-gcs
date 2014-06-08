@@ -9,5 +9,6 @@ import java.lang.annotation.ElementType;
 @Target(ElementType.FIELD)
 public @interface Display
 {
-    String value();
+    String header();
+    int width() default 150;
 }

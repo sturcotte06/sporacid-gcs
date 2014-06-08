@@ -1,12 +1,7 @@
 package gcs.webservices.client;
 
 import gcs.webapp.utils.HttpMethod;
-import gcs.webservices.client.models.MembreBean;
-import gcs.webservices.client.requests.sessions.CreateRequest;
-import gcs.webservices.client.responses.ResponseWithEntity;
-import gcs.webservices.client.responses.sessions.CreateResponse;
-
-import java.util.Collection;
+import gcs.webservices.client.responses.membres.GetAllMembresOfClubResponse;
 
 /**
  * @author Simon Turcotte-Langevin
@@ -22,9 +17,10 @@ public class MembreServiceClient extends HttpServiceClient implements IMembreSer
      * @return A collection of membre beans.
      */
     @Override
-    public ResponseWithEntity getAllMembresOfClub(String ipv4Address, String wsSessionKey, String clubName)
+    public GetAllMembresOfClubResponse getAllMembresOfClub(String ipv4Address, String wsSessionKey, String clubName)
     {
-        final HttpServiceRoute route = new HttpServiceRoute("/context/%s/session/%s/%s", HttpMethod.Get);
-        return getResponse(route, ResponseWithEntity.class);
+        final HttpServiceRoute route = new HttpServiceRoute(String.format("/context/%s/session/%s/%s/membre", clubName,
+                ipv4Address, wsSessionKey), HttpMethod.Get);
+        return getResponse(route, GetAllMembresOfClubResponse.class);
     }
 }

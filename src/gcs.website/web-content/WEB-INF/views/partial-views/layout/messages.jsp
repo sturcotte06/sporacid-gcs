@@ -12,9 +12,26 @@
 
 <ul class="messages">
   <% for (Message message : SessionUtils.getMessages(httpSession)) { %>
-    <li class="message <%=(message.getType() == MessageType.Information ? "success" : "failure")%>">
+    <% 
+      MessageType mt = message.getType();
+      String classAttr = null;
+      switch (message.getType()) {
+          case Information:
+              classAttr = "success";
+              break;
+          case Validation:
+          case Warning:
+              classAttr = "warning";
+              break;
+          case Error:
+              classAttr = "danger";
+              break;
+      }
+    %>
+    <li class="message <%=classAttr%>">
       <%=message.getContent() %>
     </li>
   <% } %>
-</ul>        
+</ul>
+
 <% SessionUtils.clearMessages(httpSession); %>

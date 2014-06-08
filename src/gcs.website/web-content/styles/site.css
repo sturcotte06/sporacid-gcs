@@ -241,7 +241,15 @@ body {
 	list-style-type: lower-roman;
 }
 
-.messages .message.failure {
+.messages .message.success {
+	color: Green;
+}
+
+.messages .message.warning {
+	color: Orange;
+}
+
+.messages .message.danger {
 	color: Red;
 }
 

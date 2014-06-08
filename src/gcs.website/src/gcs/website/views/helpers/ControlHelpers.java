@@ -1,5 +1,6 @@
 package gcs.website.views.helpers;
 
+import gcs.webapp.utils.Display;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.website.views.helpers.models.GridColumnModel;
 import gcs.website.views.helpers.models.Menu;
@@ -80,39 +81,9 @@ public final class ControlHelpers
         StringBuilder columnsDisplayOut = new StringBuilder();
         columnsDisplayOut.append("[");
 
-        Field[] fields = classObj.getDeclaredFields();
-        for (Field field : fields) {
-            if (Modifier.isStatic(field.getModifiers())) {
-                // Only iterate through non-static fields
-                continue;
-            }
-
-            Display display = field.getAnnotation(Display.class);
-            columnsDisplayOut.append(String.format("\"%s\",", display != null
-                    ? display.value()
-                    : field.getName()));
-
-            GridColumnModel column = new GridColumnModel();
-            column.setName(field.getName());
-            column.setIndex(field.getName());
-            column.setWidth(String.valueOf(100f / fields.length) + "%");
-
-            if (field.getType().isAssignableFrom(Float.class)) {
-                column.setSorttype("number");
-                column.setAlign("right");
-            } else if (field.getType().isAssignableFrom(Byte.class)) {
-                column.setSorttype("int");
-                column.setAlign("right");
-            } else if (field.getType().isAssignableFrom(Date.class)) {
-                column.setSorttype("date");
-                column.setAlign("right");
-            } else {
-                column.setSorttype("string");
-                column.setAlign("left");
-            }
-
-            columns.add(column);
-        }
+        // Resolve the grid column metadata in a bizarre separate method.
+        // Technically, this shouldn't be in a method, but it's recursive.
+        resolveGridColumnMetadata(classObj, columnsDisplayOut, columns);
 
         // Strip the last char
         lastIndex = columnsDisplayOut.length() - 1;
@@ -123,7 +94,7 @@ public final class ControlHelpers
         columnsDisplayOut.append("]");
 
         // Generate the json data from the collection
-        String rowsJson = jsonSerializer.toJson(objects);
+        String rowsJson = jsonSerializer.toJson(ReflectionUtils.getObjectProperties(objects, classObj));
         String columnsJson = jsonSerializer.toJson(columns);
 
         StringBuilder jsOut = new StringBuilder();
@@ -133,6 +104,145 @@ public final class ControlHelpers
 
         return new HtmlAndJavaScript(htmlOut.toString(), jsOut.toString());
     }
+
+    private static <E> void resolveGridColumnMetadata(Class<E> classObj, StringBuilder columnsDisplayOut,
+            Collection<GridColumnModel> columns)
+    {
+        Field[] fields = classObj.getDeclaredFields();
+        for (Field field : fields) {
+            if (Modifier.isStatic(field.getModifiers())) {
+                // Only iterate through non-static fields
+                continue;
+            }
+
+            Class<?> fieldType = field.getType();
+            if (fieldType.isArray() || Map.class.isAssignableFrom(fieldType)
+                    || Collection.class.isAssignableFrom(fieldType)) {
+                // We don't deal with inner collections and sub tables. Yet.
+                continue;
+            }
+
+            if (!ReflectionUtils.isPrimitive(fieldType)) {
+                // Recursivity
+                resolveGridColumnMetadata(fieldType, columnsDisplayOut, columns);
+            }
+
+            Display display = field.getAnnotation(Display.class);
+            if (display == null) {
+                // The field is not meant to be displayed
+                continue;
+            }
+
+            // Add the header of the field to the columns display string
+            // builder.
+            columnsDisplayOut.append(String.format("\"%s\",", display.header()));
+
+            // Add the actual
+            GridColumnModel column = new GridColumnModel();
+            column.setName(field.getName());
+            column.setIndex(field.getName());
+            column.setWidth(display.width() + "px");
+
+            if (Float.class.isAssignableFrom(field.getType())) {
+                column.setSorttype("number");
+                column.setAlign("right");
+            } else if (Byte.class.isAssignableFrom(field.getType())) {
+                column.setSorttype("int");
+                column.setAlign("right");
+            } else if (Date.class.isAssignableFrom(field.getType())) {
+                column.setSorttype("date");
+                column.setAlign("right");
+            } else {
+                column.setSorttype("string");
+                column.setAlign("left");
+            }
+
+            columns.add(column);
+        }
+    }
+
+    // public static <E> HtmlAndJavaScript getGridForObjects(Collection<E>
+    // objects, Class<E> classObj, Menu menu)
+    // {
+    // String gridId = "gcs_grid_container_" + RandomStringUtils.random(10,
+    // true, true);
+    //
+    // StringBuilder htmlOut = new
+    // StringBuilder(String.format("<div id=\"%s\"></div>", gridId));
+    // StringBuilder menuOut = new StringBuilder();
+    // menuOut.append("[");
+    // for (MenuItem item : menu.getItems()) {
+    // menuOut.append(String.format("{label: \"%s\", imageUrl: \"%s\", href: \"%s\"},",
+    // item.getLabel(),
+    // item.getImageUrl(), item.getHref()));
+    // }
+    //
+    // // Strip the last char
+    // int lastIndex = menuOut.length() - 1;
+    // if (menuOut.charAt(lastIndex) == ',') {
+    // menuOut.deleteCharAt(lastIndex);
+    // }
+    //
+    // menuOut.append("]");
+    //
+    // Collection<GridColumnModel> columns = new ArrayList<>();
+    // StringBuilder columnsDisplayOut = new StringBuilder();
+    // columnsDisplayOut.append("[");
+    //
+    // Field[] fields = classObj.getDeclaredFields();
+    // for (Field field : fields) {
+    // if (Modifier.isStatic(field.getModifiers())) {
+    // // Only iterate through non-static fields
+    // continue;
+    // }
+    //
+    // Display display = field.getAnnotation(Display.class);
+    // columnsDisplayOut.append(String.format("\"%s\",", display != null
+    // ? display.value()
+    // : field.getName()));
+    //
+    // GridColumnModel column = new GridColumnModel();
+    // column.setName(field.getName());
+    // column.setIndex(field.getName());
+    // column.setWidth(String.valueOf(100f / fields.length) + "%");
+    //
+    // if (field.getType().isAssignableFrom(Float.class)) {
+    // column.setSorttype("number");
+    // column.setAlign("right");
+    // } else if (field.getType().isAssignableFrom(Byte.class)) {
+    // column.setSorttype("int");
+    // column.setAlign("right");
+    // } else if (field.getType().isAssignableFrom(Date.class)) {
+    // column.setSorttype("date");
+    // column.setAlign("right");
+    // } else {
+    // column.setSorttype("string");
+    // column.setAlign("left");
+    // }
+    //
+    // columns.add(column);
+    // }
+    //
+    // // Strip the last char
+    // lastIndex = columnsDisplayOut.length() - 1;
+    // if (columnsDisplayOut.charAt(lastIndex) == ',') {
+    // columnsDisplayOut.deleteCharAt(lastIndex);
+    // }
+    //
+    // columnsDisplayOut.append("]");
+    //
+    // // Generate the json data from the collection
+    // String rowsJson = jsonSerializer.toJson(objects);
+    // String columnsJson = jsonSerializer.toJson(columns);
+    //
+    // StringBuilder jsOut = new StringBuilder();
+    // jsOut.append(String.format("var initData = {menu: %s, rows: %s, columns: %s, colNames: %s};",
+    // menuOut.toString(), rowsJson, columnsJson,
+    // columnsDisplayOut.toString()));
+    // jsOut.append(String.format("$(\"#%s\").gcsGrid(initData);", gridId));
+    //
+    // return new HtmlAndJavaScript(htmlOut.toString(), jsOut.toString());
+    // }
 
     /**
      * @param objects

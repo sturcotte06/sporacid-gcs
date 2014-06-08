@@ -15,12 +15,12 @@ public class ConcentrationBean  extends AbstractBean
 
     @Size(min = 1, max = 10, message = "webservices_clientmodels_concentration_acronyme_size")
     @NotEmpty(message = "webservices_clientmodels_concentration_acronyme_notempty")
-    @Display("webservices_clientmodels_concentration_acronyme_display")
+    @Display(header = "webservices_clientmodels_concentration_acronyme_display", width = 50)
     private String acronyme;
 
     @Size(min = 1, max = 150, message = "webservices_clientmodels_concentration_description_size")
     @NotEmpty(message = "webservices_clientmodels_concentration_description_notempty")
-    @Display("webservices_clientmodels_concentration_description_display")
+//    @Display(header = "webservices_clientmodels_concentration_description_display", width = 50)
     private String description;
 
     /**

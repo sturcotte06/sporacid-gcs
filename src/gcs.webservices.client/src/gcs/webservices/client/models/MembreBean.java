@@ -16,24 +16,24 @@ public class MembreBean extends AbstractBean
 
     @NotNull(message = "webservices_clientmodels_membre_id_notnull")
     private final ConcentrationBean concentration = new ConcentrationBean();
-    
+
     @Size(min = 1, max = 64, message = "webservices_clientmodels_membre_nom_size")
     @NotEmpty(message = "webservices_clientmodels_membre_nom_notempty")
-    @Display("webservices_clientmodels_membre_nom_display")
+    @Display(header = "webservices_clientmodels_membre_nom_display", width = 175)
     private String nom;
 
     @Size(min = 1, max = 64, message = "webservices_clientmodels_membre_prenom_size")
     @NotEmpty(message = "webservices_clientmodels_membre_prenom_notempty")
-    @Display("webservices_clientmodels_membre_prenom_display")
+    @Display(header = "webservices_clientmodels_membre_prenom_display", width = 125)
     private String prenom;
 
     @Size(min = 1, max = 255, message = "webservices_clientmodels_membre_email_size")
     @NotEmpty(message = "webservices_clientmodels_membre_email_notempty")
-    @Display("webservices_clientmodels_membre_email_display")
+    @Display(header = "webservices_clientmodels_membre_email_display", width = 175)
     private String courriel;
 
     @NotNull(message = "webservices_clientmodels_membre_active_notnull")
-    @Display("webservices_clientmodels_membre_active_display")
+    @Display(header = "webservices_clientmodels_membre_active_display", width = 30)
     private boolean actif;
 
     /**

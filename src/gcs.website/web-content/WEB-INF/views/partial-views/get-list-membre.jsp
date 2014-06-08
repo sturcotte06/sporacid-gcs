@@ -4,14 +4,14 @@
 <%@page import="gcs.website.views.helpers.ControlHelpers"%>
 <%@page import="gcs.website.views.helpers.models.Menu"%>
 <%@page import="gcs.website.views.helpers.models.MenuItem"%>
-<%@page import="gcs.website.models.Membre"%>
+<%@page import="gcs.webservices.client.models.MembreBean"%>
 <%@page import="gcs.website.views.helpers.HtmlAndJavaScript;"%>
 
 <%
   String context = (String) request.getContextPath();
   
   @SuppressWarnings("unchecked")
-  Collection<Membre> membres = (Collection<Membre>) request.getAttribute("listeMembres");
+  Collection<MembreBean> membres = (Collection<MembreBean>) request.getAttribute("listeMembres");
   
   Menu menu = new Menu();
   menu.addItem(new MenuItem("Modifier", context + "/images/metro-ui-icons/metro-edit.png", "#"));
@@ -25,7 +25,7 @@
   exportItem.getSubMenu().addItem(new MenuItem("...en Csv", "", "#"));
   menu.addItem(exportItem);
   
-  HtmlAndJavaScript gridControl = ControlHelpers.getGridForObjects(membres, Membre.class, menu);
+  HtmlAndJavaScript gridControl = ControlHelpers.getGridForObjects(membres, MembreBean.class, menu);
 %>
 
 <div id="list_membres_main_content">
@@ -36,16 +36,17 @@
 </div>
 
 <style type="text/css">
-#current_membre {
+  #current_membre {
     padding-left: 30px;
     padding-right: 30px;
-	background-color: #3E3E42;
-	border-color: #35353A;
-	color: #ddd;
-}
+    background-color: #3E3E42;
+    border-color: #35353A;
+    color: #ddd;
+  }
 </style>
 
 <script type="text/javascript">
+
 	/**
 	 * Create the main content container.
 	 */

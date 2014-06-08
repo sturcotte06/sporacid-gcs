@@ -1,9 +1,6 @@
 package gcs.webservices.client;
 
-import java.util.Collection;
-
-import gcs.webservices.client.models.MembreBean;
-import gcs.webservices.client.responses.ResponseWithEntity;
+import gcs.webservices.client.responses.membres.GetAllMembresOfClubResponse;
 
 /**
  * @author Simon Turcotte-Langevin
@@ -18,6 +15,5 @@ public interface IMembreServiceClient
      * @param clubName The name of the club for which we want the membres.
      * @return A collection of membre beans.
      */
-    public ResponseWithEntity<Collection<MembreBean>> getAllMembresOfClub(String ipv4Address, String wsSessionKey,
-            String clubName);
+    public GetAllMembresOfClubResponse getAllMembresOfClub(String ipv4Address, String wsSessionKey, String clubName);
 }
