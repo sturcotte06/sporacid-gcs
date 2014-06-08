@@ -1,4 +1,4 @@
-CREATE TABLE Evenements (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, nom varchar(50) NOT NULL, description varchar(255) NOT NULL, date_debut timestamptz NOT NULL, date_fin timestamptz, PRIMARY KEY (id));
+CREATE TABLE Communications (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, types_communications_id int4 NOT NULL, nom varchar(50) NOT NULL, description varchar(255) NOT NULL, date_debut timestamptz NOT NULL, date_fin timestamptz, PRIMARY KEY (id));
 CREATE TABLE Membres_Clubs_Roles (Roles_id int4 NOT NULL UNIQUE, Membres_Clubs_id int4 NOT NULL UNIQUE, PRIMARY KEY (Roles_id, Membres_Clubs_id));
 CREATE TABLE Audits (id  SERIAL NOT NULL, username varchar(50) NOT NULL, message varchar(255), date_audit timestamptz NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Membres_Preferences (id  SERIAL NOT NULL, membres_id int4 NOT NULL, "key" varchar(50) NOT NULL, value varchar(150) NOT NULL, PRIMARY KEY (id));
@@ -13,17 +13,19 @@ CREATE TABLE Formations (id  SERIAL NOT NULL, titre varchar(50), description var
 CREATE TABLE Units (id  SERIAL NOT NULL, unit_code varchar(8) NOT NULL, systeme varchar(12) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Commandites (id  SERIAL NOT NULL, Fournisseurs_id int4 NOT NULL, Items_id int4 NOT NULL, Clubs_id int4 NOT NULL, valeur numeric(6, 2) NOT NULL, nature varchar(64) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Items (id  SERIAL NOT NULL, Units_id int4 NOT NULL, description varchar(255) NOT NULL, code_club varchar(32), qte_courante numeric(6, 3) NOT NULL, qty_min numeric(6, 3), qty_max numeric(6, 3), PRIMARY KEY (id));
-CREATE TABLE Fournisseurs_Items (Fournisseurs_id int4 NOT NULL UNIQUE, Items_id int4 NOT NULL UNIQUE, code_fournisseur int4 NOT NULL, PRIMARY KEY (Fournisseurs_id, Items_id));
+CREATE TABLE Fournisseurs_Items (Fournisseurs_id int4 NOT NULL UNIQUE, Items_id int4 NOT NULL UNIQUE, code_fournisseur varchar(20) NOT NULL, PRIMARY KEY (Fournisseurs_id, Items_id));
 CREATE TABLE Fournisseurs (id  SERIAL NOT NULL, Adresses_id int4 NOT NULL, nom varchar(255) NOT NULL, contact varchar(64) NOT NULL, telephone varchar(24) NOT NULL, fax varchar(24), courriel varchar(255), PRIMARY KEY (id));
 CREATE TABLE Suivie_Statuts (id  SERIAL NOT NULL, code varchar(50) NOT NULL, description varchar(150) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Concentrations (id  SERIAL NOT NULL, acronyme varchar(10) NOT NULL, description varchar(150), PRIMARY KEY (id));
-CREATE TABLE Membres (id  SERIAL NOT NULL, Concentrations_id int4, nom varchar(64) NOT NULL, prenom varchar(64) NOT NULL, courriel varchar(255) NOT NULL, code_universel varchar(10) NOT NULL, actif bool NOT NULL, telephone varchar(16), PRIMARY KEY (id));
+CREATE TABLE Membres (id  SERIAL NOT NULL, Concentrations_id int4, nom varchar(64) NOT NULL, prenom varchar(64) NOT NULL, courriel varchar(255) NOT NULL, code_universel varchar(10) NOT NULL, actif bool NOT NULL, telephone varchar(16), avatar bytea, PRIMARY KEY (id));
 CREATE TABLE Membres_Clubs (id  SERIAL NOT NULL, Clubs_id int4 NOT NULL, Membres_id int4 NOT NULL, date_debut timestamptz NOT NULL, date_fin timestamptz, PRIMARY KEY (id));
 CREATE TABLE Adresses (id  SERIAL NOT NULL, no_civique int4 NOT NULL, rue varchar(64) NOT NULL, appartement varchar(10), ville varchar(128) NOT NULL, code_postal varchar(16) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Clubs (id  SERIAL NOT NULL, nom varchar(50) NOT NULL, description varchar(255), PRIMARY KEY (id));
+CREATE TABLE Types_Communications (id  SERIAL NOT NULL, titre varchar(50) NOT NULL, description varchar(100) NOT NULL, PRIMARY KEY (id));
+ALTER TABLE Contacts_Urgence ADD CONSTRAINT FKContacts_U687324 FOREIGN KEY (membres_id) REFERENCES Membres (id);
 ALTER TABLE Membres_Preferences ADD CONSTRAINT FKMembres_Pr229875 FOREIGN KEY (membres_id) REFERENCES Membres (id);
 ALTER TABLE Contacts_Urgence ADD CONSTRAINT FKContacts_U164890 FOREIGN KEY (liens_parente_id) REFERENCES Liens_Parente (id);
-ALTER TABLE Evenements ADD CONSTRAINT FKEvenements917475 FOREIGN KEY (Clubs_id) REFERENCES Clubs (id);
+ALTER TABLE Communications ADD CONSTRAINT FKCommunicat870017 FOREIGN KEY (Clubs_id) REFERENCES Clubs (id);
 ALTER TABLE Membres ADD CONSTRAINT FKMembres495106 FOREIGN KEY (Concentrations_id) REFERENCES Concentrations (id);
 ALTER TABLE Suivies ADD CONSTRAINT FKSuivies436259 FOREIGN KEY (Membres_id) REFERENCES Membres (id);
 ALTER TABLE Membres_Formations ADD CONSTRAINT FKMembres_Fo495691 FOREIGN KEY (Membres_id) REFERENCES Membres (id);
@@ -43,4 +45,4 @@ ALTER TABLE Membres_Clubs_Roles ADD CONSTRAINT FKMembres_Cl391451 FOREIGN KEY (R
 ALTER TABLE Membres_Clubs_Roles ADD CONSTRAINT FKMembres_Cl153481 FOREIGN KEY (Membres_Clubs_id) REFERENCES Membres_Clubs (id);
 ALTER TABLE Membres_Clubs ADD CONSTRAINT FKMembres_Cl269114 FOREIGN KEY (Clubs_id) REFERENCES Clubs (id);
 ALTER TABLE Membres_Clubs ADD CONSTRAINT FKMembres_Cl936196 FOREIGN KEY (Membres_id) REFERENCES Membres (id);
-ALTER TABLE Contacts_Urgence ADD CONSTRAINT FKContacts_U687324 FOREIGN KEY (membres_id) REFERENCES Membres (id);
+ALTER TABLE Communications ADD CONSTRAINT FKCommunicat868251 FOREIGN KEY (types_communications_id) REFERENCES Types_Communications (id);

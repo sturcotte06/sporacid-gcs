@@ -5,7 +5,6 @@ Insert into clubs values (nextval('clubs_id_seq'), 'Baja','Véhicule amphibie to
 				
 INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Membre', 'Un membre.');
 INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Capitaine', 'Un capitaine.');
-INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Membre', 'Un membre.');
 INSERT INTO roles(id, nom, description) VALUES (nextval('roles_id_seq'), 'Auditeur', 'Un auditeur.');
 
 Insert into concentrations values (nextval('concentrations_id_seq'), 'CTN','Génie de la construction');
@@ -16,11 +15,11 @@ Insert into concentrations values (nextval('concentrations_id_seq'), 'LOG','Gén
 Insert into concentrations values (nextval('concentrations_id_seq'), 'MEC','Génie mécanique');
 Insert into concentrations values (nextval('concentrations_id_seq'), 'TI','Génie des technologies de l`information');
 
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (nextval('membres_id_seq'),1,'Patrick','Olsen','nibh.Aliquam@tristiquesenectus.co.uk','XUYJ98427084','AJ00689',true,'3716562099');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (nextval('membres_id_seq'),2,'Moses','Melendez','Donec.consectetuer.mauris@mattisvelit.edu','SXGD95781049','AJ32898',true,'1881189845');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (nextval('membres_id_seq'),3,'Giacomo','Cote','velit.Cras.lorem@duiSuspendisseac.ca','IJKG71845113','AZ92060',true,'6534742324');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (nextval('membres_id_seq'),4,'Jade','Ford','sem.ut.dolor@nonbibendum.co.uk','GXLM93228319','AZ35441',true,'8522879201');
-INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_permanent,code_universel,actif,telephone) VALUES (nextval('membres_id_seq'),5,'Chandler','Mccarty','in.dolor@atpretiumaliquet.org','ACGN79164633','AX85616',true,'3055537869');
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_universel,actif,telephone,avatar) VALUES (nextval('membres_id_seq'),1,'Patrick','Lavallee','patrick.lavallee.2@ens.etsmtl.ca','AJ47700',true,'3716562099', null);
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_universel,actif,telephone,avatar) VALUES (nextval('membres_id_seq'),2,'Moses','Melendez','Donec.consectetuer.mauris@mattisvelit.edu','AJ32898',true,'1881189845', null);
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_universel,actif,telephone,avatar) VALUES (nextval('membres_id_seq'),3,'Giacomo','Cote','velit.Cras.lorem@duiSuspendisseac.ca','AZ92060',true,'6534742324', null);
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_universel,actif,telephone,avatar) VALUES (nextval('membres_id_seq'),4,'Jade','Ford','sem.ut.dolor@nonbibendum.co.uk','AZ35441',true,'8522879201',null);
+INSERT INTO membres (id,concentrations_id,nom,prenom,courriel,code_universel,actif,telephone,avatar) VALUES (nextval('membres_id_seq'),5,'Chandler','Mccarty','in.dolor@atpretiumaliquet.org','AX85616',true,'3055537869',null);
 
 INSERT INTO units (id,unit_code,systeme) VALUES (nextval('units_id_seq'),'UNIT1','SYSTEME2');
 INSERT INTO units (id,unit_code,systeme) VALUES (nextval('units_id_seq'),'UNIT2','SYSTEME3');
@@ -62,24 +61,30 @@ INSERT INTO commandites (id,fournisseurs_id,items_id,clubs_id,valeur,nature) VAL
 INSERT INTO commandites (id,fournisseurs_id,items_id,clubs_id,valeur,nature) VALUES (nextval('commandites_id_seq'),3,3,3,1628,'feugiat placerat velit. Quisque varius.');
 INSERT INTO commandites (id,fournisseurs_id,items_id,clubs_id,valeur,nature) VALUES (nextval('commandites_id_seq'),4,4,4,5702,'molestie dapibus ligula. Aliquam erat');
 
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Ami(e)');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Cousin');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Cousine');
 INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Mère');
 INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Père');
-INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Enfant');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Frère');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Soeur');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Oncle');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Tante');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Grand-père');
+INSERT INTO liens_parente (id, description) VALUES (nextval('liens_parente_id_seq'), 'Grand-mère');
 
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),1,'Hoover','Zephania','1-772-913-2130');
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),2,'Gibson','Wynne','1-727-710-9565');
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),3,'Ryan','Athena','1-462-616-1288');
-INSERT INTO contacts_urgence (id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),1,'Harper','Nissim','1-702-829-5337');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),1,1,'Hoover','Zephania','1-772-913-2130');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),2,2,'Gibson','Wynne','1-727-710-9565');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),3,3,'Ryan','Athena','1-462-616-1288');
+INSERT INTO contacts_urgence (id,membres_id,liens_parente_id,nom,prenom,telephone) VALUES (nextval('contacts_urgence_id_seq'),4,1,'Harper','Nissim','1-702-829-5337');
 
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (1,1);
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (2,2);
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (3,3);
-INSERT INTO contacts_urgence_membres (contacts_urgence_id, membres_id) VALUES (4,4);
+INSERT INTO types_communications(id, titre, description) VALUES (nextval('types_communications_id_seq'), 'INTERNE', 'Communication interne');
+INSERT INTO types_communications(id, titre, description) VALUES (nextval('types_communications_id_seq'), 'TOUS', 'Communication à tous');
 
-INSERT INTO evenements (id,clubs_id,nom,description,date_debut,date_fin) VALUES (nextval('evenements_id_seq'),1,'Événement1','mauris, aliquam eu, accumsan sed,','2012-05-05','2013-09-17');
-INSERT INTO evenements (id,clubs_id,nom,description,date_debut,date_fin) VALUES (nextval('evenements_id_seq'),2,'Événement2','In lorem. Donec elementum, lorem','2014-02-24','2014-09-25');
-INSERT INTO evenements (id,clubs_id,nom,description,date_debut,date_fin) VALUES (nextval('evenements_id_seq'),3,'Événement3','lorem. Donec elementum, lorem ut','2010-09-23','2014-06-04');
-INSERT INTO evenements (id,clubs_id,nom,description,date_debut,date_fin) VALUES (nextval('evenements_id_seq'),4,'Événement4','nulla. Integer urna. Vivamus molestie','2015-12-14','2013-09-30');
+INSERT INTO communications (id,clubs_id,types_communications_id,nom,description,date_debut,date_fin) VALUES (nextval('communications_id_seq'),1,1,'Événement1','mauris, aliquam eu, accumsan sed,','2012-05-05','2013-09-17');
+INSERT INTO communications (id,clubs_id,types_communications_id,nom,description,date_debut,date_fin) VALUES (nextval('communications_id_seq'),2,2,'Événement2','In lorem. Donec elementum, lorem','2014-02-24','2014-09-25');
+INSERT INTO communications (id,clubs_id,types_communications_id,nom,description,date_debut,date_fin) VALUES (nextval('communications_id_seq'),3,1,'Événement3','lorem. Donec elementum, lorem ut','2010-09-23','2014-06-04');
+INSERT INTO communications (id,clubs_id,types_communications_id,nom,description,date_debut,date_fin) VALUES (nextval('communications_id_seq'),4,2,'Événement4','nulla. Integer urna. Vivamus molestie','2015-12-14','2013-09-30');
 
 INSERT INTO formations (id, titre, description) VALUES (nextval('formations_id_seq'), 'ATELIER', 'Peux entrer dans l''atelier et utiliser les outils de bases');
 INSERT INTO formations (id, titre, description) VALUES (nextval('formations_id_seq'), 'SOUDURE', 'Peux utiliser les machines à souder');
@@ -96,8 +101,8 @@ INSERT INTO suivie_statuts (id,code,description) VALUES (nextval('suivie_statuts
 INSERT INTO suivie_statuts (id,code,description) VALUES (nextval('suivie_statuts_id_seq'), 'CONFIRME', 'Confirmé');
 INSERT INTO suivie_statuts (id,code,description) VALUES (nextval('suivie_statuts_id_seq'), 'FERME', 'Fermé');
 
-INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),1,1,1,'2012-10-03','erat, in conserectagiluca dsauhifds fgrakfoh fdeuihtur massa. Restibilum');
-INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),2,2,2,'2013-11-09','erat, in consectetuer ipsum nunc id enim. Curabitur massa. Vestibulum');
-INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),3,3,3,'2014-12-08','eleifend non, dapibus rutrum, justo. Praesent luctus. Curabitur egestas nunc');
-INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),4,4,4,'2014-02-09','congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae velit');
+INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (1,1,1,'2012-10-03','erat, in conserectagiluca dsauhifds fgrakfoh fdeuihtur massa. Restibilum');
+INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (2,2,2,'2013-11-09','erat, in consectetuer ipsum nunc id enim. Curabitur massa. Vestibulum');
+INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (3,3,3,'2014-12-08','eleifend non, dapibus rutrum, justo. Praesent luctus. Curabitur egestas nunc');
+INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (4,4,4,'2014-02-09','congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae velit');
 
