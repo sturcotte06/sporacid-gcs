@@ -37,7 +37,7 @@
         <div class="relative">
           <div class="status-bar-item-image" style="background-image: url(<%=context%>/images/metro-ui-icons/metro-settings.png);"></div>
         </div>
-        <a class="status-bar-item-link" href="<%=context%>/usager/preferences">Préférences</a>
+        <a class="status-bar-item-link" href="javascript:loadContentAjax('<%=context%>/usager/preferences', 'get');">Préférences</a>
     </li>
     <li id="logout_item">
         <div class="relative">

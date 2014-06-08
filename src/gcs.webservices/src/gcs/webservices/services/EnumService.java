@@ -1,18 +1,19 @@
 package gcs.webservices.services;
 
+import gcs.webapp.utils.MessageType;
+import gcs.webapp.utils.reflect.ReflectionUtils;
+import gcs.webservices.client.models.ConcentrationBean;
+import gcs.webservices.client.responses.ResponseWithEntity;
+import gcs.webservices.client.responses.enums.GetConcentrationResponse;
+import gcs.webservices.dao.IMembreDao;
+import gcs.webservices.models.Concentration;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
-
-import gcs.webapp.utils.MessageType;
-import gcs.webapp.utils.reflect.ReflectionUtils;
-import gcs.webservices.client.models.ConcentrationBean;
-import gcs.webservices.client.responses.ResponseWithEntity;
-import gcs.webservices.dao.IMembreDao;
-import gcs.webservices.models.Concentration;
 
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class EnumService extends BaseHttpService
                     ConcentrationBean.class));
         }
 
-        ResponseWithEntity<Collection<ConcentrationBean>> responseEntity = new ResponseWithEntity<>();
+        GetConcentrationResponse responseEntity = new GetConcentrationResponse();
         responseEntity.setEntity(concentrationBeans);
         responseEntity.addMessage(MessageType.Information, "enum_getconcentrations_successful");
         responseEntity.setSuccess(true);

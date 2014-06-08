@@ -4,5 +4,5 @@
   String context = (String) request.getContextPath();
 %>
 <div class="footer">
-  © spor@cid studios, 2013
+		© spor@cid studios, 2013
 </div>

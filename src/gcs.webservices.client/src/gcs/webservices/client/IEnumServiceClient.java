@@ -1,9 +1,6 @@
 package gcs.webservices.client;
 
-import gcs.webservices.client.models.ConcentrationBean;
-import gcs.webservices.client.responses.ResponseWithEntity;
-
-import java.util.Collection;
+import gcs.webservices.client.responses.enums.GetConcentrationResponse;
 
 /**
  * @author Simon Turcotte-Langevin
@@ -15,5 +12,5 @@ public interface IEnumServiceClient
      * 
      * @return A collection of concentration beans.
      */
-    public ResponseWithEntity<Collection<ConcentrationBean>> getConcentrations();
+    public GetConcentrationResponse getConcentrations();
 }

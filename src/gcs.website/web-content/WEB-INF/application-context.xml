@@ -107,4 +107,10 @@
     <property name="jerseyClient" ref="jerseyClient" />
     <property name="cache" ref="httpServiceCache" />
   </bean>
+  <!-- Enum service provider implementation -->
+  <bean id="enumServiceClient" class="gcs.webservices.client.EnumServiceClient" scope="singleton">
+    <property name="serviceUrl" ref="serviceRepositoryUrl" />
+    <property name="jerseyClient" ref="jerseyClient" />
+    <property name="cache" ref="httpServiceCache" />
+  </bean>
 </beans>
