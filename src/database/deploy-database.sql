@@ -8,7 +8,7 @@ CREATE TABLE Membres_Allergies (Membres_id int4 NOT NULL UNIQUE, Allergies_id in
 CREATE TABLE Liens_Parente (id  SERIAL NOT NULL, description varchar(50) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Contacts_Urgence (id  SERIAL NOT NULL, membres_id int4 NOT NULL, liens_parente_id int4 NOT NULL, nom varchar(50) NOT NULL, prenom varchar(50) NOT NULL, telephone varchar(16) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Membres_Formations (Membres_id int4 NOT NULL, Formations_id int4 NOT NULL, date_suivie timestamptz NOT NULL, date_echeance timestamptz, PRIMARY KEY (Membres_id, Formations_id));
-CREATE TABLE Suivies (Commandites_id int4 NOT NULL UNIQUE, Membres_id int4 NOT NULL UNIQUE, Suivie_Statuts_id int4 NOT NULL, date_suivie timestamptz NOT NULL, commentaire varchar(255) NOT NULL, PRIMARY KEY (Commandites_id, Membres_id));
+CREATE TABLE Suivies (id serial NOT NULL, Commandites_id int4 NOT NULL UNIQUE, Membres_id int4 NOT NULL UNIQUE, Suivie_Statuts_id int4 NOT NULL, date_suivie timestamptz NOT NULL, commentaire varchar(255) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Formations (id  SERIAL NOT NULL, titre varchar(50), description varchar(150), PRIMARY KEY (id));
 CREATE TABLE Units (id  SERIAL NOT NULL, unit_code varchar(8) NOT NULL, systeme varchar(12) NOT NULL, PRIMARY KEY (id));
 CREATE TABLE Commandites (id  SERIAL NOT NULL, Fournisseurs_id int4 NOT NULL, Items_id int4 NOT NULL, Clubs_id int4 NOT NULL, valeur numeric(6, 2) NOT NULL, nature varchar(64) NOT NULL, PRIMARY KEY (id));
