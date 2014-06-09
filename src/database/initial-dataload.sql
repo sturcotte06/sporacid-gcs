@@ -101,8 +101,8 @@ INSERT INTO suivie_statuts (id,code,description) VALUES (nextval('suivie_statuts
 INSERT INTO suivie_statuts (id,code,description) VALUES (nextval('suivie_statuts_id_seq'), 'CONFIRME', 'Confirmé');
 INSERT INTO suivie_statuts (id,code,description) VALUES (nextval('suivie_statuts_id_seq'), 'FERME', 'Fermé');
 
-INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (1,1,1,'2012-10-03','erat, in conserectagiluca dsauhifds fgrakfoh fdeuihtur massa. Restibilum');
-INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (2,2,2,'2013-11-09','erat, in consectetuer ipsum nunc id enim. Curabitur massa. Vestibulum');
-INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (3,3,3,'2014-12-08','eleifend non, dapibus rutrum, justo. Praesent luctus. Curabitur egestas nunc');
-INSERT INTO suivies (commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (4,4,4,'2014-02-09','congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae velit');
+INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),1,1,1,'2012-10-03','erat, in conserectagiluca dsauhifds fgrakfoh fdeuihtur massa. Restibilum');
+INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),2,2,2,'2013-11-09','erat, in consectetuer ipsum nunc id enim. Curabitur massa. Vestibulum');
+INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),3,3,3,'2014-12-08','eleifend non, dapibus rutrum, justo. Praesent luctus. Curabitur egestas nunc');
+INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),4,4,4,'2014-02-09','congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae velit');
 
