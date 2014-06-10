@@ -4,14 +4,14 @@
 <%@page import="gcs.website.views.helpers.ControlHelpers"%>
 <%@page import="gcs.website.views.helpers.models.Menu"%>
 <%@page import="gcs.website.views.helpers.models.MenuItem"%>
-<%@page import="gcs.webservices.client.models.MembreBean"%>
+<%@page import="gcs.webservices.client.models.membres.BaseMembreBean"%>
 <%@page import="gcs.website.views.helpers.HtmlAndJavaScript;"%>
 
 <%
-  String context = (String) request.getContextPath();
+    String context = (String) request.getContextPath();
   
   @SuppressWarnings("unchecked")
-  Collection<MembreBean> membres = (Collection<MembreBean>) request.getAttribute("listeMembres");
+  Collection<BaseMembreBean> membres = (Collection<BaseMembreBean>) request.getAttribute("listeMembres");
   
   Menu menu = new Menu();
   menu.addItem(new MenuItem("Modifier", context + "/images/metro-ui-icons/metro-edit.png", "#"));
@@ -25,7 +25,7 @@
   exportItem.getSubMenu().addItem(new MenuItem("...en Csv", "", "#"));
   menu.addItem(exportItem);
   
-  HtmlAndJavaScript gridControl = ControlHelpers.getGridForObjects(membres, MembreBean.class, menu);
+  HtmlAndJavaScript gridControl = ControlHelpers.getGridForObjects(membres, BaseMembreBean.class, menu);
 %>
 
 <div id="list_membres_main_content">

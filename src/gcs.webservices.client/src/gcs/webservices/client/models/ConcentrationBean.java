@@ -5,6 +5,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import gcs.webapp.utils.Display;
+import gcs.webapp.utils.beans.AbstractBean;
 
 public class ConcentrationBean  extends AbstractBean
 {

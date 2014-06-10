@@ -1,10 +1,6 @@
 package gcs.webservices.client;
 
-import java.util.Collection;
-
 import gcs.webapp.utils.HttpMethod;
-import gcs.webservices.client.models.ConcentrationBean;
-import gcs.webservices.client.responses.ResponseWithEntity;
 import gcs.webservices.client.responses.enums.GetConcentrationResponse;
 
 /**
@@ -17,7 +13,6 @@ public class EnumServiceClient extends HttpServiceClient implements IEnumService
      * 
      * @return A collection of concentration beans.
      */
-    @SuppressWarnings("unchecked")
     public GetConcentrationResponse getConcentrations()
     {
         final HttpServiceRoute route = new HttpServiceRoute("/enumerations/concentrations", HttpMethod.Get);

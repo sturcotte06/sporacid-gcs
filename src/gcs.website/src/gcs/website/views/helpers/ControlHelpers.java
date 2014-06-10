@@ -43,7 +43,7 @@ public final class ControlHelpers
         Map<String, Object> objProperties = null;
 
         // Get the object properties through reflection
-        objProperties = ReflectionUtils.getObjectProperties(object, classObj);
+        objProperties = ReflectionUtils.flatten(object);
 
         // For each object properties
         for (Map.Entry<String, Object> entry : objProperties.entrySet()) {
@@ -94,7 +94,7 @@ public final class ControlHelpers
         columnsDisplayOut.append("]");
 
         // Generate the json data from the collection
-        String rowsJson = jsonSerializer.toJson(ReflectionUtils.getObjectProperties(objects, classObj));
+        String rowsJson = jsonSerializer.toJson(ReflectionUtils.flatten(objects));
         String columnsJson = jsonSerializer.toJson(columns);
 
         StringBuilder jsOut = new StringBuilder();

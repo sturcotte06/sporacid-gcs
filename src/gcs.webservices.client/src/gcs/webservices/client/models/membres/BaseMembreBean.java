@@ -1,4 +1,4 @@
-package gcs.webservices.client.models;
+package gcs.webservices.client.models.membres;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -6,8 +6,10 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import gcs.webapp.utils.Display;
+import gcs.webapp.utils.beans.AbstractBean;
+import gcs.webservices.client.models.ConcentrationBean;
 
-public class MembreBean extends AbstractBean
+public class BaseMembreBean extends AbstractBean
 {
     /** */
     private static final long serialVersionUID = 4140884890312466382L;
@@ -15,7 +17,7 @@ public class MembreBean extends AbstractBean
     private int id;
 
     @NotNull(message = "webservices_clientmodels_membre_id_notnull")
-    private final ConcentrationBean concentration = new ConcentrationBean();
+    private ConcentrationBean concentration;
 
     @Size(min = 1, max = 64, message = "webservices_clientmodels_membre_nom_size")
     @NotEmpty(message = "webservices_clientmodels_membre_nom_notempty")
@@ -35,14 +37,6 @@ public class MembreBean extends AbstractBean
     @NotNull(message = "webservices_clientmodels_membre_active_notnull")
     @Display(header = "webservices_clientmodels_membre_active_display", width = 30)
     private boolean actif;
-
-    /**
-     * @return the concentration
-     */
-    public ConcentrationBean getConcentration()
-    {
-        return concentration;
-    }
 
     /**
      * @return the id
@@ -122,5 +116,21 @@ public class MembreBean extends AbstractBean
     public void setActif(boolean actif)
     {
         this.actif = actif;
+    }
+
+    /**
+     * @return the concentration
+     */
+    public ConcentrationBean getConcentration()
+    {
+        return concentration;
+    }
+
+    /**
+     * @param concentration the concentration to set
+     */
+    public void setConcentration(ConcentrationBean concentration)
+    {
+        this.concentration = concentration;
     }
 }
