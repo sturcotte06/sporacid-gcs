@@ -4,7 +4,6 @@ import gcs.webapp.utils.caching.CacheKey;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Simon
@@ -16,13 +15,16 @@ public class QueryStringKeyProvider implements IKeyProvider
     {
         StringBuffer keyBuilder = new StringBuffer();
 
-        Map<String, Object> objProperties = ReflectionUtils.getObjectProperties(object, classObj);
-        Set<String> propNames = objProperties.keySet();
-
         // Append all properties as query strings
-        for (String propName : propNames) {
-            keyBuilder.append(propName + "=" + objProperties.get(propName).toString());
+        Map<String, Object> objProperties = ReflectionUtils.flatten(object);
+        for (Map.Entry<String, Object> objProperty : objProperties.entrySet()) {
+            keyBuilder.append(objProperty.getKey() + "=" + objProperty.getValue());
             keyBuilder.append("&");
+        }
+
+        if (keyBuilder.length() > 0) {
+            // Truncate last ampersand
+            keyBuilder.setLength(keyBuilder.length() - 1);
         }
 
         // Append request type, because we could have different type of

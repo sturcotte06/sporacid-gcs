@@ -17,4 +17,7 @@ public final class CommonPatterns
      * permanent code AJxxxxx.
      */
     public static final String GcsUsername = "^[aA]{1}[A-Za-z]{1}[0-9]{5}$";
+    
+    /** Regex to test a phone number. */
+    public static final String PhoneNumber = "[0-9]{10,11}";
 }

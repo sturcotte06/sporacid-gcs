@@ -4,11 +4,15 @@ import static org.reflections.ReflectionUtils.*;
 import gcs.webapp.utils.exceptions.ArgumentNullException;
 import gcs.webapp.utils.exceptions.ReflectionException;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Array;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,29 +79,6 @@ public final class ReflectionUtils
     }
 
     /**
-     * Method that return a dictionary of all properties of an object and its
-     * values.
-     * 
-     * @param object An object from which we want properties
-     * @param classObj The class of the object
-     * @return A dictionary of all properties of the object and its values
-     * @throws IllegalAccessException Typical exception when dealing with
-     *             reflection
-     */
-    public static <E> Map<String, Object> getObjectProperties(Object object, Class<E> classObj)
-    {
-        if (object == null) {
-            throw new ArgumentNullException("object");
-        }
-
-        if (classObj == null) {
-            throw new ArgumentNullException("classObj");
-        }
-
-        return getObjectProperties(object, classObj, null);
-    }
-
-    /**
      * @param obj
      * @param classObj
      * @return
@@ -130,6 +111,36 @@ public final class ReflectionUtils
     }
 
     /**
+     * Method that return a dictionary of all properties of an object and its
+     * values.
+     * 
+     * @param object An object from which we want properties
+     * @param classObj The class of the object
+     * @return A dictionary of all properties of the object and its values
+     * @throws IllegalAccessException Typical exception when dealing with
+     *             reflection
+     */
+    @SuppressWarnings("rawtypes")
+    public static <TObject> Map<String, Object> flatten(TObject object)
+    {
+        if (object == null) {
+            throw new ArgumentNullException("object");
+        }
+
+        Map<String, Object> flattenResult = new HashMap<>();
+        Class<?> classObj = object.getClass();
+        if (Collection.class.isAssignableFrom(classObj)) {
+            flattenCollection((Collection) object, classObj, flattenResult, null);
+        } else if (classObj.isArray()) {
+            flattenArray(object, classObj, flattenResult, null);
+        } else {
+            flatten(object, classObj, flattenResult, null);
+        }
+
+        return flattenResult;
+    }
+
+    /**
      * Recursive method that return a dictionary of all properties of an object
      * and its values.
      * 
@@ -140,41 +151,73 @@ public final class ReflectionUtils
      * @throws IllegalAccessException Typical exception when dealing with
      *             reflection
      */
-    private static <E> Map<String, Object> getObjectProperties(Object object, Class<E> classObj, String currentPath)
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    private static <TObject> void flatten(Object object, Class<TObject> classObj, Map<String, Object> fieldsMap,
+            String currentPath)
     {
-        Map<String, Object> fieldsMap = new HashMap<String, Object>();
-        Field[] valueObjFields = classObj.getDeclaredFields();
+        // Get all getters from the source using org.reflections library.
+        final Set<Method> objectGetters = getAllMethods(classObj, withModifier(Modifier.PUBLIC), withPrefix("get"),
+                withParametersCount(0));
 
-        // compare values now
-        for (int i = 0; i < valueObjFields.length; i++) {
-            String fieldName = (currentPath != null)
-                    ? currentPath + "." + valueObjFields[i].getName()
-                    : valueObjFields[i].getName();
-            valueObjFields[i].setAccessible(true);
+        try {
+            // Iterate through each of the getters
+            for (Method objectGetter : objectGetters) {
+                Class<?> objectGetterReturnType = objectGetter.getReturnType();
+                String fieldName = objectGetter.getName().replace("get", "");
 
-            Object newObj = null;
-            try {
-                newObj = valueObjFields[i].get(object);
-            } catch (IllegalArgumentException | IllegalAccessException ex) {
-                throw new ReflectionException(ex);
-            }
-
-            if (newObj != null) {
-                // If the property is either a primitive type, a Date or a
-                // String,
-                // toString() can be called to get the value.
-                if (ReflectionUtils.isPrimitive(newObj) || newObj instanceof Date || newObj instanceof String) {
-                    fieldsMap.put(fieldName, newObj);
-                }
-                // The property is a complex object, resolve the sub object
-                else {
-                    // Recursivity
-                    fieldsMap.putAll(getObjectProperties(newObj, newObj.getClass(), fieldName));
+                if (isPrimitive(objectGetterReturnType) || objectGetterReturnType == String.class
+                        || objectGetterReturnType == Date.class) {
+                    // If the property is either a primitive type, a Date or a
+                    // String, we simply add the return value of the getter.
+                    fieldsMap.put(fieldName, objectGetter.invoke(object));
+                } else if (Collection.class.isAssignableFrom(objectGetterReturnType)) {
+                    // Getter return type is a collection type;
+                    Collection collection = (Collection) objectGetter.invoke(object);
+                    flattenCollection(collection, objectGetterReturnType, fieldsMap, currentPath + "." + fieldName);
+                } else if (objectGetterReturnType.isArray()) {
+                    // Getter return type is an array type;
+                    Object array = objectGetter.invoke(object);
+                    flattenArray(array, objectGetterReturnType, fieldsMap, currentPath + "." + fieldName);
+                } else {
+                    flatten(objectGetter.invoke(object), objectGetterReturnType, fieldsMap, currentPath + "."
+                            + fieldName);
                 }
             }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            throw new ReflectionException(ex);
         }
+    }
 
-        return fieldsMap;
+    private static <TObject> void flattenArray(Object array, Class<?> classObj, Map<String, Object> fieldsMap,
+            String currentPath)
+    {
+        // Getter return type is an array type;
+        Class<?> arrayType = classObj.getComponentType();
+        int arrayLength = Array.getLength(array);
+
+        // Iterate through each object and recall the method
+        // recursively...
+        for (int iArray = 0; iArray < arrayLength; iArray++) {
+            flatten(Array.get(array, iArray), arrayType, fieldsMap, currentPath + "[" + iArray + "]");
+            iArray++;
+        }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static <TObject> void flattenCollection(Collection collection, Class<TObject> classObj,
+            Map<String, Object> fieldsMap, String currentPath)
+    {
+        // Get the source collection's elements' generic type.
+        ParameterizedType collectionGenericType = (ParameterizedType) classObj.getGenericSuperclass();
+        Class<?> collectionGenericClass = getClass(collectionGenericType.getActualTypeArguments()[0]);
+
+        // Iterate through each object and recall the method
+        // recursively...
+        int iElement = 0;
+        for (Object collectionElement : collection) {
+            flatten(collectionElement, collectionGenericClass, fieldsMap, currentPath + "[" + iElement + "]");
+            iElement++;
+        }
     }
 
     /**
@@ -189,7 +232,7 @@ public final class ReflectionUtils
      * @param dstClass The destination class object.
      * @return The generated bean with its properties filled.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <TSource, TDestination> void copyInto(TSource source, Class<?> srcClass, TDestination destination,
             Class<?> dstClass)
     {
@@ -218,47 +261,87 @@ public final class ReflectionUtils
                 withPrefix("get"), withParametersCount(0)).stream().collect(
                 Collectors.toMap(Method::getName, method -> method));
 
-        // Iterate through each of the getters
-        for (Method srcGetter : srcGetters) {
-            Class<?> srcGetterReturnType = srcGetter.getReturnType();
-            String fieldName = srcGetter.getName().replace("get", "");
-
-            if (isPrimitive(srcGetterReturnType) || srcGetterReturnType == String.class
-                    || srcGetterReturnType == Date.class || Collection.class.isAssignableFrom(srcGetterReturnType)
-                    || srcGetterReturnType.isArray() || Map.class.isAssignableFrom(srcGetterReturnType)) {
-
-                // Method is either a collection, an array or a primitive;
-                // simply copy the values from getter to setter.
-                if (!dstSetters.containsKey("set" + fieldName)) {
-                    // Property setter is not in the destination
+        try {
+            // Iterate through each of the getters
+            for (Method srcGetter : srcGetters) {
+                String fieldName = srcGetter.getName().replace("get", "");
+                if (!dstSetters.containsKey("set" + fieldName) || !dstGetters.containsKey("get" + fieldName)) {
+                    // Property getter and setter is not in the destination
                     continue;
                 }
 
-                // Copy the values from getter to setter.
-                Method dstSetter = dstSetters.get("set" + fieldName);
-                try {
-                    dstSetter.invoke(destination, srcGetter.invoke(source));
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    throw new ReflectionException(ex);
-                }
-            } else {
-                // Method is a nested object getter.
-                // Recursivity.
-                if (!dstGetters.containsKey("get" + fieldName)) {
-                    // Property getter is not in the destination
+                Object srcGetterValue = srcGetter.invoke(source);
+                if (srcGetterValue == null) {
+                    // Don't copy null value
                     continue;
                 }
 
-                // Pretty sick recursivity, huh?
-                Method dstGetter = dstGetters.get("get" + fieldName);
+                // Get the destination getter and setter
+                final Method dstGetter = dstGetters.get("get" + fieldName);
+                final Method dstSetter = dstSetters.get("set" + fieldName);
+
+                // Get the types of both source and destination objects
+                Class<?> srcGetterReturnType = srcGetter.getReturnType();
                 Class<?> dstGetterReturnType = dstGetter.getReturnType();
-                try {
-                    copyInto(srcGetter.invoke(source), srcGetterReturnType, dstGetter.invoke(destination),
-                            dstGetterReturnType);
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-                    throw new ReflectionException(ex);
+
+                if (isPrimitive(srcGetterReturnType) || srcGetterReturnType == String.class
+                        || srcGetterReturnType == Date.class) {
+                    // Getter return type is either a primitive, a string or a
+                    // date; simply copy the values from getter to setter.
+                    dstSetter.invoke(destination, srcGetterValue);
+                } else if (Collection.class.isAssignableFrom(srcGetterReturnType)) {
+                    // Getter return type is a collection type;
+                    // Get the source collection
+                    Collection srcCollection = (Collection) srcGetterValue;
+
+                    // Get the source collection's elements' generic type.
+                    ParameterizedType srcCollectionGenericType = (ParameterizedType) srcGetterReturnType
+                            .getGenericSuperclass();
+                    Class<?> srcCollectionGenericClass = getClass(srcCollectionGenericType.getActualTypeArguments()[0]);
+
+                    // Create a new destination collection
+                    Collection dstCollection = Collections.emptyList();
+
+                    // Get the destination collection's elements' generic type.
+                    ParameterizedType dstCollectionGenericType = (ParameterizedType) dstGetterReturnType
+                            .getGenericSuperclass();
+                    Class<?> dstCollectionGenericClass = getClass(dstCollectionGenericType.getActualTypeArguments()[0]);
+
+                    // Iterate through each object and recall the method
+                    // recursively...
+                    for (Object srcCollectionElement : srcCollection) {
+                        Object dstCollectionElement = dstCollectionGenericClass.newInstance();
+                        copyInto(srcCollectionElement, srcCollectionGenericClass, dstCollectionElement,
+                                dstCollectionGenericClass);
+                        dstCollection.add(dstCollectionElement);
+                    }
+                } else if (srcGetterReturnType.isArray()) {
+                    // Getter return type is an array type;
+                    Class<?> srcArrayType = srcGetterReturnType.getComponentType();
+                    Object srcArray = srcGetterValue;
+                    int srcArrayLength = Array.getLength(srcArray);
+
+                    Class<?> dstArrayType = dstGetter.getReturnType().getComponentType();
+                    Object dstArray = Array.newInstance(dstArrayType, srcArrayLength);
+
+                    // Iterate through each object and recall the method
+                    // recursively...
+                    for (int iArray = 0; iArray < srcArrayLength; iArray++) {
+                        Object dstArrayElement = dstArrayType.newInstance();
+                        copyInto(Array.get(srcArray, iArray), srcArrayType, dstArrayElement, dstArrayType);
+                        Array.set(dstArray, iArray, dstArrayElement);
+                    }
+                } else {
+                    // Create a new instance of the sub object
+                    dstSetter.invoke(destination, dstGetterReturnType.newInstance());
+
+                    // Recursivity
+                    copyInto(srcGetterValue, srcGetterReturnType, dstGetter.invoke(destination), dstGetterReturnType);
                 }
             }
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex) {
+            // Just wrap the exception with a clearer context and throw
+            throw new ReflectionException(ex);
         }
     }
 
@@ -274,9 +357,16 @@ public final class ReflectionUtils
      * @param dstClass The destination class object.
      * @return The generated bean with its properties filled.
      */
-    @SuppressWarnings("unchecked")
-    public static <TSource, TDestination> TDestination generateBean(TSource source, Class<?> srcClass, Class<?> dstClass)
+    public static <TSource, TDestination> TDestination generateBean(TSource source, Class<TDestination> dstClass)
     {
+        if (source == null) {
+            throw new ArgumentNullException("source");
+        }
+
+        if (null == dstClass) {
+            throw new ArgumentNullException("dstClass");
+        }
+
         TDestination destination;
 
         try {
@@ -287,9 +377,36 @@ public final class ReflectionUtils
         }
 
         // Copy the source into the destination.
-        copyInto(source, srcClass, destination, dstClass);
+        copyInto(source, source.getClass(), destination, dstClass);
 
         // Return the filled destination.
         return destination;
+    }
+
+    /**
+     * Get the underlying class for a type, or null if the type is a variable
+     * type.
+     * 
+     * @param type the type
+     * @return the underlying class
+     */
+    @SuppressWarnings("rawtypes")
+    public static Class<?> getClass(Type type)
+    {
+        if (type instanceof Class) {
+            return (Class) type;
+        } else if (type instanceof ParameterizedType) {
+            return getClass(((ParameterizedType) type).getRawType());
+        } else if (type instanceof GenericArrayType) {
+            Type componentType = ((GenericArrayType) type).getGenericComponentType();
+            Class<?> componentClass = getClass(componentType);
+            if (componentClass != null) {
+                return Array.newInstance(componentClass, 0).getClass();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }
