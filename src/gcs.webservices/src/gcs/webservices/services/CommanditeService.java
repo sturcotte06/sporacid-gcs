@@ -7,7 +7,6 @@ import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webservices.client.beans.ContextualSessionToken;
 import gcs.webservices.client.models.CommanditeBean;
-import gcs.webservices.client.models.MembreBean;
 import gcs.webservices.client.requests.commandites.AddRequest;
 import gcs.webservices.client.requests.commandites.DeleteRequest;
 import gcs.webservices.client.responses.ResponseWithEntity;
@@ -58,7 +57,7 @@ public class CommanditeService extends SecureHttpService
         Collection<CommanditeBean> commanditeBeans = new ArrayList<>(commandites.size());
         for (Commandite commandite : commandites) {
             // Copy the system entity into a client bean
-            commanditeBeans.add(ReflectionUtils.generateBean(commandite, Commandite.class, CommanditeBean.class));
+            commanditeBeans.add(ReflectionUtils.generateBean(commandite, CommanditeBean.class));
         }
 
         ResponseWithEntity<Collection<CommanditeBean>> responseEntity = new ResponseWithEntity<>();
@@ -90,7 +89,7 @@ public class CommanditeService extends SecureHttpService
 
         super.sessionCache.withSession(sessionToken, session -> {
             Membre membre = session.getMembre();
-            Club club = session.getMembre().getClubByName(sessionToken.getContext().getName());
+            Club club = membre.getClubByName(sessionToken.getContext().getName());
 
             commandite.setClub(club);
             //suivie.setMembreId(membre.getId());
@@ -146,19 +145,23 @@ public class CommanditeService extends SecureHttpService
         this.commanditeDao = commanditeDao;
     }
 
-	public IFournisseurDao getFournisseurDao() {
-		return fournisseurDao;
-	}
+    public IFournisseurDao getFournisseurDao()
+    {
+        return fournisseurDao;
+    }
 
-	public void setFournisseurDao(IFournisseurDao fournisseurDao) {
-		this.fournisseurDao = fournisseurDao;
-	}
+    public void setFournisseurDao(IFournisseurDao fournisseurDao)
+    {
+        this.fournisseurDao = fournisseurDao;
+    }
 
-	public IItemDao getItemDao() {
-		return itemDao;
-	}
+    public IItemDao getItemDao()
+    {
+        return itemDao;
+    }
 
-	public void setItemDao(IItemDao itemDao) {
-		this.itemDao = itemDao;
-	}
+    public void setItemDao(IItemDao itemDao)
+    {
+        this.itemDao = itemDao;
+    }
 }
