@@ -3,7 +3,6 @@ package gcs.webservices.services;
 import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webservices.client.models.ConcentrationBean;
-import gcs.webservices.client.responses.ResponseWithEntity;
 import gcs.webservices.client.responses.enums.GetConcentrationResponse;
 import gcs.webservices.dao.IMembreDao;
 import gcs.webservices.models.Concentration;
@@ -30,8 +29,7 @@ public class EnumService extends BaseHttpService
         Collection<Concentration> concentrations = membreDao.getConcentrations();
         Collection<ConcentrationBean> concentrationBeans = new ArrayList<>();
         for (Concentration concentration : concentrations) {
-            concentrationBeans.add(ReflectionUtils.generateBean(concentration, Concentration.class,
-                    ConcentrationBean.class));
+            concentrationBeans.add(ReflectionUtils.generateBean(concentration, ConcentrationBean.class));
         }
 
         GetConcentrationResponse responseEntity = new GetConcentrationResponse();

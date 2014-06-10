@@ -10,7 +10,7 @@ import gcs.webapp.utils.app.security.SecureModule;
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webservices.client.beans.ContextualSessionToken;
-import gcs.webservices.client.models.MembreBean;
+import gcs.webservices.client.models.membres.BaseMembreBean;
 import gcs.webservices.client.requests.membres.*;
 import gcs.webservices.client.responses.ResponseWithEntity;
 import gcs.webservices.dao.IMembreDao;
@@ -93,7 +93,7 @@ public class MembreService extends SecureHttpService implements IMembreService
         membreToAdd.setPrenom(ldapUser.getFirstName());
         membreToAdd.setNom(ldapUser.getLastName());
         // TODO have a deault value for concentration
-        membreToAdd.setConcentration(membreDao.getConcentrationByAcronyme("ti"));
+        // membreToAdd.setConcentration(membreDao.getConcentrationByAcronyme("ti"));
         membreToAdd.setActif(true);
 
         // Add the membre to the system
@@ -106,13 +106,13 @@ public class MembreService extends SecureHttpService implements IMembreService
     public Response getAll(@BeanParam ContextualSessionToken sessionToken)
     {
         Collection<Membre> membres = membreDao.getMembresByClubName(sessionToken.getContext().getName());
-        Collection<MembreBean> membreBeans = new ArrayList<>(membres.size());
+        Collection<BaseMembreBean> membreBeans = new ArrayList<>(membres.size());
         for (Membre membre : membres) {
             // Copy the system entity into a client bean
-            membreBeans.add(ReflectionUtils.generateBean(membre, Membre.class, MembreBean.class));
+            membreBeans.add(ReflectionUtils.generateBean(membre, BaseMembreBean.class));
         }
 
-        ResponseWithEntity<Collection<MembreBean>> responseEntity = new ResponseWithEntity<>();
+        ResponseWithEntity<Collection<BaseMembreBean>> responseEntity = new ResponseWithEntity<>();
         responseEntity.setEntity(membreBeans);
         responseEntity.addMessage(MessageType.Information, "members_getall_member_successful");
         responseEntity.setSuccess(true);

@@ -12,7 +12,7 @@
     <property name="driverClassName" value="org.postgresql.Driver" />
     <property name="url" value="jdbc:postgresql://localhost:5432/GCS" />
     <property name="username" value="postgres" />
-    <property name="password" value="bacon" />
+    <property name="password" value="postgres" />
   </bean>
 
   <!-- Session factory bean object for hibernate -->
@@ -177,7 +177,12 @@
     <property name="membreDao" ref="membreDao" />
   </bean>
 
-  <bean id="userService" class="gcs.webservices.services.UserService" scope="singleton" />
+  <!-- -->
+  <bean id="usagerService" class="gcs.webservices.services.UsagerService" scope="singleton">
+    <property name="sessionCache" ref="sessionCache" />
+    <property name="messageLocalizer" ref="messageLocalizer" />
+  </bean>
+  
   <bean id="utilityService" class="gcs.webservices.services.UtilityService" scope="singleton" />
   <bean id="clubService" class="gcs.webservices.services.ClubService" scope="singleton" />
   <bean id="commanditeService" class="gcs.webservices.services.CommanditeService" scope="singleton" />
