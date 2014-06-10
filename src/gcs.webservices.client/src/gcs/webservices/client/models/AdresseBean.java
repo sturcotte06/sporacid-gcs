@@ -13,6 +13,8 @@
  */
 package gcs.webservices.client.models;
 
+import gcs.webapp.utils.beans.AbstractBean;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 

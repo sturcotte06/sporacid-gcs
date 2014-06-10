@@ -2,33 +2,37 @@ package gcs.webservices.client.models;
 
 import javax.validation.constraints.NotNull;
 
+import gcs.webapp.utils.beans.AbstractBean;
+
 public class AllergieBean extends AbstractBean
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /** */
+    private static final long serialVersionUID = 1L;
 
-	@NotNull(message = "webservices_allergiebeanmodels_id_notnull")
-	private int id;
-	
-	@NotNull(message = "webservices_allergiebeanmodels_description_notnull")
-	private String description;
+    @NotNull(message = "webservices_allergiebeanmodels_id_notnull")
+    private int id;
 
-	public int getId() {
-		return id;
-	}
+    @NotNull(message = "webservices_allergiebeanmodels_description_notnull")
+    private String description;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
 }

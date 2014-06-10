@@ -1,5 +1,7 @@
 package gcs.webservices.client.models;
 
+import gcs.webapp.utils.beans.AbstractBean;
+
 import javax.validation.constraints.NotNull;
 
 import org.apache.log4j.Logger;

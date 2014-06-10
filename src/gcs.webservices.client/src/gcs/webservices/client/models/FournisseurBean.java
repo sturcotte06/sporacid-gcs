@@ -1,17 +1,6 @@
-/**
- * "Visual Paradigm: DO NOT MODIFY THIS FILE!"
- * 
- * This is an automatic generated file. It will be regenerated every time 
- * you generate persistence class.
- * 
- * Modifying its content may cause the program not work, or your work may lost.
- */
-
-/**
- * Licensee: 
- * License Type: Evaluation
- */
 package gcs.webservices.client.models;
+
+import gcs.webapp.utils.beans.AbstractBean;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -46,59 +35,73 @@ public class FournisseurBean extends AbstractBean
     @NotNull(message = "webservices_clientmodels_courriel_notnull")
     private String courriel;
 
-	public int getId() {
-		return id;
-	}
+    public int getId()
+    {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id)
+    {
+        this.id = id;
+    }
 
-	public AdresseBean getAdresse() {
-		return adresse;
-	}
+    public AdresseBean getAdresse()
+    {
+        return adresse;
+    }
 
-	public void setAdresse(AdresseBean adresse) {
-		this.adresse = adresse;
-	}
+    public void setAdresse(AdresseBean adresse)
+    {
+        this.adresse = adresse;
+    }
 
-	public String getNom() {
-		return nom;
-	}
+    public String getNom()
+    {
+        return nom;
+    }
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
+    public void setNom(String nom)
+    {
+        this.nom = nom;
+    }
 
-	public String getContact() {
-		return contact;
-	}
+    public String getContact()
+    {
+        return contact;
+    }
 
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
+    public void setContact(String contact)
+    {
+        this.contact = contact;
+    }
 
-	public String getTelephone() {
-		return telephone;
-	}
+    public String getTelephone()
+    {
+        return telephone;
+    }
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
+    public void setTelephone(String telephone)
+    {
+        this.telephone = telephone;
+    }
 
-	public String getFax() {
-		return fax;
-	}
+    public String getFax()
+    {
+        return fax;
+    }
 
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
+    public void setFax(String fax)
+    {
+        this.fax = fax;
+    }
 
-	public String getCourriel() {
-		return courriel;
-	}
+    public String getCourriel()
+    {
+        return courriel;
+    }
 
-	public void setCourriel(String courriel) {
-		this.courriel = courriel;
-	}
+    public void setCourriel(String courriel)
+    {
+        this.courriel = courriel;
+    }
 }

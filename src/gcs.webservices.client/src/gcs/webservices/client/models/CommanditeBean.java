@@ -13,6 +13,8 @@
  */
 package gcs.webservices.client.models;
 
+import gcs.webapp.utils.beans.AbstractBean;
+
 import java.util.HashSet;
 import java.util.Set;
 
