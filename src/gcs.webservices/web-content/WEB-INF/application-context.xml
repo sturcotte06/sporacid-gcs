@@ -185,6 +185,14 @@
   
   <bean id="utilityService" class="gcs.webservices.services.UtilityService" scope="singleton" />
   <bean id="clubService" class="gcs.webservices.services.ClubService" scope="singleton" />
-  <bean id="commanditeService" class="gcs.webservices.services.CommanditeService" scope="singleton" />
+  
+  <bean id="commanditeService" class="gcs.webservices.services.CommanditeService" scope="singleton">
+    <property name="sessionCache" ref="sessionCache" />
+    <property name="messageLocalizer" ref="messageLocalizer" />
+    <property name="itemDao" ref="itemDao" />
+    <property name="fournisseurDao" ref="fournisseurDao" />
+    <property name="commanditeDao" ref="commanditeDao" />
+  </bean>
+  
   <bean id="fournisseurService" class="gcs.webservices.services.FournisseurService" scope="singleton" />
 </beans>

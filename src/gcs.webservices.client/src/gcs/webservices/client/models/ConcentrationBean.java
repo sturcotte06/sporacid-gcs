@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import gcs.webapp.utils.Display;
 import gcs.webapp.utils.beans.AbstractBean;
 
-public class ConcentrationBean  extends AbstractBean
+public class ConcentrationBean extends AbstractBean
 {
     /** */
     private static final long serialVersionUID = -2102816735215371938L;

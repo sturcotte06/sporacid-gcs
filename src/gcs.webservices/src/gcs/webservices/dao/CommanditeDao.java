@@ -2,6 +2,7 @@ package gcs.webservices.dao;
 
 import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webapp.utils.hibernate.HibernateUtils;
+import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webservices.models.Commandite;
 import gcs.webservices.models.Membre;
 import gcs.webservices.models.Suivie;
@@ -20,6 +21,7 @@ public class CommanditeDao implements ICommanditeDao
     public Collection<Commandite> getAllCommandite()
     {
         return HibernateUtils.getEntities(Commandite.class, sessionFactory);
+        
     }
 
     @Override
@@ -88,4 +90,10 @@ public class CommanditeDao implements ICommanditeDao
     {
         this.sessionFactory = sessionFactory;
     }
+
+	@Override
+	public SuivieStatut getSuivieStatutsByName(String strSuivieStatut) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

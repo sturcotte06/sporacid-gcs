@@ -26,6 +26,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -56,7 +58,7 @@ public class Commandite extends AbstractModelObject implements Serializable
 
     @OneToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
-    @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "items_id", referencedColumnName = "id", nullable = false)
     private Item item;
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -68,13 +70,19 @@ public class Commandite extends AbstractModelObject implements Serializable
 
     @Column(name = "nature", nullable = false, length = 64)
     private String nature;
-
-    @OneToMany(mappedBy = "commanditeId", fetch = FetchType.EAGER)
-    @Cascade(CascadeType.ALL)
+    
+    /*@Cascade(CascadeType.ALL)
+    @OneToMany
     @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "commandites_suivies", joinColumns = { @JoinColumn(name = "fournisseurs_id") }, inverseJoinColumns = { @JoinColumn(name = "items_id") })
     @OrderBy(clause = "date_suivie")
+    private Set<Suivie> suivies = new HashSet<>();*/
+    
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable(name = "suivies", joinColumns = { @JoinColumn(name = "commandites_Id") }, inverseJoinColumns = { @JoinColumn(name = "membres_id") })
     private Set<Suivie> suivies = new HashSet<>();
-
+    
     public int getORMID()
     {
         return getId();
@@ -196,6 +204,10 @@ public class Commandite extends AbstractModelObject implements Serializable
     {
         this.suivies = suivies;
     }
-    
+
+	public void addSuivie(Suivie suivie) 
+	{
+		this.suivies.add(suivie);
+	}
     
 }

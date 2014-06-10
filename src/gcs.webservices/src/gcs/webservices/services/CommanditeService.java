@@ -4,7 +4,10 @@ import gcs.webapp.utils.MessageType;
 import gcs.webapp.utils.app.security.CrudOperation;
 import gcs.webapp.utils.app.security.CrudOperator;
 import gcs.webapp.utils.app.security.SecureModule;
+import gcs.webapp.utils.reflect.ReflectionUtils;
 import gcs.webservices.client.beans.ContextualSessionToken;
+import gcs.webservices.client.models.CommanditeBean;
+import gcs.webservices.client.models.MembreBean;
 import gcs.webservices.client.requests.commandites.AddRequest;
 import gcs.webservices.client.requests.commandites.DeleteRequest;
 import gcs.webservices.client.responses.ResponseWithEntity;
@@ -27,7 +30,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,22 +38,33 @@ import org.springframework.stereotype.Component;
 public class CommanditeService extends SecureHttpService
 {
 
-    @Autowired
     private ICommanditeDao commanditeDao;
-    @Autowired
     private IFournisseurDao fournisseurDao;
-    @Autowired
     private IItemDao itemDao;
 
     @GET
     @CrudOperator(CrudOperation.Read)
     public Response getAll(@BeanParam ContextualSessionToken sessionToken)
     {
-        ResponseWithEntity<Collection<Commandite>> responseEntity = new ResponseWithEntity<>();
+        /*ResponseWithEntity<Collection<Commandite>> responseEntity = new ResponseWithEntity<Collection<Commandite>>();
 
         responseEntity.setEntity(commanditeDao.getAllCommandite());
         responseEntity.setSuccess(true);
         responseEntity.addMessage(MessageType.Information, "Success");
+
+        return completeRequest(responseEntity);*/
+        
+        Collection<Commandite> commandites = commanditeDao.getAllCommandite();
+        Collection<CommanditeBean> commanditeBeans = new ArrayList<>(commandites.size());
+        for (Commandite commandite : commandites) {
+            // Copy the system entity into a client bean
+            commanditeBeans.add(ReflectionUtils.generateBean(commandite, Commandite.class, CommanditeBean.class));
+        }
+
+        ResponseWithEntity<Collection<CommanditeBean>> responseEntity = new ResponseWithEntity<>();
+        responseEntity.setEntity(commanditeBeans);
+        responseEntity.addMessage(MessageType.Information, "commandites_getall_commandite_successful");
+        responseEntity.setSuccess(true);
 
         return completeRequest(responseEntity);
     }
@@ -80,11 +93,11 @@ public class CommanditeService extends SecureHttpService
             Club club = session.getMembre().getClubByName(sessionToken.getContext().getName());
 
             commandite.setClub(club);
-            suivie.setMembreId(membre.getId());
+            //suivie.setMembreId(membre.getId());
         });
 
         commanditeId = commanditeDao.addCommandite(commandite);
-        suivie.setCommanditeId(commanditeId);
+        //suivie.setCommanditeId(commanditeId);
 
         commanditeDao.addSuivie(suivie);
 
@@ -132,4 +145,20 @@ public class CommanditeService extends SecureHttpService
     {
         this.commanditeDao = commanditeDao;
     }
+
+	public IFournisseurDao getFournisseurDao() {
+		return fournisseurDao;
+	}
+
+	public void setFournisseurDao(IFournisseurDao fournisseurDao) {
+		this.fournisseurDao = fournisseurDao;
+	}
+
+	public IItemDao getItemDao() {
+		return itemDao;
+	}
+
+	public void setItemDao(IItemDao itemDao) {
+		this.itemDao = itemDao;
+	}
 }
