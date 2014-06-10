@@ -1,18 +1,23 @@
+/**
+ * 
+ */
 package gcs.webservices.client.models;
 
 import javax.validation.constraints.NotNull;
 
-public class AllergieBean extends AbstractBean
+import gcs.webapp.utils.hibernate.AbstractModelObject;
+
+public class LienParenteBean extends AbstractBean
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@NotNull(message = "webservices_allergiebeanmodels_id_notnull")
+	@NotNull(message = "webservices_lienparentemodels_id_notnull")
 	private int id;
 	
-	@NotNull(message = "webservices_allergiebeanmodels_description_notnull")
+	@NotNull(message = "webservices_lienparentemodels_description_notnull")
 	private String description;
 
 	public int getId() {
@@ -30,5 +35,5 @@ public class AllergieBean extends AbstractBean
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 }

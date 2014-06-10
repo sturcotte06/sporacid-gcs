@@ -26,8 +26,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "suivies", schema = "public")
@@ -37,25 +41,32 @@ public class Suivie extends AbstractModelObject implements Serializable
     /** */
     private static final long serialVersionUID = 3720905955780572417L;
 
+    /*@EmbeddedId
+    private SuiviePK suiviePK;*/
+    
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suivies_id_seq")
     private int id;
-
-    /*@OneToOne(fetch = FetchType.EAGER)
-    @Fetch(FetchMode.JOIN)
-    @JoinColumn(name = "membres_id", referencedColumnName = "id", nullable = false)
-    private Membre membre;*/
-    
-    @Column(name = "membres_id", nullable = false)
-    private int membreId;
-    
-    /*@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "commandites_id", referencedColumnName = "id", nullable = false)
-    private Commandite commandite;*/
     
     @Column(name = "commandites_id", nullable = false)
     private int commanditeId;
+
+    /*@Column(name = "membres_id", nullable = false)
+    private Membre membre;*/
+
+    /*@Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suivies_id_seq")
+    private int id;*/
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @Fetch(FetchMode.JOIN)
+    @JoinColumn(name = "membres_id", referencedColumnName = "id", nullable = false)
+    private Membre membre;
+    
+    /*@Column(name = "commandites_id", nullable = false)
+    private Integer commanditeId;*/
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "suivie_statuts_id", referencedColumnName = "id", nullable = false)
@@ -67,38 +78,6 @@ public class Suivie extends AbstractModelObject implements Serializable
 
     @Column(name = "commentaire", nullable = false, length = 255)
     private String commentaire;
-
-    /**
-     * @return the id
-     */
-    public int getId()
-    {
-        return id;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    /**
-     * @return the commandite
-     */
-    /*public Commandite getCommandite()
-    {
-        return commandite;
-    }*/
-
-    /**
-     * @param commandite the commandite to set
-     */
-   /* public void setCommandite(Commandite commandite)
-    {
-        this.commandite = commandite;
-    }*/
 
     /**
      * @return the suivieStatut
@@ -148,12 +127,12 @@ public class Suivie extends AbstractModelObject implements Serializable
         this.commentaire = commentaire;
     }
 
-	public Integer getMembreId() {
-		return membreId;
+	public int getId() {
+		return id;
 	}
 
-	public void setMembreId(Integer membreId) {
-		this.membreId = membreId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getCommanditeId() {
@@ -164,11 +143,89 @@ public class Suivie extends AbstractModelObject implements Serializable
 		this.commanditeId = commanditeId;
 	}
 
-	/*public Membre getMembre() {
+	public Membre getMembre() {
 		return membre;
 	}
 
 	public void setMembre(Membre membre) {
 		this.membre = membre;
-	}*/
-}
+	}
+
+	/* INNER CLASS FOR PK */
+	/*@Embeddable
+	public static class SuiviePK implements Serializable 
+	{
+
+		public SuiviePK(){}
+		
+	   	public SuiviePK(Commandite commandite, Membre membre) {
+			super();
+			this.commandite = commandite;
+			this.membre = membre;
+		}
+	   	
+		private static final long serialVersionUID = 1L;
+		
+	    @OneToOne
+	    @JsonIgnore
+	    @JoinColumn(name = "commandites_id", referencedColumnName = "id", nullable = false)
+	    private Commandite commandite;
+
+	    @OneToOne
+	    @JsonIgnore
+	    @JoinColumn(name = "membres_id", referencedColumnName = "id", nullable = false)
+	    private Membre membre;
+
+		public Commandite getCommandite() {
+			return commandite;
+		}
+
+		public void setCommandite(Commandite commandite) {
+			this.commandite = commandite;
+		}
+
+		public Membre getMembre() {
+			return membre;
+		}
+
+		public void setMembre(Membre membre) {
+			this.membre = membre;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((commandite == null) ? 0 : commandite.hashCode());
+			result = prime * result
+					+ ((membre == null) ? 0 : membre.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			SuiviePK other = (SuiviePK) obj;
+			if (commandite == null) {
+				if (other.commandite != null)
+					return false;
+			} else if (!commandite.equals(other.commandite))
+				return false;
+			if (membre == null) {
+				if (other.membre != null)
+					return false;
+			} else if (!membre.equals(other.membre))
+				return false;
+			return true;
+		}
+*/
+		
+	}
+
+

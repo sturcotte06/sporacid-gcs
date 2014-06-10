@@ -1,6 +1,5 @@
 package gcs.webservices.dao;
 
-import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webservices.models.Commandite;
 import gcs.webservices.models.Suivie;
 import gcs.webservices.models.SuivieStatut;
@@ -14,4 +13,5 @@ public interface ICommanditeDao {
 	public SuivieStatut getSuivieStatutsById(int id);
 	public Integer addCommandite(Commandite commandite);
 	public Integer addSuivie(Suivie suivie);
+	public SuivieStatut getSuivieStatutsByName(String strSuivieStatut);
 }
