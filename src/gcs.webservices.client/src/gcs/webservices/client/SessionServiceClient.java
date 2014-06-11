@@ -31,7 +31,7 @@ public class SessionServiceClient extends HttpServiceClient implements ISessionS
      * Invalidates a web services' session.
      * 
      * @param ipAddress Ip address of the requester.
-     * @param wsSessionKey The web service session key.
+     * @param sessionKey The web service session key.
      * @return The logout response from the web services.
      */
     @Override

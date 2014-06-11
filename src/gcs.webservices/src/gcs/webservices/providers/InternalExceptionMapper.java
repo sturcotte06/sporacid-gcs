@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -25,9 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Provider
 public class InternalExceptionMapper implements ExceptionMapper<InternalException>
 {
-    /** Log4j logger. */
-    private static final Logger logger = Logger.getLogger(InternalExceptionMapper.class);
-
     @Autowired
     protected IMessageLocalizer messageLocalizer;
 
@@ -74,8 +70,9 @@ public class InternalExceptionMapper implements ExceptionMapper<InternalExceptio
         responseEntity.localize(messageLocalizer);
 
         // Localize the exception and log it
-        exception.localize(messageLocalizer);
-        logger.error("Uncaught exception in InternalExceptionMapper: ", exception);
+        // exception.localize(messageLocalizer);
+        // logger.error("Uncaught exception in InternalExceptionMapper: ",
+        // exception);
 
         // Return the response with the error status and the response entity
         return builder.entity(responseEntity).type(MediaType.APPLICATION_JSON).build();

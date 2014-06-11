@@ -1,5 +1,7 @@
 package gcs.webapp.utils.beans;
 
+import gcs.webapp.utils.hibernate.AbstractModelObject;
+
 /**
  * @author Simon Turcotte-Langevin
  */
@@ -13,5 +15,6 @@ public interface IBeanFactory
      * @param beanClass The class object of the bean.
      * @return A bean which properties are filled from the model.
      */
-    public <TModel, TBean> TBean createBean(TModel model, Class<TBean> beanClass);
+    public <TModel extends AbstractModelObject, TBean extends AbstractBean> TBean createBean(TModel model,
+            Class<TBean> beanClass);
 }

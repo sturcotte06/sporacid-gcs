@@ -11,13 +11,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import org.apache.commons.collections.Bag;
+import org.apache.commons.collections.bag.HashBag;
+
+import antlr.collections.List;
 
 import com.google.gson.Gson;
 
@@ -295,16 +303,14 @@ public final class ReflectionUtils
                     Collection srcCollection = (Collection) srcGetterValue;
 
                     // Get the source collection's elements' generic type.
-                    ParameterizedType srcCollectionGenericType = (ParameterizedType) srcGetterReturnType
-                            .getGenericSuperclass();
+                    ParameterizedType srcCollectionGenericType = ((ParameterizedType) srcGetter.getGenericReturnType());
                     Class<?> srcCollectionGenericClass = getClass(srcCollectionGenericType.getActualTypeArguments()[0]);
 
                     // Create a new destination collection
-                    Collection dstCollection = Collections.emptyList();
+                    Collection dstCollection = createCollection(dstGetterReturnType);
 
                     // Get the destination collection's elements' generic type.
-                    ParameterizedType dstCollectionGenericType = (ParameterizedType) dstGetterReturnType
-                            .getGenericSuperclass();
+                    ParameterizedType dstCollectionGenericType = ((ParameterizedType) dstGetter.getGenericReturnType());
                     Class<?> dstCollectionGenericClass = getClass(dstCollectionGenericType.getActualTypeArguments()[0]);
 
                     // Iterate through each object and recall the method
@@ -315,6 +321,9 @@ public final class ReflectionUtils
                                 dstCollectionGenericClass);
                         dstCollection.add(dstCollectionElement);
                     }
+
+                    // Set the collection attribute
+                    dstSetter.invoke(destination, dstCollection);
                 } else if (srcGetterReturnType.isArray()) {
                     // Getter return type is an array type;
                     Class<?> srcArrayType = srcGetterReturnType.getComponentType();
@@ -331,6 +340,9 @@ public final class ReflectionUtils
                         copyInto(Array.get(srcArray, iArray), srcArrayType, dstArrayElement, dstArrayType);
                         Array.set(dstArray, iArray, dstArrayElement);
                     }
+
+                    // Set the array attribute
+                    dstSetter.invoke(destination, dstArray);
                 } else {
                     // Create a new instance of the sub object
                     dstSetter.invoke(destination, dstGetterReturnType.newInstance());
@@ -343,6 +355,46 @@ public final class ReflectionUtils
             // Just wrap the exception with a clearer context and throw
             throw new ReflectionException(ex);
         }
+    }
+
+    @SuppressWarnings("rawtypes")
+    private static Collection createCollection(Class<?> collectionClass) throws InstantiationException,
+            IllegalAccessException
+    {
+        if (!Collection.class.isAssignableFrom(collectionClass)) {
+            throw new IllegalArgumentException("createCollection() only accepts Set, List and Bag.");
+        }
+
+        if (Modifier.isAbstract(collectionClass.getModifiers())) {
+            // Class is abstract, we don't support it, because the case is rare
+            // plus it's a pain in the ass to find the first Collection
+            // interface.
+            throw new UnsupportedOperationException("createCollection() does not support abstract classes.");
+        }
+
+        if (!collectionClass.isInterface()) {
+            // the collection's class is a not an interface,
+            // just create a instance of this type.
+            return (Collection) collectionClass.newInstance();
+        }
+
+        if (Set.class.isAssignableFrom(collectionClass)) {
+            // Default Set is HashSet
+            return (Collection) HashSet.class.newInstance();
+        }
+
+        if (List.class.isAssignableFrom(collectionClass)) {
+            // Default List is ArrayList
+            return (Collection) ArrayList.class.newInstance();
+        }
+
+        if (Bag.class.isAssignableFrom(collectionClass)) {
+            // Default Bag is HashBag
+            return (Collection) HashBag.class.newInstance();
+        }
+
+        // Not a supported collection
+        throw new UnsupportedOperationException();
     }
 
     /**

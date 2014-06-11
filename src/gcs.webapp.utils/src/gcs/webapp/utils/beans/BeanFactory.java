@@ -2,6 +2,7 @@ package gcs.webapp.utils.beans;
 
 import gcs.webapp.utils.exceptions.ArgumentNullException;
 import gcs.webapp.utils.exceptions.ReflectionException;
+import gcs.webapp.utils.hibernate.AbstractModelObject;
 import gcs.webapp.utils.reflect.ReflectionUtils;
 
 public class BeanFactory implements IBeanFactory
@@ -15,14 +16,15 @@ public class BeanFactory implements IBeanFactory
      * @return A bean which properties are filled from the model.
      */
     @Override
-    public <TModel, TBean> TBean createBean(TModel model, Class<TBean> beanClass)
+    public <TModel extends AbstractModelObject, TBean extends AbstractBean> TBean createBean(TModel model,
+            Class<TBean> beanClass)
     {
         if (model == null) {
             throw new ArgumentNullException("source");
         }
 
         if (beanClass == null) {
-            throw new ArgumentNullException("dstClass");
+            throw new ArgumentNullException("beanClass");
         }
 
         TBean bean;

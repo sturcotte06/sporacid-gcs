@@ -22,8 +22,8 @@ public interface ISessionServiceClient
      * Invalidates a web services' session.
      * 
      * @param ipAddress Ip address of the requester.
-     * @param wsSessionKey The web service session key.
+     * @param sessionKey The web service session key.
      * @return The logout response from the web services.
      */
-    public Response invalidate(String ipv4Address, String wsSessionKey);
+    public Response invalidate(String ipv4Address, String sessionKey);
 }

@@ -12,15 +12,15 @@ public class MembreServiceClient extends HttpServiceClient implements IMembreSer
      * Get all the membre beans from the webservices for the given club.
      * 
      * @param ipv4Address Ipv4 address of the requester.
-     * @param wsSessionKey The web service session key.
+     * @param sessionKey The web service session key.
      * @param clubName The name of the club for which we want the membres.
      * @return A collection of membre beans.
      */
     @Override
-    public GetAllMembresOfClubResponse getAllMembresOfClub(String ipv4Address, String wsSessionKey, String clubName)
+    public GetAllMembresOfClubResponse getAllMembresOfClub(String ipv4Address, String sessionKey, String clubName)
     {
         final HttpServiceRoute route = new HttpServiceRoute(String.format("/context/%s/session/%s/%s/membre", clubName,
-                ipv4Address, wsSessionKey), HttpMethod.Get);
+                ipv4Address, sessionKey), HttpMethod.Get);
         return getResponse(route, GetAllMembresOfClubResponse.class);
     }
 }

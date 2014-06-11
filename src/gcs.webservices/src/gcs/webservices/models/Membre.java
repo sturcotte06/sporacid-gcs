@@ -134,6 +134,54 @@ public class Membre extends AbstractModelObject
     }
 
     /**
+     * @return the clubs
+     */
+    public Set<MembreClub> getClubs()
+    {
+        return clubs;
+    }
+
+    /**
+     * @param clubs the clubs to set
+     */
+    public void setClubs(Set<MembreClub> clubs)
+    {
+        this.clubs = clubs;
+    }
+
+    /**
+     * @return the contactsUrgence
+     */
+    public Set<ContactUrgence> getContactsUrgence()
+    {
+        return contactsUrgence;
+    }
+
+    /**
+     * @param contactsUrgence the contactsUrgence to set
+     */
+    public void setContactsUrgence(Set<ContactUrgence> contactsUrgence)
+    {
+        this.contactsUrgence = contactsUrgence;
+    }
+
+    /**
+     * @return the allergies
+     */
+    public Set<Allergie> getAllergies()
+    {
+        return allergies;
+    }
+
+    /**
+     * @param allergies the allergies to set
+     */
+    public void setAllergies(Set<Allergie> allergies)
+    {
+        this.allergies = allergies;
+    }
+
+    /**
      * @return the nom
      */
     public String getNom()
@@ -182,6 +230,22 @@ public class Membre extends AbstractModelObject
     }
 
     /**
+     * @return the codeUniversel
+     */
+    public String getCodeUniversel()
+    {
+        return codeUniversel;
+    }
+
+    /**
+     * @param codeUniversel the codeUniversel to set
+     */
+    public void setCodeUniversel(String codeUniversel)
+    {
+        this.codeUniversel = codeUniversel;
+    }
+
+    /**
      * @return the actif
      */
     public boolean isActif()
@@ -200,7 +264,7 @@ public class Membre extends AbstractModelObject
     /**
      * @return the telephone
      */
-    public String isTelephone()
+    public String getTelephone()
     {
         return telephone;
     }
@@ -211,69 +275,5 @@ public class Membre extends AbstractModelObject
     public void setTelephone(String telephone)
     {
         this.telephone = telephone;
-    }
-
-    /**
-     * @return the codeUniversel
-     */
-    public String getCodeUniversel()
-    {
-        return codeUniversel;
-    }
-
-    /**
-     * @param codeUniversel the codeUniversel to set
-     */
-    public void setCodeUniversel(String codeUniversel)
-    {
-        this.codeUniversel = codeUniversel;
-    }
-
-    /**
-     * @return the clubs
-     */
-    public Set<MembreClub> getClubs()
-    {
-        return clubs;
-    }
-
-    /**
-     * @param clubs the clubs to set
-     */
-    public void setClubs(Set<MembreClub> clubs)
-    {
-        this.clubs = clubs;
-    }
-
-    /**
-     * @return the contactsUrgence
-     */
-    public Set<ContactUrgence> getContactsUrgence()
-    {
-        return contactsUrgence;
-    }
-
-    /**
-     * @param contactsUrgence the contactsUrgence to set
-     */
-    public void setContactsUrgence(Set<ContactUrgence> contactsUrgence)
-    {
-        this.contactsUrgence = contactsUrgence;
-    }
-
-    /**
-     * @return the allergies
-     */
-    public Set<Allergie> getAllergies()
-    {
-        return allergies;
-    }
-
-    /**
-     * @param allergies the allergies to set
-     */
-    public void setAllergies(Set<Allergie> allergies)
-    {
-        this.allergies = allergies;
     }
 }
