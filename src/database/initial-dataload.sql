@@ -101,3 +101,5 @@ INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,
 INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),3,3,3,'2014-12-08','eleifend non, dapibus rutrum, justo. Praesent luctus. Curabitur egestas nunc');
 INSERT INTO suivies (id,commandites_id,membres_id,suivie_statuts_id,date_suivie,commentaire) VALUES (nextval('suivies_id_seq'),4,4,4,'2014-02-09','congue. In scelerisque scelerisque dui. Suspendisse ac metus vitae velit');
 
+INSERT INTO membres_allergies (membres_id, allergies_id) VALUES (1,1);
+INSERT INTO membres_allergies (membres_id, allergies_id) VALUES (1,2);

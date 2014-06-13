@@ -1,6 +1,11 @@
+<%@page import="gcs.webservices.client.models.ContactUrgenceBean"%>
+<%@page import="gcs.webservices.client.models.AllergieBean"%>
+<%@page import="gcs.webservices.client.models.usagers.UserProfileBean"%>
 <%@page import="java.util.Collection"%>
 <%@page import="gcs.website.views.helpers.ControlHelpers"%>
 <%@page import="gcs.webservices.client.models.ConcentrationBean"%>
+<%@page import="gcs.website.views.helpers.models.Menu"%>
+<%@page import="gcs.website.views.helpers.models.MenuItem"%>
 <%@page import="gcs.website.views.helpers.HtmlAndJavaScript;"%>
 
 <%
@@ -8,19 +13,38 @@
 
 	@SuppressWarnings("unchecked")
 	Collection<ConcentrationBean> concentrations = (Collection<ConcentrationBean>) request.getAttribute("listeConcentrations");
+	
+	UserProfileBean userProfile = (UserProfileBean) request.getAttribute("userProfile");
+	Collection<AllergieBean> allergies = userProfile.getAllergies();
+	Collection<ContactUrgenceBean> contactsUrgences = userProfile.getContactsUrgence();
+	
+	
+	Menu menu = new Menu();
+	menu.addItem(new MenuItem("", context + "/images/metro-ui-icons/metro-add.png", "#"));
+	menu.addItem(new MenuItem("Modifier", context + "/images/metro-ui-icons/metro-edit.png", "#"));
+	menu.addItem(new MenuItem("Supprimer", context + "/images/metro-ui-icons/metro-delete.png", "#"));
+	
+	HtmlAndJavaScript allergiesGridControl = ControlHelpers.getGridForObjects(allergies, AllergieBean.class, menu);
+	HtmlAndJavaScript contactUrgenceGridControl = ControlHelpers.getGridForObjects(contactsUrgences, ContactUrgenceBean.class, menu);
+	
 %>
 <style type="text/css">
+
+.main-content{
+	overflow-y:scroll;
+	overflow-x:hidden;
+}
 
 #profil-container{
 	padding-left: 25px;
 }
 
 .header-row h1 {
-	color: whitesmoke;
+	color: white;
 }
 
 .profil-label {
-    color: whitesmoke;
+   color: white;
 }
 
 .profil-item-container{
@@ -73,7 +97,7 @@ figcaption:hover {
 }
 </style>
 
-<div id="profil-container ">
+<div id="profil-container">
 	<div class="row header-row">
 		<div class="col-md-12">
 			<h1>Bienvenue sur votre profil</h1>
@@ -83,29 +107,33 @@ figcaption:hover {
 	<div class="row">
 		<div class="profil-item-container col-md-4">
 			<label class="profil-label control-label unselectable" for="nom">Nom:</label>
-			<input type="text" class="form-control" name="nom" value="" />
+			<input type="text" class="form-control" name="nom" value="<%=userProfile.getNom()%>" />
 		</div>
 		<div class="profil-item-container col-md-4">
 			<label class="profil-label control-label unselectable" for="prenom">Prénom:</label>
-			<input type="text" class="form-control" name="prenom" value="" />
+			<input type="text" class="form-control" name="prenom" value="<%=userProfile.getPrenom()%>" />
 		</div>
 		<div class="profil-item-container col-md-4">
 			<label class="profil-label control-label unselectable" for="concentration">Concentration:</label>
 			<select class="form-control" name="concentration">
-				<% for(ConcentrationBean concentration : concentrations) {%>
-					<option value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
-				<% }%>
+				<% for(ConcentrationBean concentration : concentrations) { 
+				       if(userProfile.getConcentration().getId() == concentration.getId()){ %>
+					   		<option selected value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
+					<%} else {%>
+					   		<option value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
+					<%}%>	   	
+				<%}%>
 			</select>
 		</div>
 	</div>
 	<div class="row">
 		<div class="profil-item-container col-md-4">
 			<label class="profil-label control-label unselectable" for="courriel">Courriel:</label>
-			<input type="text" class="form-control" name="courriel" value="" />
+			<input type="text" class="form-control" name="courriel" value="<%=userProfile.getCourriel()%>" />
 		</div>
 		<div class="profil-item-container col-md-4">
 			<label class="profil-label control-label unselectable" for="telephone">Téléphone:</label>
-			<input type="text" class="form-control" name="telephone" value="" />
+			<input type="text" class="form-control" name="telephone" value="<%=userProfile.getTelephone()%>" />
 		</div>
 	</div>
 	<!-- Avatar section -->
@@ -124,10 +152,12 @@ figcaption:hover {
 	<!-- Allergie & Contact Urgence section -->
 	<div class= "row">
 		<!--  Allergies -->
-		<div class="col-md-6">
+		<div class="col-md-5">
+			<%=allergiesGridControl.getHtmlString()%>	
 		</div>
 		<!-- Contact Urgence -->
-		<div class="col-md-6">
+		<div class="col-md-offset-2 col-md-5">
+			<%--<%=contactUrgenceGridControl.getHtmlString() --%>
 		</div>
 	</div>
 </div>
@@ -139,13 +169,23 @@ figcaption:hover {
 		});
 	});
 	
+	/**
+	 * Import the grid's javascript.
+	 */
+    <%=allergiesGridControl.getScript()%>
+<%--     <%=contactUrgenceGridControl.getScript()*/%> --%> 
+    
+    // BUILD CALISSE ! 12/06/2014
+	
+    // Handle img upload and displays a preview scaled to 250x250
 	function fileSelectHandler(input)
 	{
 	    if (input.files && input.files[0])
         {
             var reader = new FileReader();
             
-            reader.onload = function (e){
+            reader.onload = function (e)
+            				{
             					$(".avatar-image figure img")
             					.attr('src', e.target.result)
             					.width(250)

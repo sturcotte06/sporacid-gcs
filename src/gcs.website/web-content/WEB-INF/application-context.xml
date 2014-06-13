@@ -113,4 +113,10 @@
     <property name="jerseyClient" ref="jerseyClient" />
     <property name="cache" ref="httpServiceCache" />
   </bean>
+  <!-- Usager service provider implementation -->
+  <bean id="usagerServiceClient" class="gcs.webservices.client.UsagerServiceClient" scope="singleton">
+    <property name="serviceUrl" ref="serviceRepositoryUrl" />
+    <property name="jerseyClient" ref="jerseyClient" />
+    <property name="cache" ref="httpServiceCache" />
+  </bean>
 </beans>

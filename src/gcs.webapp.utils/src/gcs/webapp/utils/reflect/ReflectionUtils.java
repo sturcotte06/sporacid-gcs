@@ -365,7 +365,7 @@ public final class ReflectionUtils
             throw new IllegalArgumentException("createCollection() only accepts Set, List and Bag.");
         }
 
-        if (Modifier.isAbstract(collectionClass.getModifiers())) {
+        if (Modifier.isAbstract(collectionClass.getModifiers()) && !collectionClass.isInterface()) {
             // Class is abstract, we don't support it, because the case is rare
             // plus it's a pain in the ass to find the first Collection
             // interface.

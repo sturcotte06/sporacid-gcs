@@ -11,6 +11,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -59,7 +60,8 @@ public final class ControlHelpers
 
     public static <E> HtmlAndJavaScript getGridForObjects(Collection<E> objects, Class<E> classObj, Menu menu)
     {
-        String gridId = "gcs_grid_container_" + RandomStringUtils.random(10, true, true);
+    	String uniqueId = RandomStringUtils.random(10, true, true);
+        String gridId = "gcs_grid_container_" + uniqueId;
 
         StringBuilder htmlOut = new StringBuilder(String.format("<div id=\"%s\"></div>", gridId));
         StringBuilder menuOut = new StringBuilder();
@@ -94,13 +96,19 @@ public final class ControlHelpers
         columnsDisplayOut.append("]");
 
         // Generate the json data from the collection
-        String rowsJson = jsonSerializer.toJson(ReflectionUtils.flatten(objects));
+        Collection<Map<String,Object>> flattenedObjects = new ArrayList<>();
+        for(Object obj : objects)
+        {
+        	flattenedObjects.add(ReflectionUtils.flatten(classObj.cast(obj)));
+        }
+        
+        String rowsJson = jsonSerializer.toJson(flattenedObjects);
         String columnsJson = jsonSerializer.toJson(columns);
 
         StringBuilder jsOut = new StringBuilder();
-        jsOut.append(String.format("var initData = {menu: %s, rows: %s, columns: %s, colNames: %s};",
-                menuOut.toString(), rowsJson, columnsJson, columnsDisplayOut.toString()));
-        jsOut.append(String.format("$(\"#%s\").gcsGrid(initData);", gridId));
+        jsOut.append(String.format("var initData_%s = {menu: %s, rows: %s, columns: %s, colNames: %s};",
+        		uniqueId, menuOut.toString(), rowsJson, columnsJson, columnsDisplayOut.toString()));
+        jsOut.append(String.format("$(\"#%s\").gcsGrid(initData_%s);", gridId, uniqueId));
 
         return new HtmlAndJavaScript(htmlOut.toString(), jsOut.toString());
     }
