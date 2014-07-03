@@ -1,6 +1,8 @@
 package gcs.webservices.client;
 
 import gcs.webapp.utils.HttpMethod;
+import gcs.webservices.client.requests.membres.AddRequest;
+import gcs.webservices.client.responses.Response;
 import gcs.webservices.client.responses.membres.GetAllMembresOfClubResponse;
 
 /**
@@ -22,5 +24,12 @@ public class MembreServiceClient extends HttpServiceClient implements IMembreSer
         final HttpServiceRoute route = new HttpServiceRoute(String.format("/context/%s/session/%s/%s/membre", clubName,
                 ipv4Address, sessionKey), HttpMethod.Get);
         return getResponse(route, GetAllMembresOfClubResponse.class);
+    }
+    
+    public Response addMembre(String ipv4Address, String sessionKey, String clubName, AddRequest request)
+    {
+    	final HttpServiceRoute route = new HttpServiceRoute(String.format("/context/%s/session/%s/%s/membre", clubName,
+                ipv4Address, sessionKey), HttpMethod.Post);
+        return getResponse(route, Response.class, request);
     }
 }

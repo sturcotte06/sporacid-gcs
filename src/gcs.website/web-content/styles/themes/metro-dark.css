@@ -78,3 +78,9 @@ body,
 .form-input:focus {
     border-color: #EF9C00;
 }
+
+.form-control
+{
+	padding: 0px 5px;
+}
+	

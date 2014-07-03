@@ -1,5 +1,7 @@
 package gcs.webservices.client;
 
+import gcs.webservices.client.requests.membres.AddRequest;
+import gcs.webservices.client.responses.Response;
 import gcs.webservices.client.responses.membres.GetAllMembresOfClubResponse;
 
 /**
@@ -16,4 +18,15 @@ public interface IMembreServiceClient
      * @return A collection of membre beans.
      */
     public GetAllMembresOfClubResponse getAllMembresOfClub(String ipv4Address, String sessionKey, String clubName);
+    
+    /**
+     * self explanatory
+     * 
+     * @param ipv4Address
+     * @param sessionKey
+     * @param ldapSearchString
+     * @param clubName
+     * @return
+     */
+    public Response addMembre(String ipv4Address, String sessionKey, String clubName, AddRequest request);
 }

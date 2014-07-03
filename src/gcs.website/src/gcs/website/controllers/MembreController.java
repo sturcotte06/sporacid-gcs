@@ -2,6 +2,8 @@ package gcs.website.controllers;
 
 import gcs.webapp.utils.exceptions.InternalException;
 import gcs.webservices.client.IMembreServiceClient;
+import gcs.webservices.client.requests.membres.AddRequest;
+import gcs.webservices.client.responses.Response;
 import gcs.webservices.client.responses.membres.GetAllMembresOfClubResponse;
 import gcs.website.utils.SessionUtils;
 import gcs.website.views.beans.WsSession;
@@ -9,8 +11,11 @@ import gcs.website.views.beans.WsSession;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -60,6 +65,7 @@ public class MembreController
     @RequestMapping(value = "/obtenir", method = RequestMethod.GET)
     public String getMembre(HttpServletRequest request)
     {
+    	
         return "partial-views/get-membre";
     }
 
@@ -70,8 +76,36 @@ public class MembreController
     }
 
     @RequestMapping(value = "/ajouter", method = RequestMethod.POST)
-    public String addMembre(HttpServletRequest request)
+    public String addMembre(@ModelAttribute @Valid AddRequest formRequest, BindingResult result, HttpServletRequest request)
     {
+    	HttpSession session = request.getSession();
+        WsSession wsSession = SessionUtils.getWsSession(session);
+
+        if (wsSession == null) 
+        {
+            return "redirect:/";
+        }
+
+        String ipv4Address = request.getHeader("X-FORWARDED-FOR");
+        if (ipv4Address == null) 
+        {
+            ipv4Address = request.getRemoteAddr();
+            if (ipv4Address == null) 
+            {
+                throw new InternalException("controllers_ipv4address_cannotberesolved");
+            }
+        }
+        
+        try
+        {
+        	Response response = membreServiceClient.addMembre(ipv4Address,
+        			wsSession.getSessionKey(), "preci", formRequest);
+        }
+        catch(InternalException intex)
+        {
+        	
+        }
+        
         return "partial-views/add-membre";
     }
 }

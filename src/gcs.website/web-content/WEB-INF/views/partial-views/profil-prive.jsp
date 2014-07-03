@@ -19,13 +19,22 @@
 	Collection<ContactUrgenceBean> contactsUrgences = userProfile.getContactsUrgence();
 	
 	
-	Menu menu = new Menu();
-	menu.addItem(new MenuItem("", context + "/images/metro-ui-icons/metro-add.png", "#"));
-	menu.addItem(new MenuItem("Modifier", context + "/images/metro-ui-icons/metro-edit.png", "#"));
-	menu.addItem(new MenuItem("Supprimer", context + "/images/metro-ui-icons/metro-delete.png", "#"));
+	Menu allergiesMenu = new Menu();
+	Menu contactUrgenceMenu = new Menu();
 	
-	HtmlAndJavaScript allergiesGridControl = ControlHelpers.getGridForObjects(allergies, AllergieBean.class, menu);
-	HtmlAndJavaScript contactUrgenceGridControl = ControlHelpers.getGridForObjects(contactsUrgences, ContactUrgenceBean.class, menu);
+	MenuItem addButton = new MenuItem("Ajouter", context + "/images/metro-ui-icons/metro-add.png", "#");
+	MenuItem editButton = new MenuItem("Modifier", context + "/images/metro-ui-icons/metro-edit.png", "#");
+	MenuItem deleteButton = new MenuItem("Supprimer", context + "/images/metro-ui-icons/metro-delete.png", "#");
+	
+	allergiesMenu.addItem(addButton);
+	allergiesMenu.addItem(deleteButton);
+	
+	contactUrgenceMenu.addItem(addButton);
+	contactUrgenceMenu.addItem(editButton);
+	contactUrgenceMenu.addItem(deleteButton);
+	
+	HtmlAndJavaScript allergiesGridControl = ControlHelpers.getGridForObjects(allergies, AllergieBean.class, allergiesMenu);
+	HtmlAndJavaScript contactUrgenceGridControl = ControlHelpers.getGridForObjects(contactsUrgences, ContactUrgenceBean.class, contactUrgenceMenu);
 	
 %>
 <style type="text/css">
@@ -46,6 +55,8 @@
 .profil-label {
    color: white;
 }
+
+
 
 .profil-item-container{
 	width: 250px;
@@ -95,6 +106,14 @@ figcaption:hover {
 .upload-ctrl{
 	display: none !important;
 }
+
+.allergies-container {
+	margin-top: 25px;
+}
+
+.gcs-grid-pager {
+	display : none;
+}
 </style>
 
 <div id="profil-container">
@@ -103,67 +122,78 @@ figcaption:hover {
 			<h1>Bienvenue sur votre profil</h1>
 		</div>
 	</div>
-	<!-- Basic member information -->
-	<div class="row">
-		<div class="profil-item-container col-md-4">
-			<label class="profil-label control-label unselectable" for="nom">Nom:</label>
-			<input type="text" class="form-control" name="nom" value="<%=userProfile.getNom()%>" />
+	<form id="login_form" class="form form-horizontal" method="post" action="<%=context%>/membres/editer">
+		<!-- Basic member information -->
+		<div class="row">
+			<div class="profil-item-container col-md-4">
+				<label class="profil-label control-label unselectable" for="nom">Nom:</label>
+				<input type="text" class="form-control" name="nom" value="<%=userProfile.getNom()%>" />
+			</div>
+			<div class="profil-item-container col-md-4">
+				<label class="profil-label control-label unselectable" for="prenom">Prénom:</label>
+				<input type="text" class="form-control" name="prenom" value="<%=userProfile.getPrenom()%>" />
+			</div>
+			<div class="profil-item-container col-md-4">
+				<label class="profil-label control-label unselectable" for="concentration">Concentration:</label>
+				<select class="form-control" name="concentration">
+					<% for(ConcentrationBean concentration : concentrations) { 
+					       if(userProfile.getConcentration().getId() == concentration.getId()){ %>
+						   		<option selected value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
+						<%} else {%>
+						   		<option value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
+						<%}%>	   	
+					<%}%>
+				</select>
+			</div>
 		</div>
-		<div class="profil-item-container col-md-4">
-			<label class="profil-label control-label unselectable" for="prenom">Prénom:</label>
-			<input type="text" class="form-control" name="prenom" value="<%=userProfile.getPrenom()%>" />
+		<div class="row">
+			<div class="profil-item-container col-md-4">
+				<label class="profil-label control-label unselectable" for="courriel">Courriel:</label>
+				<input type="text" class="form-control" name="courriel" value="<%=userProfile.getCourriel()%>" />
+			</div>
+			<div class="profil-item-container col-md-4">
+				<label class="profil-label control-label unselectable" for="telephone">Téléphone:</label>
+				<input type="text" class="form-control telephone-control" name="telephone" value="<%=userProfile.getTelephone()%>" />
+			</div>
 		</div>
-		<div class="profil-item-container col-md-4">
-			<label class="profil-label control-label unselectable" for="concentration">Concentration:</label>
-			<select class="form-control" name="concentration">
-				<% for(ConcentrationBean concentration : concentrations) { 
-				       if(userProfile.getConcentration().getId() == concentration.getId()){ %>
-					   		<option selected value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
-					<%} else {%>
-					   		<option value="<%=concentration.getId()%>"><%=concentration.getAcronyme()%></option>
-					<%}%>	   	
-				<%}%>
-			</select>
+		<!-- Avatar section -->
+		<div class="avatar-container row">
+			<!-- Image container -->
+			<div class="avatar-image col-md-4">
+				<figure>
+					<img src="http://placehold.it/250x250" alt="my avatar :D">
+					<figcaption>
+						<a class="upload-button">Upload Avatar</a>
+						<input type="file" class="upload-ctrl" onchange="fileSelectHandler(this);" accept="image/x-png, image/gif, image/jpeg"/>
+					</figcaption>
+				</figure>
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="profil-item-container col-md-4">
-			<label class="profil-label control-label unselectable" for="courriel">Courriel:</label>
-			<input type="text" class="form-control" name="courriel" value="<%=userProfile.getCourriel()%>" />
+		<!-- Allergie & Contact Urgence section -->
+		<div class= "row allergies-container">
+			<!--  Allergies -->
+			<div class="col-md-5">
+				<%=allergiesGridControl.getHtmlString()%>	
+			</div>
+			<!-- Contact Urgence -->
+			<div class="col-md-offset-2 col-md-5">
+				<%--<%=contactUrgenceGridControl.getHtmlString() --%>
+			</div>
 		</div>
-		<div class="profil-item-container col-md-4">
-			<label class="profil-label control-label unselectable" for="telephone">Téléphone:</label>
-			<input type="text" class="form-control" name="telephone" value="<%=userProfile.getTelephone()%>" />
+		<!-- Buttons sections -->
+		<div class="row">
+			<div class="col-md-offset-9 col-md-3">
+				<button type="button" onclick="">Modifier</button>
+				<button type="button" onclick="">Annuler</button>
+			</div>
 		</div>
-	</div>
-	<!-- Avatar section -->
-	<div class="avatar-container row">
-		<!-- Image container -->
-		<div class="avatar-image col-md-4">
-			<figure>
-				<img src="http://placehold.it/250x250" alt="my avatar :D">
-				<figcaption>
-					<a class="upload-button">Upload Avatar</a>
-					<input type="file" class="upload-ctrl" onchange="fileSelectHandler(this);" accept="image/x-png, image/gif, image/jpeg"/>
-				</figcaption>
-			</figure>
-		</div>
-	</div>
-	<!-- Allergie & Contact Urgence section -->
-	<div class= "row">
-		<!--  Allergies -->
-		<div class="col-md-5">
-			<%=allergiesGridControl.getHtmlString()%>	
-		</div>
-		<!-- Contact Urgence -->
-		<div class="col-md-offset-2 col-md-5">
-			<%--<%=contactUrgenceGridControl.getHtmlString() --%>
-		</div>
-	</div>
+	</form>
 </div>
 <script type="text/javascript">
 	
 	$(document).ready(function() {
+		$(".telephone-control").mask('000-000-0000', {placeholder: "___-___-____"});
+		
 		$(".upload-button").click(function(){
 			$(this).siblings(".upload-ctrl").click();
 		});
@@ -175,6 +205,11 @@ figcaption:hover {
     <%=allergiesGridControl.getScript()%>
 <%--     <%=contactUrgenceGridControl.getScript()*/%> --%> 
     
+    // Binding Click action on Add Menu item
+	$(".gcs-grid-menu > ul > li:first").click(function(){	
+		window.open("./add-membre.jsp");
+	});
+
     // BUILD CALISSE ! 12/06/2014
 	
     // Handle img upload and displays a preview scaled to 250x250

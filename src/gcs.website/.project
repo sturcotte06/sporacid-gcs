@@ -5,6 +5,7 @@
 	<projects>
 		<project>gcs.webapp.utils</project>
 		<project>gcs.webservices.client</project>
+		<project>gcs.webservices</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
