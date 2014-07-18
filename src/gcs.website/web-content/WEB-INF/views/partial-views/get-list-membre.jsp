@@ -14,6 +14,8 @@
   Collection<BaseMembreBean> membres = (Collection<BaseMembreBean>) request.getAttribute("listeMembres");
   
   Menu menu = new Menu();
+
+  menu.addItem(new MenuItem("Ajouter", context + "/images/metro-ui-icons/metro-add.png", "javascript:showAddMembreDialogue()"));
   menu.addItem(new MenuItem("Modifier", context + "/images/metro-ui-icons/metro-edit.png", "#"));
   menu.addItem(new MenuItem("Supprimer", context + "/images/metro-ui-icons/metro-delete.png", "#"));
   menu.addItem(new MenuItem("Rechercher", context + "/images/metro-ui-icons/metro-search.png", "javascript:$('.ui-icon-search').click()"));
@@ -35,6 +37,10 @@
   <div id="current_membre" class="main-content-2" style="height: 100%;"></div>
 </div>
 
+<div id="dialogAddMembre">
+	<div></div>
+	<div></div>
+</div>
 <style type="text/css">
   #current_membre {
     padding-left: 30px;
@@ -75,4 +81,13 @@
 			}
 		});
 	});
+	
+	function showAddMembreDialogue()
+		{
+			var $DialogAddMembre = $("#dialogAddMembre");
+			$DialogAddMembre.jqxWindow({ height:250, width: 525, theme: cJqWidgetTheme });
+			$DialogAddMembre.find(".jqx-window-content").loadContentAjax(cContext + '/membres/ajouter', 'get');
+			$DialogAddMembre.find(".jqx-window-content").css('overflow', 'hidden');
+			return false; ////cancel eventbubbeling
+		}
 </script>
