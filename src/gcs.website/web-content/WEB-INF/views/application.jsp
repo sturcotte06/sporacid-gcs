@@ -10,7 +10,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Gestionnaire de club scientifique</title>
-    
+	
+    <script type="text/javascript">var cContext = "<%=context%>"</script>
+	
     <%-- Include common scripts and styles in the page --%>
     <jsp:include page="partial-views/layout/includes-top.jsp"></jsp:include>
     
