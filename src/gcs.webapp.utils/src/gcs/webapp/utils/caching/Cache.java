@@ -16,8 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 
  * @author Simon Turcotte-Langevin
  */
-@Loggable
-public abstract class Cache<K, V>
+public abstract class Cache<K, V> implements ICache<K, V>
 {
     /** */
     private static final int cHashMapInitialCapacity = 100;
@@ -68,17 +67,13 @@ public abstract class Cache<K, V>
      * @param keyClass The class object of the key.
      * @return Whether an object is cached for the given key.
      */
-    public boolean isValueCached(K keyObj, Class<K> keyClass)
+    public boolean has(K keyObj)
     {
         if (keyObj == null) {
             throw new ArgumentNullException("keyObj");
         }
 
-        if (keyClass == null) {
-            throw new ArgumentNullException("keyClass");
-        }
-
-        CacheKey key = keyProvider.toKey(keyObj, keyClass);
+        CacheKey key = keyProvider.toKey(keyObj);
         boolean containsKey = false;
         try {
             cacheLock.lock();
@@ -97,22 +92,17 @@ public abstract class Cache<K, V>
      * @param keyClass The class object of the key.
      * @param value The object to cache.
      */
-    public void cacheValue(K keyObj, Class<K> keyClass, V value)
+    public void put(K keyObj, V value)
     {
         if (keyObj == null) {
             throw new ArgumentNullException("keyObj");
         }
 
-        if (keyClass == null) {
-            throw new ArgumentNullException("keyClass");
-        }
-
         if (value == null) {
             throw new ArgumentNullException("value");
         }
-
-        CacheKey key = keyProvider.toKey(keyObj, keyClass);
-
+        
+        CacheKey key = keyProvider.toKey(keyObj);
         try {
             cacheLock.lock();
 
@@ -133,18 +123,14 @@ public abstract class Cache<K, V>
      * @param keyClass The class object of the key.
      * @return The cached object for the given key.
      */
-    public V getCacheValue(K keyObj, Class<K> keyClass)
+    public V get(K keyObj)
     {
         if (keyObj == null) {
             throw new ArgumentNullException("keyObj");
         }
 
-        if (keyClass == null) {
-            throw new ArgumentNullException("keyClass");
-        }
-
         V value = null;
-        CacheKey key = keyProvider.toKey(keyObj, keyClass);
+        CacheKey key = keyProvider.toKey(keyObj);
 
         try {
             cacheLock.lock();
@@ -165,17 +151,13 @@ public abstract class Cache<K, V>
      * @param keyObj The key object
      * @param keyClass The class object of the key
      */
-    public void removeCacheValue(K keyObj, Class<K> keyClass)
+    public void remove(K keyObj)
     {
         if (keyObj == null) {
             throw new ArgumentNullException("keyObj");
         }
 
-        if (keyClass == null) {
-            throw new ArgumentNullException("keyClass");
-        }
-
-        CacheKey key = keyProvider.toKey(keyObj, keyClass);
+        CacheKey key = keyProvider.toKey(keyObj);
 
         try {
             cacheLock.lock();
@@ -274,9 +256,6 @@ public abstract class Cache<K, V>
                             } finally {
                                 cacheLock.unlock();
                             }
-                            // synchronized (cache) {
-                            // iterator.remove();
-                            // }
                         }
                     }
 
@@ -286,7 +265,8 @@ public abstract class Cache<K, V>
                     Thread.sleep(cThreadSleep);
 
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    // Propagate interruption.
+                    Thread.currentThread().interrupt();
                 }
             }
         }

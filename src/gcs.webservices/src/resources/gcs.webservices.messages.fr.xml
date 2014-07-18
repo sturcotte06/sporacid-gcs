@@ -9,13 +9,18 @@
   <message key="session_create_success" message="La création d'une session a été effectuée avec succès." />
   <message key="session_invalidate_success" message="L'invalidation de la session a été effectuée avec succès." />
   <!-- Members service messages -->
-  <message key="members_get_member_successful" message="L'obtention du membre a été effectué avec succès." />
+  <message key="members_get_member_successful" message="L'obtention du membre a été effectuée avec succès." />
   <message key="members_add_member_successful" message="L'ajout du membre a été effectué avec succès." />
   <!-- Ldap Authentication messages -->
   <message key="ldap_authentication_general_error" message="L'authentification a échoué." />
   <message key="ldap_authentication_unreachable_host" message="Le système ldap ne peut être rejoint. Veuillez contacter l'administrateur du système." />
   <message key="ldap_authentication_login_wrong_username" message="Le nom d'usager est invalide." />
   <message key="ldap_authentication_login_wrong_password" message="Le mot de passe est invalide." />
-    <!-- Ldap search messages -->
+  <!-- Ldap search messages -->
   <message key="ldap_search_general_error" message="L'application n'a pas été en mesure de rechercher dans le système ldap." />
+  <!-- Utility service -->
+  <message key="utility_generatecsv_unsupported" message="Seul les tableaux json sont supportés." />
+  <!-- Enum service -->
+  <message key="enum_getconcentrations_successful" message="L'obtention des concentrations a été effectuée avec succès." />
+  <message key="enum_getclubs_successful" message="L'obtention des clubs a été effectuée avec succès." />
 </application-messages>

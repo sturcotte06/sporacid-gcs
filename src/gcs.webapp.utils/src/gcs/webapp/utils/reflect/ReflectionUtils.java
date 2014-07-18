@@ -11,10 +11,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +46,9 @@ public final class ReflectionUtils
     private static final Class<?>[] cPrimitiveWrapperTypes = { Boolean.class, Character.class, Byte.class, Short.class,
             Integer.class, Long.class, Float.class, Double.class };
 
+    /** */
+    private static final Gson jsonSerializer = new Gson();
+    
     /**
      * Returns whether the object is a wrapper for a primitive type or not.
      * 
@@ -93,7 +94,7 @@ public final class ReflectionUtils
      */
     public static <TObject> TObject deepCopy(TObject obj)
     {
-        return deepCopy(obj, new Gson());
+        return deepCopy(obj, jsonSerializer);
     }
 
     /**
@@ -172,9 +173,10 @@ public final class ReflectionUtils
             for (Method objectGetter : objectGetters) {
                 Class<?> objectGetterReturnType = objectGetter.getReturnType();
                 String fieldName = objectGetter.getName().replace("get", "");
+                fieldName = fieldName.substring(0, 1).toLowerCase() + fieldName.substring(1);
 
-                if (isPrimitive(objectGetterReturnType) || objectGetterReturnType == String.class
-                        || objectGetterReturnType == Date.class) {
+                if (isPrimitive(objectGetterReturnType) || String.class.isAssignableFrom(objectGetterReturnType)
+                        || Date.class.isAssignableFrom(objectGetterReturnType)) {
                     // If the property is either a primitive type, a Date or a
                     // String, we simply add the return value of the getter.
                     fieldsMap.put(fieldName, objectGetter.invoke(object));
@@ -196,6 +198,13 @@ public final class ReflectionUtils
         }
     }
 
+    /**
+     * 
+     * @param array
+     * @param classObj
+     * @param fieldsMap
+     * @param currentPath
+     */
     private static <TObject> void flattenArray(Object array, Class<?> classObj, Map<String, Object> fieldsMap,
             String currentPath)
     {
@@ -211,6 +220,13 @@ public final class ReflectionUtils
         }
     }
 
+    /**
+     * 
+     * @param collection
+     * @param classObj
+     * @param fieldsMap
+     * @param currentPath
+     */
     @SuppressWarnings("rawtypes")
     private static <TObject> void flattenCollection(Collection collection, Class<TObject> classObj,
             Map<String, Object> fieldsMap, String currentPath)

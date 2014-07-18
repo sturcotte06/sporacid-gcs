@@ -19,5 +19,8 @@
   <!-- Ldap search messages -->
   <message key="ldap_search_general_error" message="The application was unable to search the ldap system." />
   <!-- Utility service -->
-  <message key="utility_generatecsv_unsupported" message="Only json arrays are supported" />
+  <message key="utility_generatecsv_unsupported" message="Only json arrays are supported." />
+  <!-- Enum service -->
+  <message key="enum_getconcentrations_successful" message="The get concentrations request was successful." />
+  <message key="enum_getclubs_successful" message="The get clubs request was successful." />
 </application-messages>
