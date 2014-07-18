@@ -28,4 +28,13 @@
 	<message key="commandites_idItem_notempty" message="The item cannot be null." />
 	<message key="commandites_valeur_notempty" message="The value cannot be null." />
 	<message key="commandites_nature_notempty" message="The nature cannot be null." />
+    
+    <!-- Display messages -->
+    <!-- gcs.webservices.client.models.membres.BaseMembreBean -->
+    <message key="webservices_clientmodels_membre_nom_display" message="Last Name" />
+    <message key="webservices_clientmodels_membre_prenom_display" message="First Name" />
+    <message key="webservices_clientmodels_membre_email_display" message="Email" />
+    <message key="webservices_clientmodels_membre_active_display" message="Active" />
+    <!-- gcs.webservices.client.models.ConcentrationBean -->
+    <message key="webservices_clientmodels_concentration_acronyme_display" message="Concentration" />
 </application-messages>

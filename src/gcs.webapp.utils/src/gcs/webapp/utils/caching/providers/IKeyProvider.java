@@ -15,9 +15,8 @@ public interface IKeyProvider
     /**
      * Transform an object into a cache key
      * 
-     * @param object
-     * @param classObj
+     * @param value
      * @return
      */
-    public <E> CacheKey toKey(E object, Class<E> classObj);
+    public <TValue> CacheKey toKey(TValue value);
 }

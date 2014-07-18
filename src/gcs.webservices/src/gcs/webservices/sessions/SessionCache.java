@@ -46,7 +46,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     public boolean sessionExists(String ipv4Address, String sessionKey)
     {
         final PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, sessionKey, ipv4Address);
-        return this.isValueCached(privateKey, PrivateSessionKey.class);
+        return this.has(privateKey);
     }
 
     /* (non-Javadoc)
@@ -66,7 +66,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     {
         final PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, sessionKey, ipv4Address);
         final IWithCacheValueAction<AuthorizedSession> withSession = (session) -> {
-            removeCacheValue(privateKey, PrivateSessionKey.class);
+            super.remove(privateKey);
 
             try {
                 session.getAuthenticationToken().getLoginContext().logout();
@@ -76,7 +76,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
         };
 
         // Do the actual remove
-        this.withCacheValue(privateKey, PrivateSessionKey.class, withSession);
+        this.withCacheValue(privateKey, withSession);
     }
 
     /* (non-Javadoc)
@@ -85,7 +85,6 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     @Override
     public PublicSessionKey createSessionFor(String ipv4Address, Membre membre, LdapAuthenticationToken token)
     {
-
         // Generate a new unique session key
         PublicSessionKey publicKey = PublicSessionKey.generate();
 
@@ -93,7 +92,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
         PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, publicKey.getKey(), ipv4Address);
 
         // Cache the newly create session
-        this.cacheValue(privateKey, PrivateSessionKey.class, session);
+        super.put(privateKey, session);
 
         return publicKey;
     }
@@ -114,7 +113,7 @@ public class SessionCache extends ConcurrentCache<PrivateSessionKey, AuthorizedS
     public void withSession(String ipv4Address, String sessionKey, IWithCacheValueAction<AuthorizedSession> action)
     {
         PrivateSessionKey privateKey = new PrivateSessionKey(hashProvider, sessionKey, ipv4Address);
-        withCacheValue(privateKey, PrivateSessionKey.class, action);
+        withCacheValue(privateKey, action);
     }
 
     /**

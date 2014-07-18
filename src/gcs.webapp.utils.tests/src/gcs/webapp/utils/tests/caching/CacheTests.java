@@ -23,7 +23,6 @@ public class CacheTests {
 	private Cache<KeyValuePair<String, String>, Object> cache = new Cache<KeyValuePair<String, String>, Object>(cValidityTimeSpan) { };
 	
 	@Test
-	@SuppressWarnings("unchecked")
 	public void test() {
 		final KeyValuePair<String, String> key1 = new KeyValuePair<String, String>("clé111", "key111");
 		final KeyValuePair<String, String> key2 = new KeyValuePair<String, String>("clé222", "key222");
@@ -32,31 +31,31 @@ public class CacheTests {
 		
 		for (IKeyProvider provider : providers) {
 			cache.setKeyProvider(provider);
-			CacheKey cacheKey1 = provider.toKey(key1, (Class<KeyValuePair<String, String>>) key1.getClass());
-			CacheKey cacheKey2 = provider.toKey(key2, (Class<KeyValuePair<String, String>>) key2.getClass());
+			CacheKey cacheKey1 = provider.toKey(key1);
+			CacheKey cacheKey2 = provider.toKey(key2);
 			
 			assertNotNull("Cache key is null.", cacheKey1);
 			assertNotEquals("Cache keys are not unique.", cacheKey1, cacheKey2);
 			
-			cache.cacheValue(key1, (Class<KeyValuePair<String, String>>) key1.getClass(), value1);
-			cache.cacheValue(key2, (Class<KeyValuePair<String, String>>) key2.getClass(), value2);
+			cache.put(key1, value1);
+			cache.put(key2, value2);
 			
-			assertTrue("Cache add failed (1).", cache.isValueCached(key1, (Class<KeyValuePair<String, String>>) key1.getClass()));
-			assertTrue("Cache add failed (2).", cache.isValueCached(key2, (Class<KeyValuePair<String, String>>) key2.getClass()));
-			assertEquals("Discrepency between cache key and value (1).", value1, cache.getCacheValue(key1, (Class<KeyValuePair<String, String>>) key1.getClass()));
-			assertEquals("Discrepency between cache key and value (2).", value2, cache.getCacheValue(key2, (Class<KeyValuePair<String, String>>) key2.getClass()));
+			assertTrue("Cache add failed (1).", cache.has(key1));
+			assertTrue("Cache add failed (2).", cache.has(key2));
+			assertEquals("Discrepency between cache key and value (1).", value1, cache.get(key1));
+			assertEquals("Discrepency between cache key and value (2).", value2, cache.get(key2));
 			
-			cache.removeCacheValue(key1, (Class<KeyValuePair<String, String>>) key1.getClass());
-			cache.removeCacheValue(key2, (Class<KeyValuePair<String, String>>) key2.getClass());
+			cache.remove(key1);
+			cache.remove(key2);
 			
-			assertNull("Cache removal failed (1).", cache.getCacheValue(key1, (Class<KeyValuePair<String, String>>) key1.getClass()));
-			assertNull("Cache removal failed (2).", cache.getCacheValue(key2, (Class<KeyValuePair<String, String>>) key2.getClass()));
+			assertNull("Cache removal failed (1).", cache.get(key1));
+			assertNull("Cache removal failed (2).", cache.get(key2));
 		}
 		
 		cache = new Cache<KeyValuePair<String,String>, Object>(2) {};
 		cache.setKeyProvider(providers[0]);
-		cache.cacheValue(key1, (Class<KeyValuePair<String, String>>) key1.getClass(), value1);
-		cache.cacheValue(key2, (Class<KeyValuePair<String, String>>) key2.getClass(), value2);
+		cache.put(key1, value1);
+		cache.put(key2, value2);
 		
 		try {
 			// time of validity ± 5s from the invalidator ± a small buffer of 0.5s
@@ -66,7 +65,7 @@ public class CacheTests {
 			e.printStackTrace();
 		}
 		
-		assertFalse("Cache invalidator failed (1).", cache.isValueCached(key1, (Class<KeyValuePair<String, String>>) key2.getClass()));
-		assertFalse("Cache invalidator failed (2).", cache.isValueCached(key2, (Class<KeyValuePair<String, String>>) key2.getClass()));
+		assertFalse("Cache invalidator failed (1).", cache.has(key1));
+		assertFalse("Cache invalidator failed (2).", cache.has(key2));
 	}
 }

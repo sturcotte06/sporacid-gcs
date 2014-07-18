@@ -16,6 +16,7 @@ import gcs.webapp.utils.hibernate.HibernateUtils;
 import gcs.webservices.models.Club;
 import gcs.webservices.models.Concentration;
 import gcs.webservices.models.Membre;
+import gcs.webservices.models.MembreClub;
 
 /**
  * @author Simon Turcotte-Langevin
@@ -237,6 +238,51 @@ public class MembreDao implements IMembreDao
 
         return concentrations;
     }
+    
+    /**
+     * Get all clubs of the membre.
+     * 
+     * @param membre The membre.
+     * @return A collection of clubs.
+     * @throws InternalException
+     */
+    public Collection<Club> getClubsOfMembre(Membre membre)
+    {
+        Collection<Club> clubs = null;
+        Collection<MembreClub> membreClubs = membre.getClubs();
+        
+        // Check if the orm config was eager.
+        if (membreClubs != null) {
+            // Eager: objects are pre-loaded
+            clubs = new ArrayList<>();
+            for (MembreClub membresClub : membreClubs) {
+                clubs.add(membresClub.getClub());
+            }
+            
+            return clubs;
+        }
+        
+        // Lazy: load from database.
+        Collection<HibernateAlias> aliases = new ArrayList<>();
+        Collection<Criterion> criterions = new ArrayList<>();
+        
+        // Create an alias for 
+        aliases.add(new HibernateAlias("membres.membre", "membre"));
+        
+        // Create a criterion on username
+        criterions.add(Restrictions.eq("membre.id", membre.getId()).ignoreCase());
+        
+        try {
+            // Get the clubs of the membre
+            clubs = HibernateUtils.getEntities(Club.class, aliases, criterions, sessionFactory);
+        } catch (HibernateException ex) {
+            // Couldn't edit the membre
+            throw new InternalException("membersdao_getclubsofmembre_exception", ex);
+        }
+        
+        return clubs;
+    }
+    
 
     /**
      * @return the sessionFactory

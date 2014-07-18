@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import gcs.webapp.utils.exceptions.EntityNotFoundException;
 import gcs.webapp.utils.exceptions.InternalException;
+import gcs.webservices.models.Club;
 import gcs.webservices.models.Concentration;
 import gcs.webservices.models.Membre;
 
@@ -82,4 +83,13 @@ public interface IMembreDao
      * @throws InternalException
      */
     public Collection<Concentration> getConcentrations() throws InternalException;
+    
+    /**
+     * Get all clubs of the membre.
+     * 
+     * @param membre The membre.
+     * @return A collection of clubs.
+     * @throws InternalException
+     */
+    public Collection<Club> getClubsOfMembre(Membre membre) throws InternalException;
 }
