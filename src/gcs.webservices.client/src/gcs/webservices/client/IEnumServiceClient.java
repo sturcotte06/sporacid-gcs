@@ -1,5 +1,6 @@
 package gcs.webservices.client;
 
+import gcs.webservices.client.responses.enums.GetClubsResponse;
 import gcs.webservices.client.responses.enums.GetConcentrationResponse;
 
 /**
@@ -13,4 +14,11 @@ public interface IEnumServiceClient
      * @return A collection of concentration beans.
      */
     public GetConcentrationResponse getConcentrations();
+    
+    /**
+     * Get all the club beans enumeration values from the webservices.
+     * 
+     * @return A collection of club beans.
+     */
+    public GetClubsResponse getClubs();
 }

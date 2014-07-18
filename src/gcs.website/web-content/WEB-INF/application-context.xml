@@ -60,7 +60,6 @@
 
   <!-- Application messages cache. This is where configured messages will be loaded. -->
   <bean id="messageLocalizer" class="gcs.webapp.utils.app.messages.MessageLocalizer" scope="singleton">
-    <!-- <constructor-arg name="messagesFolderRelativePath" value="./resources" /> -->
     <constructor-arg name="messageResourcePaths">
       <list>
         <value>gcs.website.messages.en.xml</value>
@@ -72,6 +71,14 @@
       </list>
     </constructor-arg>
     <property name="defaultLocale" value="fr" />
+  </bean>
+  
+  <!-- -->
+  <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="staticMethod" value="gcs.website.views.helpers.ControlHelpers.setMessageLocalizer" />
+    <property name="arguments">
+      <ref bean="messageLocalizer" />
+    </property>
   </bean>
 
   <!-- Application menus cache. This is where configured menus will be loaded. -->
@@ -107,12 +114,14 @@
     <property name="jerseyClient" ref="jerseyClient" />
     <property name="cache" ref="httpServiceCache" />
   </bean>
+  
   <!-- Enum service provider implementation -->
   <bean id="enumServiceClient" class="gcs.webservices.client.EnumServiceClient" scope="singleton">
     <property name="serviceUrl" ref="serviceRepositoryUrl" />
     <property name="jerseyClient" ref="jerseyClient" />
     <property name="cache" ref="httpServiceCache" />
   </bean>
+  
   <!-- Usager service provider implementation -->
   <bean id="usagerServiceClient" class="gcs.webservices.client.UsagerServiceClient" scope="singleton">
     <property name="serviceUrl" ref="serviceRepositoryUrl" />

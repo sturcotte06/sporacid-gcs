@@ -15,20 +15,16 @@ public class Base64KeyProvider implements IKeyProvider
     /**
      * Transform an object into a cache key.
      * 
-     * @param object
-     * @param classObj
+     * @param value
      * @return
      */
     @Override
-    public <TValue> CacheKey toKey(TValue object, Class<TValue> classObj)
+    public <TValue> CacheKey toKey(TValue value)
     {
         CacheKey key = null;
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutput out = null;
-
-        try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(object);
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
+             ObjectOutput out = new ObjectOutputStream(bos)) {
+            out.writeObject(value);
 
             // Get the object bytes
             byte[] objBytes = bos.toByteArray();
@@ -38,19 +34,8 @@ public class Base64KeyProvider implements IKeyProvider
             key = new CacheKey(new String(Base64.encodeBase64(objBytes)));
         } catch (IOException ex) {
             throw new InternalException("caching_keyprovider_serialization_failure", ex);
-        } finally {
-            try {
-                out.close();
-            } catch (IOException ex) {
-                // Nothing to do
-            }
-            try {
-                bos.close();
-            } catch (IOException ex) {
-                // Nothing to do
-            }
         }
-
+        
         return key;
     }
 }

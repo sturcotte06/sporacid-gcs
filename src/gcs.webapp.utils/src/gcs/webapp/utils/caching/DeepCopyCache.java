@@ -22,24 +22,30 @@ public class DeepCopyCache<K, V> extends Cache<K, V>
 	}
 
 	@Override
-	public synchronized void cacheValue(K keyObj, Class<K> keyClass, V value)
+	public void put(K keyObj, V value)
 	{
-		super.cacheValue(keyObj, keyClass, ReflectionUtils.deepCopy(value, jsonSerialiser));
+	    super.put(keyObj, ReflectionUtils.deepCopy(value, jsonSerialiser));
 	}
 	
 	@Override
-	public synchronized V getCacheValue(K keyObj, Class<K> keyClass)
+	public V get(K keyObj)
 	{
-		return ReflectionUtils.deepCopy(super.getCacheValue(keyObj, keyClass));
-	}
-	
-	public Gson getJsonSerialiser() 
-	{
-		return jsonSerialiser;
+	    return ReflectionUtils.deepCopy(super.get(keyObj));
 	}
 
-	public void setJsonSerialiser(Gson jsonSerialiser) 
-	{
-		this.jsonSerialiser = jsonSerialiser;
-	}
+    /**
+     * @return the jsonSerialiser
+     */
+    public Gson getJsonSerialiser()
+    {
+        return jsonSerialiser;
+    }
+
+    /**
+     * @param jsonSerialiser the jsonSerialiser to set
+     */
+    public void setJsonSerialiser(Gson jsonSerialiser)
+    {
+        this.jsonSerialiser = jsonSerialiser;
+    }
 }

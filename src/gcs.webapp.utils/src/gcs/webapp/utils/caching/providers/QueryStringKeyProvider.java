@@ -11,12 +11,13 @@ import java.util.Map;
 public class QueryStringKeyProvider implements IKeyProvider
 {
     @Override
-    public <TValue> CacheKey toKey(TValue object, Class<TValue> classObj)
+    public <TValue> CacheKey toKey(TValue value)
     {
+        Class<?> classObj = value.getClass();
         StringBuffer keyBuilder = new StringBuffer();
 
         // Append all properties as query strings
-        Map<String, Object> objProperties = ReflectionUtils.flatten(object);
+        Map<String, Object> objProperties = ReflectionUtils.flatten(value);
         for (Map.Entry<String, Object> objProperty : objProperties.entrySet()) {
             keyBuilder.append(objProperty.getKey() + "=" + objProperty.getValue());
             keyBuilder.append("&");
@@ -29,7 +30,7 @@ public class QueryStringKeyProvider implements IKeyProvider
 
         // Append request type, because we could have different type of
         // requests with the same parameters
-        keyBuilder.append("requestType=" + classObj.toString());
+        keyBuilder.append("valuetype=" + classObj.toString());
 
         return new CacheKey(keyBuilder.toString());
     }

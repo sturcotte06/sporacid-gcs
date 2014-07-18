@@ -36,7 +36,6 @@ import org.springframework.stereotype.Component;
 @Path("/context/{contextName}/session/{ipv4Address}/{sessionKey}/commandite")
 public class CommanditeService extends SecureHttpService
 {
-
     private ICommanditeDao commanditeDao;
     private IFournisseurDao fournisseurDao;
     private IItemDao itemDao;
