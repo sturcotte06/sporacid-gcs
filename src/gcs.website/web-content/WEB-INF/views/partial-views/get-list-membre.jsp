@@ -75,19 +75,35 @@
 			onSelectRow : function(rowId) {
 				var firstName = $(this).jqGrid('getCell', rowId, 'prenom');
 				var lastName = $(this).jqGrid('getCell', rowId, 'nom');
-				$("#current_membre").html(
+				
+				var id = $(this).jqGrid('getCell', rowId, 'id');
+				
+				
+				$("#current_membre").loadContentAjax("<%=context%>/membres/get-membre", "GET", {membre_id:id});
+				
+				/*$("#current_membre").html(
 						"<h1>Membre - <small class=\"current-membre-code-universel\">" + firstName + " "
-								+ lastName + "</small></h1>");
+								+ lastName + "</small></h1>"); */
+				
+								
+								
+				/*$("<form />").attr("action", "<%=context%>/membres/get-membre")
+				              .append($("<input />").attr("type", "hidden").attr("value", id));*/
+				
 			}
 		});
 	});
 	
+	function showMembreDetail(id) {
+		$("#current_membre").html();
+	}
+	
 	function showAddMembreDialogue()
-		{
+	{
 			var $DialogAddMembre = $("#dialogAddMembre");
 			$DialogAddMembre.jqxWindow({ height:250, width: 525, theme: cJqWidgetTheme });
 			$DialogAddMembre.find(".jqx-window-content").loadContentAjax(cContext + '/membres/ajouter', 'get');
 			$DialogAddMembre.find(".jqx-window-content").css('overflow', 'hidden');
 			return false; ////cancel eventbubbeling
-		}
+	}
 </script>
