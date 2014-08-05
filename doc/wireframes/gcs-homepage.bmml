@@ -196,7 +196,7 @@
     <control controlID="56" controlTypeID="com.balsamiq.mockups::StickyNote" x="813" y="606" w="156" h="119" measuredW="109" measuredH="123" zOrder="40" locked="false" isInGroup="-1">
       <controlProperties>
         <bold>true</bold>
-        <size>18</size>
+        <size>20</size>
         <text>%20%0ASuggestions%20%3F</text>
       </controlProperties>
     </control>
@@ -205,8 +205,9 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="61" controlTypeID="com.balsamiq.mockups::StickyNote" x="1073" y="257" w="143" h="116" measuredW="109" measuredH="123" zOrder="42" locked="false" isInGroup="-1">
+    <control controlID="61" controlTypeID="com.balsamiq.mockups::StickyNote" x="1073" y="257" w="201" h="197" measuredW="109" measuredH="123" zOrder="42" locked="false" isInGroup="-1">
       <controlProperties>
+        <size>20</size>
         <text>Zone%20de%20statistiques%20contextuelles%0Aau%20club%20s%E9lectionn%E9</text>
       </controlProperties>
     </control>

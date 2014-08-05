@@ -87,18 +87,19 @@
         <text>Voir%20les%20donn%E9es%20de%3A</text>
       </controlProperties>
     </control>
-    <control controlID="81" controlTypeID="com.balsamiq.mockups::DataGrid" x="534" y="222" w="913" h="286" measuredW="619" measuredH="203" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="81" controlTypeID="com.balsamiq.mockups::DataGrid" x="534" y="222" w="913" h="286" measuredW="604" measuredH="203" zOrder="18" locked="false" isInGroup="-1">
       <controlProperties>
         <selectedIndex>3</selectedIndex>
         <text>Nom%20%5E%2C%20Prenom%2C%20Code%20Permanent%2C%20Courriel%2C%20Telephone%2C%20Actif%0ABalthazar%2C%20Justine%2C%20BALJ11111111%2C%20juju@larousse.diguidi%2C%20819-111-1111%2C%20%5Bx%5D%0ABedard%2C%20Mathieu%2C%20BEDM22222222%2C%20bedstar@bacon.lol%2C%20450-222-2222%2C%20%5Bx%5D%0AColucci%2C%20Leo%2C%20COLL33333333%2C%20pastis@vino.fr%2C%2077%2052%2078%2096%2012%2C%20%5Bx%5D%0ALavallee%2C%20Patrick%2C%20LAVP12048408%2C%20lavalleep@gmail.com%2C%20514-726-4257%2C%20%5Bx%5D%0APitre%2C%20Maxime%2C%20PITM55555555%2C%20livinthelife@%23yolo.com%2C%20541-333-3333%2C%20%5Bx%5D%0ASalesse-Lafleur%2C%20Michael%2C%20SALM66666666%2C%20chewbachat@mikachu.jp%2C%20514-555-5678%2C%20%5Bx%5D%0A%7B0L%2C%200L%2C%200C%2C%200C%2C%200C%2C%200C%7D</text>
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
     </control>
-    <control controlID="85" controlTypeID="com.balsamiq.mockups::PointyButton" x="1394" y="333" w="-1" h="-1" measuredW="98" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="85" controlTypeID="com.balsamiq.mockups::PointyButton" x="1329" y="333" w="163" h="-1" measuredW="127" measuredH="28" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
         <direction>left</direction>
         <href>gcs-public-profil%26bm%3Bgcs-public-profil.bmml%26bm%3Bgcs-public-profil.bmml%26bm%3Bgcs-public-profil.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%221078%2C310%2C1176%2C337%22%20href%3D%22gcs-public-profil.bmml%22%20alt%3D%22gcs-public-profil%22%20id%3D%2285%22/%3E</map>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%221013%2C310%2C1176%2C338%22%20href%3D%22gcs-public-profil.bmml%22%20alt%3D%22gcs-public-profil%22%20id%3D%2285%22/%3E</map>
+        <size>18</size>
         <text>Double%20Click%21%21</text>
       </controlProperties>
     </control>
@@ -121,9 +122,9 @@
         <text>%5BG%E9rer%20les%20formations%5D</text>
       </controlProperties>
     </control>
-    <control controlID="90" controlTypeID="com.balsamiq.mockups::StickyNote" x="618" y="463" w="310" h="146" measuredW="109" measuredH="123" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="90" controlTypeID="com.balsamiq.mockups::StickyNote" x="618" y="463" w="365" h="179" measuredW="109" measuredH="123" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
-        <size>16</size>
+        <size>18</size>
         <text>La%20grille%20prend%20en%20charge%20les%20op%E9ration%20suivantes%3A%0A%09-%20Consultation%20%28tous%29%0A%09-%20Supression%20%20%28capitaine%29%0A%09-%20Modification%20actif/inactif%20%28capitaine%29</text>
       </controlProperties>
     </control>
@@ -132,8 +133,9 @@
         <text>Fiches%20Signalitiques</text>
       </controlProperties>
     </control>
-    <control controlID="92" controlTypeID="com.balsamiq.mockups::StickyNote" x="1378" y="539" w="-1" h="-1" measuredW="109" measuredH="123" zOrder="25" locked="false" isInGroup="-1">
+    <control controlID="92" controlTypeID="com.balsamiq.mockups::StickyNote" x="1278" y="539" w="196" h="123" measuredW="109" measuredH="123" zOrder="25" locked="false" isInGroup="-1">
       <controlProperties>
+        <size>18</size>
         <text>Exporte%20en%20format%20PDF%20le%20profil%20public%20d%27un%20utilisateur</text>
       </controlProperties>
     </control>

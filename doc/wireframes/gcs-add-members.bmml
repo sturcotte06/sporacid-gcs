@@ -137,9 +137,9 @@
         <text>Voir%20les%20donn%E9es%20de%3A</text>
       </controlProperties>
     </control>
-    <control controlID="36" controlTypeID="com.balsamiq.mockups::StickyNote" x="1152" y="219" w="158" h="123" measuredW="109" measuredH="123" zOrder="27" locked="false" isInGroup="-1">
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::StickyNote" x="1152" y="219" w="174" h="149" measuredW="109" measuredH="123" zOrder="27" locked="false" isInGroup="-1">
       <controlProperties>
-        <size>16</size>
+        <size>20</size>
         <text>Un%20membre%20est%20ajout%E9%20selon%20le%20contexte%20du%20club%20s%E9lectionn%E9.</text>
       </controlProperties>
     </control>
